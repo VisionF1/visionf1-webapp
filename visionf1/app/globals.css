@@ -5,7 +5,7 @@
   --foreground: #171717;
 }
 
-@theme inline {
+:root {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -23,4 +23,46 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@font-face {
+  font-family: 'F1Year';
+  src: url('/fonts/F1YEAR.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Formula1-Display-Regular';
+  src: url('/fonts/Formula1 Display-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Formula1-Display-Bold';
+  src: url('/fonts/Formula1 Display-Bold Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: bold;
+}
+
+@font-face {
+  font-family: 'Formula1-Display-Italic';
+  src: url('/fonts/Formula1 Display-Italic Italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Formula1-Display-Black';
+  src: url('/fonts/Formula1 Display-Black.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Formula1-Display-Wide';
+  src: url('/fonts/Formula1 Display-Wide.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
 }

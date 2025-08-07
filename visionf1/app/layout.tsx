@@ -1,12 +1,5 @@
 import type { Metadata } from "next";
-import { Oswald } from "next/font/google";
 import "./globals.css";
-
-const oswald = Oswald({
-  variable: "--font-oswald",
-  subsets: ["latin"],
-  weight: ["400", "700"],
-});
 
 export const metadata: Metadata = {
   title: "VisionF1",
@@ -20,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${oswald.variable} antialiased`}>
+      <body style={{ fontFamily: "Formula1-Display-Regular, F1Year, sans-serif" }}>
         {children}
       </body>
     </html>

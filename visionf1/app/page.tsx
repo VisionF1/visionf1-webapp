@@ -8,8 +8,8 @@ export default function Home() {
       padding: "2rem"
     }}>
       <h1 style={{
-        fontFamily: "var(--font-oswald)",
-        fontSize: "3rem",
+        fontFamily: "Formula1-Display-Black",
+        fontSize: "4rem",
         color: "#19dae0",
         letterSpacing: "2px"
       }}>
