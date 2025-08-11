@@ -26,8 +26,8 @@ body {
 }
 
 @font-face {
-  font-family: 'F1Year';
-  src: url('/fonts/F1YEAR.woff2') format('woff2');
+  font-family: 'Formula1-Display-Year';
+  src: url('/fonts/Formula1 Display-Year.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -41,14 +41,14 @@ body {
 
 @font-face {
   font-family: 'Formula1-Display-Bold';
-  src: url('/fonts/Formula1 Display-Bold Bold.woff2') format('woff2');
+  src: url('/fonts/Formula1 Display-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: bold;
 }
 
 @font-face {
   font-family: 'Formula1-Display-Italic';
-  src: url('/fonts/Formula1 Display-Italic Italic.woff2') format('woff2');
+  src: url('/fonts/Formula1 Display-Italic.woff2') format('woff2');
   font-weight: 400;
   font-style: italic;
 }
