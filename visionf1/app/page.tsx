@@ -1,42 +1,3 @@
-/*export default function Home() {
-  return (
-    <main style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: "2rem",
-      padding: "2rem"
-    }}>
-      <h1 style={{
-        fontFamily: "Formula1-Display-Black",
-        fontSize: "4rem",
-        color: "#19dae0",
-        letterSpacing: "2px"
-      }}>
-        VisionF1
-      </h1>
-      <img
-        src="/f1-eau-rouge.png"
-        alt="Fórmula 1"
-        style={{
-          maxWidth: "500px",
-          borderRadius: "1rem",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.2)"
-        }}
-      />
-      <section style={{
-        maxWidth: "600px",
-        textAlign: "center",
-        fontSize: "1.2rem"
-      }}>
-        <p>
-          Welcome to <strong>VisionF1</strong>, a Formula 1 web app for statistics, analysis and predictions.
-        </p>
-      </section>
-    </main>
-  );
-}*/
-
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -52,20 +13,66 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import { Input } from "@/components/ui/input"
+import { Button } from "@/components/ui/button"
+
+import { JSX, SVGProps } from "react"
+
+function SearchIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </svg>
+  )
+}
+
+function UserIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  )
+}
 
 export default function Home() {
   return (
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
-          <div className="flex items-center gap-2 px-4">
+        <header className="flex h-20 shrink-0 items-center gap-2 border-b bg-background px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-16">
+          <div className="flex items-center gap-4 flex-1">
             <SidebarTrigger className="-ml-1" />
             <Separator
               orientation="vertical"
-              className="mr-2 data-[orientation=vertical]:h-4"
+              className="mr-2 h-6"
             />
-            <Breadcrumb>
+            {/* Site section Breadcrumb */}
+            <div className="flex items-center gap-3">
+              <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbLink href="#">
@@ -78,6 +85,24 @@ export default function Home() {
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
+            </div>
+            {/* Search Bar and Dark Mode Button */}
+            <div className="ml-auto">
+              <div className="flex items-center gap-4">
+                <form className="relative">
+                  <SearchIcon className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    type="search"
+                    placeholder="Search..."
+                    className="pl-8 bg-background text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  />
+                </form>
+                <Button variant="outline" size="icon" className="rounded-full">
+                  <UserIcon className="h-5 w-5" />
+                  <span className="sr-only">User Menu</span>
+                </Button>
+              </div>
+            </div>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

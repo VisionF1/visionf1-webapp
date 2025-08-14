@@ -4,19 +4,11 @@ import * as React from "react"
 import {
   AudioWaveform,
   Bot,
-  ChartAreaIcon,
-  ChartBarBigIcon,
-  ChartBarIcon,
-  ChartBarIncreasingIcon,
-  ChartBarStackedIcon,
-  ChartGanttIcon,
   ChartLineIcon,
   Command,
   GalleryVerticalEnd,
-  GitGraphIcon,
   HomeIcon,
   InfoIcon,
-  SquareTerminal,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
