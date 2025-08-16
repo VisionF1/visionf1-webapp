@@ -14,7 +14,7 @@ import {
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { SidebarBrand } from "@/components/sidebar-brand"
 import {
   Sidebar,
   SidebarContent,
@@ -29,23 +29,10 @@ const data = {
     email: "afabregas@fi.uba.ar",
     avatar: "/avatars/shadcn.jpg",
   },
-  teams: [
-    {
-      name: "VisionF1",
-      logo: GalleryVerticalEnd,
-      plan: "FIUBA",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
+  brand: {
+    name: "VisionF1",
+    logo: "/visionf1-logo.JPEG",
+  },
   home: [
     {
       name: "Home",
@@ -107,7 +94,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <SidebarBrand brand={data.brand} />
       </SidebarHeader>
       <SidebarContent>
         <NavProjects projects={data.home} />
