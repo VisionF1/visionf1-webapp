@@ -2,19 +2,16 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
   Bot,
   ChartLineIcon,
-  Command,
-  GalleryVerticalEnd,
   HomeIcon,
   InfoIcon,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
 import { SidebarBrand } from "@/components/sidebar-brand"
+import { SidebarBottom } from "@/components/sidebar-bottom"
 import {
   Sidebar,
   SidebarContent,
@@ -24,14 +21,15 @@ import {
 } from "@/components/ui/sidebar"
 
 const data = {
-  user: {
-    name: "Alejo Fabregas",
-    email: "afabregas@fi.uba.ar",
-    avatar: "/avatars/shadcn.jpg",
-  },
   brand: {
     name: "VisionF1",
     logo: "/visionf1-logo.JPEG",
+  },
+  university: {
+    title: "FIUBA",
+    subtitle: "Trabajo Profesional",
+    year: "2025",
+    logo: "/fiuba-logo.png",
   },
   home: [
     {
@@ -102,7 +100,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavProjects projects={data.about} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <SidebarBottom detail={data.university} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
