@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "VisionF1",
@@ -12,9 +13,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
+    <html lang="en" suppressHydrationWarning>
+      <head />
       <body style={{ fontFamily: "Formula1-Display-Regular, F1Year, sans-serif" }}>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          
+        </ThemeProvider>
       </body>
     </html>
   );
