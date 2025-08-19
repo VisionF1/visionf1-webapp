@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
+import Link from "next/link"
 
 import {
   SidebarMenu,
@@ -21,29 +22,31 @@ export function SidebarBrand({
   return (
     <SidebarMenu>
       <SidebarMenuItem>
-        <SidebarMenuButton
-          size="lg"
-          className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-        >
-          <div className="h-12 w-12 bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-            <Image
-              src={brand.logo}
-              alt={brand.name}
-              width={48}
-              height={48}
-              className="object-cover"
-              priority
-            />
-          </div>
-          <div className="grid flex-1 text-left text-2xl leading-tight">
-            <span
-              className="truncate font-normal"
-              style={{ fontFamily: "Formula1-Display-Black, sans-serif" }}
-            >
-              {brand.name}
-            </span>
-          </div>
-        </SidebarMenuButton>
+        <Link href="/">
+          <SidebarMenuButton
+            size="lg"
+            className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground h-18"
+          >
+            <div className="h-12 w-12 bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+              <Image
+                src={brand.logo}
+                alt={brand.name}
+                width={48}
+                height={48}
+                className="object-cover"
+                priority
+              />
+            </div>
+            <div className="grid flex-1 text-left text-3xl leading-tight">
+              <span
+                className="truncate font-normal"
+                style={{ fontFamily: "Formula1-Display-Black, sans-serif" }}
+              >
+                {brand.name}
+              </span>
+            </div>
+          </SidebarMenuButton>
+        </Link>
       </SidebarMenuItem>
     </SidebarMenu>
   )
