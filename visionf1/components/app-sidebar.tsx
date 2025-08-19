@@ -62,7 +62,6 @@ const data = {
       title: "Analytics & Insights",
       url: "#",
       icon: ChartLineIcon,
-      isActive: true,
       items: [
         {
           title: "Race Pace",
