@@ -23,7 +23,7 @@ import {
 const data = {
   brand: {
     name: "VisionF1",
-    logo: "/visionf1-logo.JPEG",
+    logo: "/visionf1-logo.png",
   },
   university: {
     title: "FIUBA",
