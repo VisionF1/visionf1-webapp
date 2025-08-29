@@ -56,7 +56,42 @@ export default function Home() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="bg-muted/50 aspect-video rounded-xl" />
+            <div className="bg-muted/50 aspect-video rounded-xl flex items-center justify-between px-4 py-6 overflow-hidden relative box-border">
+              {/* Welcome text */}
+              <div className="flex flex-col items-start flex-1 pr-2">
+                <span
+                  className="text-2xl font-normal leading-tight md:whitespace-nowrap py-4"
+                  style={{ fontFamily: "Formula1-Display-Regular, sans-serif" }}
+                >
+                  Welcome to{" "}
+                  <span
+                    className="text-3xl font-black align-middle"
+                    style={{ fontFamily: "Formula1-Display-Black, sans-serif" }}
+                  >
+                    VisionF1
+                  </span>
+                </span>
+
+                <span
+                  className="text-base font-normal mt-3 max-w-xl"
+                  style={{ fontFamily: "Formula1-Display-Regular, sans-serif" }}
+                >
+                  Your place for Formula 1 analysis, statistics and predictive models.
+                </span>
+              </div>
+
+              {/* Logo */}
+              <div className="ml-8 flex-shrink-0">
+                <div className="h-28 w-28 md:h-36 md:w-36 bg-sidebar-primary flex items-center justify-center rounded-lg overflow-hidden">
+                  <img
+                    src="/visionf1-logo.png"
+                    alt="VisionF1"
+                    className="object-contain h-full w-full"
+                    loading="eager"
+                  />
+                </div>
+              </div>
+            </div>
             <div className="bg-muted/50 aspect-video rounded-xl">
               <DriverImages />
             </div>
