@@ -117,40 +117,6 @@ export default function Home() {
             <div className="bg-muted/50 aspect-video rounded-xl">
               <UpcomingGP gp={upcomingGP} />
             </div>
-            <div className="bg-muted/50 aspect-video rounded-xl p-6 flex flex-col justify-center overflow-hidden">
-              <span className="text-xs uppercase tracking-wide text-muted-foreground">
-                Upcoming GP
-              </span>
-
-              <div className="mt-3 flex items-center gap-4">
-                <Image
-                  src={`https://flagcdn.com/${upcomingGP.countryCode}.svg`}
-                  alt={upcomingGP.countryCode}
-                  width={48}
-                  height={36}
-                  className="object-contain"
-                />
-
-                <div className="flex-1">
-                  <div className="text-lg font-semibold text-foreground">
-                    {upcomingGP.name}
-                  </div>
-                  <div className="text-sm text-muted-foreground mt-1">
-                    {upcomingGP.circuit}
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 text-sm text-foreground">
-                <time dateTime={upcomingGP.startDate}>{fmt(start)}</time>
-                <span className="mx-2 text-muted-foreground">—</span>
-                <time dateTime={upcomingGP.endDate}>{fmt(end)}</time>
-              </div>
-
-              <div className="mt-3 text-sm font-medium text-foreground">
-                Round {upcomingGP.round}
-              </div>
-            </div>
           </div>
           <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
         </div>
