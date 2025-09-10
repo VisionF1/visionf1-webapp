@@ -16,14 +16,13 @@ import {
 import { ThemeToggler } from "@/components/theme-toggler"
 import { SearchBar } from "@/components/search-bar"
 import { DriverImages } from "@/components/drivers"
-import Image from "next/image"
 import UpcomingGP from "@/components/upcoming-gp"
 
 export default function Home() {
 
-  // upcoming GP data (ajusta estos valores dinámicamente si tienes una API)
+  // upcoming GP data (get from API later)
   const upcomingGP = {
-    countryCode: "it", // ISO alpha-2 en minúsculas para flagcdn
+    countryCode: "it", // ISO alpha-2 in lowercase for flagcdn
     name: "Italian Grand Prix",
     circuit: "Autodromo Nazionale Monza",
     startDate: "2025-09-05",
@@ -31,11 +30,6 @@ export default function Home() {
     round: 15,
     year: 2025,
   }
-
-  const start = new Date(upcomingGP.startDate)
-  const end = new Date(upcomingGP.endDate)
-  const fmt = (d: Date) =>
-    d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })
 
   return (
     <SidebarProvider>

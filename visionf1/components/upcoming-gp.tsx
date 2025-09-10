@@ -23,11 +23,13 @@ export default function UpcomingGP({ gp }: UpcomingGPProps) {
   const [isLive, setIsLive] = useState(false);
 
   useEffect(() => {
+    // run once immediately and then every second
+    setTimeLeft(calculateTimeLeft());
+    checkIfLive();
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
       checkIfLive();
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
@@ -38,9 +40,8 @@ export default function UpcomingGP({ gp }: UpcomingGPProps) {
     const difference = start.getTime() - now.getTime();
     
     if (difference <= 0) {
-      // If started, check if we are in the weekend
+      // If started and inside weekend -> return zeros
       if (now >= start && now <= end) {
-        setIsLive(true);
         return { days: 0, hours: 0, minutes: 0, seconds: 0 };
       } else if (now > end) {
         // If already passed, do not show counter
@@ -64,7 +65,7 @@ export default function UpcomingGP({ gp }: UpcomingGPProps) {
   }
 
   const fmt = (d: Date) =>
-    d.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
+    d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
 
   const start = new Date(gp.startDate);
   const end = new Date(gp.endDate);
@@ -123,8 +124,8 @@ export default function UpcomingGP({ gp }: UpcomingGPProps) {
           <Image
             src={`/${gp.circuit}.avif`}
             alt={gp.circuit}
-            width={200}
-            height={200}
+            width={300}
+            height={300}
             className="object-cover w-full h-full"
           />
         </div>
@@ -153,10 +154,10 @@ export default function UpcomingGP({ gp }: UpcomingGPProps) {
           </div>
         </div>
       ) : isLive ? (
-        <div className="mt-auto text-center py-3 bg-red-100 dark:bg-red-950/30 rounded-md">
+        <div className="mt-auto text-center py-2 bg-red-100 dark:bg-red-950/30 rounded-md">
           <span className="text-lg font-bold text-red-600">LIVE NOW</span>
           <p className="text-xs text-muted-foreground mt-1">
-            🔴 LIVE: event in progress
+            Event in progress
           </p>
         </div>
       ) : (
