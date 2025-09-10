@@ -19,7 +19,6 @@ interface GPData {
   startDate: string;
   endDate: string;
   round: number;
-  year: number;
 }
 
 interface UpcomingGPProps {
@@ -77,6 +76,7 @@ export default function UpcomingGP({ gp }: UpcomingGPProps) {
 
   const start = new Date(gp.startDate);
   const end = new Date(gp.endDate);
+  const year = start.getFullYear();
 
   return (
     <div className="rounded-xl p-4 h-full flex flex-col">
@@ -107,7 +107,7 @@ export default function UpcomingGP({ gp }: UpcomingGPProps) {
                 {gp.name}
               </h3>
               <p className="text-sm text-muted-foreground">
-                {gp.year}
+                {year}
               </p>
             </div>
           </div>
