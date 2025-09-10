@@ -3,6 +3,14 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Calendar, MapPin } from "lucide-react"
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 interface GPData {
   countryCode: string;
@@ -65,7 +73,7 @@ export default function UpcomingGP({ gp }: UpcomingGPProps) {
   }
 
   const fmt = (d: Date) =>
-    d.toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+    d.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
 
   const start = new Date(gp.startDate);
   const end = new Date(gp.endDate);
@@ -120,14 +128,45 @@ export default function UpcomingGP({ gp }: UpcomingGPProps) {
         </div>
         
         {/* Circuit Image */}
-        <div className="w-50 h-28 rounded-md overflow-hidden border">
-          <Image
-            src={`/${gp.circuit}.avif`}
-            alt={gp.circuit}
-            width={300}
-            height={300}
-            className="object-cover w-full h-full"
-          />
+        <div className="flex-shrink-0">
+          <Dialog>
+            <DialogTrigger asChild>
+              <button
+                type="button"
+                className="w-50 h-28 rounded-md overflow-hidden border"
+                aria-label={`Open ${gp.circuit} image`}
+              >
+                <Image
+                  src={`/${gp.circuit}.avif`}
+                  alt={gp.circuit}
+                  width={320}
+                  height={320}
+                  className="object-cover w-full h-full"
+                />
+              </button>
+            </DialogTrigger>
+
+            <DialogContent className="max-w-[50vw] sm:max-w-[45vw] p-0">
+              <DialogHeader>
+                <DialogTitle className="sr-only">{gp.circuit}</DialogTitle>
+                <DialogClose className="absolute right-2 top-2 z-50" />
+              </DialogHeader>
+
+              <div className="w-full flex items-center justify-center bg-black/80">
+                <Image
+                  src={`/${gp.circuit}.avif`}
+                  alt={gp.circuit}
+                  width={1252}
+                  height={704}
+                  className="object-contain max-h-[80vh] w-full"
+                />
+              </div>
+
+              <div className="p-4">
+                <p className="text-sm text-muted-foreground">{gp.circuit}</p>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
