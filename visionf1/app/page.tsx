@@ -16,8 +16,20 @@ import {
 import { ThemeToggler } from "@/components/theme-toggler"
 import { SearchBar } from "@/components/search-bar"
 import { DriverImages } from "@/components/drivers"
+import UpcomingGP from "@/components/upcoming-gp"
 
 export default function Home() {
+
+  // upcoming GP data (get from API later)
+  const upcomingGP = {
+    countryCode: "it", // ISO alpha-2 in lowercase for flagcdn
+    name: "Italian Grand Prix",
+    circuit: "Autodromo Nazionale Monza",
+    startDate: "2025-09-05",
+    endDate: "2025-09-07",
+    round: 15,
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -95,7 +107,9 @@ export default function Home() {
             <div className="bg-muted/50 aspect-video rounded-xl">
               <DriverImages />
             </div>
-            <div className="bg-muted/50 aspect-video rounded-xl" />
+            <div className="bg-muted/50 aspect-video rounded-xl">
+              <UpcomingGP gp={upcomingGP} />
+            </div>
           </div>
           <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
         </div>
