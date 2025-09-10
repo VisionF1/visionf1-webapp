@@ -29,6 +29,7 @@ export default function Home() {
     startDate: "2025-09-05",
     endDate: "2025-09-07",
     round: 15,
+    year: 2025,
   }
 
   const start = new Date(upcomingGP.startDate)
