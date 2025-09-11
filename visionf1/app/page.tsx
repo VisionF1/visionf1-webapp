@@ -71,7 +71,7 @@ export default function Home() {
             {/* Welcome card */}
             <div className="bg-muted/50 aspect-video rounded-xl flex items-center justify-between px-4 py-6 overflow-hidden relative box-border">           
               {/* Welcome text */}
-              <div className="flex flex-col justify-center h-full flex-1 pr-2 z-10">
+              <div className="flex flex-col justify-center h-full flex-1 pr-2 z-10 pb-14">
                 <span
                   className="text-2xl md:text-3xl font-normal leading-tight py-2"
                   style={{ fontFamily: "Formula1-Display-Regular, sans-serif" }}
@@ -93,12 +93,6 @@ export default function Home() {
                   Your place for Formula 1 analysis, statistics and predictive models. Made by passionate students.
                 </p>
                 
-                {/* Quick stats or features */}
-                <div className="flex flex-wrap gap-2 mt-4">
-                  <span className="text-xs bg-primary/20 px-2 py-1 rounded-full">Data Analytics</span>
-                  <span className="text-xs bg-primary/20 px-2 py-1 rounded-full">Predictive Models</span>
-                  <span className="text-xs bg-primary/20 px-2 py-1 rounded-full">Key Statistics</span>
-                </div>
               </div>
 
               {/* Logo */}
@@ -112,12 +106,13 @@ export default function Home() {
                   />
                 </div>
               </div>
-              
-              {/* Background pattern */}
-              <div className="absolute inset-0 opacity-5">
-                <div className="absolute top-0 right-0 w-32 h-32 border-2 border-red-500 rounded-full -mt-16 -mr-16"></div>
-                <div className="absolute bottom-0 left-0 w-40 h-40 border-2 border-primary rounded-full -mb-20 -ml-20"></div>
+
+              <div className="absolute left-4 bottom-6 z-20 flex gap-2 items-center whitespace-nowrap">
+                <span className="text-xs bg-primary/20 px-2 py-1 rounded-full whitespace-nowrap">Data Analytics</span>
+                <span className="text-xs bg-primary/20 px-2 py-1 rounded-full whitespace-nowrap">Predictive Models</span>
+                <span className="text-xs bg-primary/20 px-2 py-1 rounded-full whitespace-nowrap">Key Statistics</span>
               </div>
+
             </div>
             
             <div className="bg-muted/50 aspect-video rounded-xl">
