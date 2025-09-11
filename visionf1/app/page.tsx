@@ -68,42 +68,58 @@ export default function Home() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            <div className="bg-muted/50 aspect-video rounded-xl flex items-center justify-between px-4 py-6 overflow-hidden relative box-border">
+            {/* Welcome card */}
+            <div className="bg-muted/50 aspect-video rounded-xl flex items-center justify-between px-4 py-6 overflow-hidden relative box-border">           
               {/* Welcome text */}
-              <div className="flex flex-col items-start flex-1 pr-2">
+              <div className="flex flex-col justify-center h-full flex-1 pr-2 z-10">
                 <span
-                  className="text-2xl font-normal leading-tight md:whitespace-nowrap py-4"
+                  className="text-2xl md:text-3xl font-normal leading-tight py-2"
                   style={{ fontFamily: "Formula1-Display-Regular, sans-serif" }}
                 >
-                  Welcome to{" "}
-                  <span
-                    className="text-3xl font-black align-middle"
-                    style={{ fontFamily: "Formula1-Display-Black, sans-serif" }}
-                  >
-                    VisionF1
-                  </span>
+                  Welcome to
+                </span>
+                
+                <span
+                  className="text-4xl md:text-5xl font-black py-2 bg-gradient-to-r from-primary to-50% to-brand bg-clip-text text-transparent"
+                  style={{ fontFamily: "Formula1-Display-Black, sans-serif" }}
+                >
+                  VisionF1
                 </span>
 
-                <span
-                  className="text-base font-normal mt-3 max-w-xl"
+                <p
+                  className="text-base md:text-lg font-normal mt-3 max-w-md text-muted-foreground"
                   style={{ fontFamily: "Formula1-Display-Regular, sans-serif" }}
                 >
-                  Your place for Formula 1 analysis, statistics and predictive models.
-                </span>
+                  Your place for Formula 1 analysis, statistics and predictive models. Made by passionate students.
+                </p>
+                
+                {/* Quick stats or features */}
+                <div className="flex flex-wrap gap-2 mt-4">
+                  <span className="text-xs bg-primary/20 px-2 py-1 rounded-full">Data Analytics</span>
+                  <span className="text-xs bg-primary/20 px-2 py-1 rounded-full">Predictive Models</span>
+                  <span className="text-xs bg-primary/20 px-2 py-1 rounded-full">Key Statistics</span>
+                </div>
               </div>
 
               {/* Logo */}
-              <div className="ml-8 flex-shrink-0">
-                <div className="h-28 w-28 md:h-36 md:w-36 bg-sidebar-primary flex items-center justify-center rounded-lg overflow-hidden">
+              <div className="mt-4 md:mt-0 flex-shrink-0 z-10">
+                <div className="h-24 w-24 md:h-32 md:w-32 bg-sidebar-primary border-2 border-brand flex items-center justify-center rounded-full overflow-hidden shadow-lg">
                   <img
                     src="/visionf1-logo.png"
                     alt="VisionF1"
-                    className="object-contain h-full w-full"
+                    className="object-contain h-full w-full p-2"
                     loading="eager"
                   />
                 </div>
               </div>
+              
+              {/* Background pattern */}
+              <div className="absolute inset-0 opacity-5">
+                <div className="absolute top-0 right-0 w-32 h-32 border-2 border-red-500 rounded-full -mt-16 -mr-16"></div>
+                <div className="absolute bottom-0 left-0 w-40 h-40 border-2 border-primary rounded-full -mb-20 -ml-20"></div>
+              </div>
             </div>
+            
             <div className="bg-muted/50 aspect-video rounded-xl">
               <DriverImages />
             </div>
