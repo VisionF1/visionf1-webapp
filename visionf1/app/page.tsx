@@ -16,7 +16,7 @@ import {
 import { ThemeToggler } from "@/components/theme-toggler"
 import { SearchBar } from "@/components/search-bar"
 import { DriverImages } from "@/components/drivers"
-import UpcomingGP from "@/components/upcoming-gp"
+import { UpcomingGP } from "@/components/upcoming-gp"
 import { Welcome } from "@/components/welcome"
 
 export default function Home() {

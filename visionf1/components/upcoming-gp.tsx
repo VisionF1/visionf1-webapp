@@ -25,7 +25,7 @@ interface UpcomingGPProps {
   gp: GPData;
 }
 
-export default function UpcomingGP({ gp }: UpcomingGPProps) {
+export function UpcomingGP({ gp }: UpcomingGPProps) {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
   const [isLive, setIsLive] = useState(false);
 
