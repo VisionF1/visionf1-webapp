@@ -17,6 +17,7 @@ import { ThemeToggler } from "@/components/theme-toggler"
 import { SearchBar } from "@/components/search-bar"
 import { DriverImages } from "@/components/drivers"
 import UpcomingGP from "@/components/upcoming-gp"
+import { Welcome } from "@/components/welcome"
 
 export default function Home() {
 
@@ -68,53 +69,9 @@ export default function Home() {
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
           <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-            {/* Welcome card */}
-            <div className="bg-muted/50 aspect-video rounded-xl flex items-center justify-between px-4 py-6 overflow-hidden relative box-border">           
-              {/* Welcome text */}
-              <div className="flex flex-col justify-center h-full flex-1 pr-2 z-10 pb-14">
-                <span
-                  className="text-2xl md:text-3xl font-normal leading-tight py-2"
-                  style={{ fontFamily: "Formula1-Display-Regular, sans-serif" }}
-                >
-                  Welcome to
-                </span>
-                
-                <span
-                  className="text-4xl md:text-5xl font-black py-2 bg-gradient-to-r from-primary to-50% to-brand bg-clip-text text-transparent"
-                  style={{ fontFamily: "Formula1-Display-Black, sans-serif" }}
-                >
-                  VisionF1
-                </span>
-
-                <p
-                  className="text-base md:text-lg font-normal mt-3 max-w-md text-muted-foreground"
-                  style={{ fontFamily: "Formula1-Display-Regular, sans-serif" }}
-                >
-                  Your place for Formula 1 analysis, statistics and predictive models. Made by passionate students.
-                </p>
-                
-              </div>
-
-              {/* Logo */}
-              <div className="mt-4 md:mt-0 flex-shrink-0 z-10">
-                <div className="h-24 w-24 md:h-32 md:w-32 bg-sidebar-primary border-2 border-brand flex items-center justify-center rounded-full overflow-hidden shadow-lg">
-                  <img
-                    src="/visionf1-logo.png"
-                    alt="VisionF1"
-                    className="object-contain h-full w-full p-2"
-                    loading="eager"
-                  />
-                </div>
-              </div>
-
-              <div className="absolute left-4 bottom-6 z-20 flex gap-2 items-center whitespace-nowrap">
-                <span className="text-xs bg-primary/20 px-2 py-1 rounded-full whitespace-nowrap">Data Analytics</span>
-                <span className="text-xs bg-primary/20 px-2 py-1 rounded-full whitespace-nowrap">Predictive Models</span>
-                <span className="text-xs bg-primary/20 px-2 py-1 rounded-full whitespace-nowrap">Key Statistics</span>
-              </div>
-
+            <div className="bg-muted/50 aspect-video rounded-xl">
+              <Welcome />
             </div>
-            
             <div className="bg-muted/50 aspect-video rounded-xl">
               <DriverImages />
             </div>
