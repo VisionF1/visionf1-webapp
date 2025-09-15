@@ -37,8 +37,8 @@ const columns: ColumnDef<TeamStanding>[] = [
 
 export function TeamStandings() {
   return (
-    <div className="aspect-video p-4 flex flex-col">
-      <h2 className="text-lg font-semibold">Team Standings</h2>
+    <div className="p-4 flex flex-col">
+      <h2 className="text-lg font-semibold pb-4">Team Standings</h2>
       <DataTable columns={columns} data={teamStandings} />
     </div>
   );

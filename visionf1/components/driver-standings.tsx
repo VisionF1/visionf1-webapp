@@ -58,8 +58,8 @@ const columns: ColumnDef<DriverStanding>[] = [
 
 export function DriverStandings() {
   return (
-    <div className="aspect-video p-4 flex flex-col">
-      <h2 className="text-lg font-semibold">Driver Standings</h2>
+    <div className="p-4 flex flex-col">
+      <h2 className="text-lg font-semibold pb-4">Driver Standings</h2>
       <DataTable columns={columns} data={driverStandings} />
     </div>
   );
