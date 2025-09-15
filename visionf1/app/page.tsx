@@ -18,6 +18,8 @@ import { SearchBar } from "@/components/search-bar"
 import { DriverImages } from "@/components/drivers"
 import { UpcomingGP } from "@/components/upcoming-gp"
 import { Welcome } from "@/components/welcome"
+import { DriverStandings } from "@/components/driver-standings"
+import { TeamStandings } from "@/components/team-standings"
 
 export default function Home() {
 
@@ -79,7 +81,12 @@ export default function Home() {
               <UpcomingGP gp={upcomingGP} />
             </div>
           </div>
-          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min" />
+          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min">
+            <DriverStandings />
+          </div>
+          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min">
+            <TeamStandings />
+          </div>
         </div>
       </SidebarInset>
     </SidebarProvider>
