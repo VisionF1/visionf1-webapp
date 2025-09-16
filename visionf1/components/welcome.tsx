@@ -30,7 +30,7 @@ export function Welcome() {
       <div className="mt-4 md:mt-0 flex-shrink-0 z-10">
         <div className="h-24 w-24 md:h-32 md:w-32 bg-sidebar-primary border-2 border-brand flex items-center justify-center rounded-full overflow-hidden shadow-lg">
           <img
-            src="/visionf1-logo.png"
+            src="/visionf1-logo.svg"
             alt="VisionF1"
             className="object-contain h-full w-full p-2"
             loading="eager"
