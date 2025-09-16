@@ -9,13 +9,6 @@ import {
 } from "lucide-react"
 
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarMenu,
@@ -37,7 +30,7 @@ export function NavProjects({
   const { isMobile } = useSidebar()
 
   return (
-    <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+    <SidebarGroup>
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>

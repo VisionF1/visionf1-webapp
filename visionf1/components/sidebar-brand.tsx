@@ -8,6 +8,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 export function SidebarBrand({
@@ -19,6 +20,8 @@ export function SidebarBrand({
   }
 }) {
 
+  const { state } = useSidebar()
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -27,12 +30,14 @@ export function SidebarBrand({
             size="lg"
             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground h-18"
           >
-            <div className="h-12 w-12 bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+            <div className={`bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square items-center justify-center rounded-lg transition-all duration-300 ${
+              state === "expanded" ? "h-12 w-12" : "h-8 w-8"
+            }`}>
               <Image
                 src={brand.logo}
                 alt={brand.name}
-                width={48}
-                height={48}
+                width={state === "expanded" ? 48 : 32}
+                height={state === "expanded" ? 48 : 32}
                 className="object-cover"
                 priority
               />
