@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 export function Welcome() {
   return (
     <div className="aspect-video flex items-center justify-between px-4 py-6 overflow-hidden relative box-border">           
@@ -29,9 +31,11 @@ export function Welcome() {
       {/* Logo */}
       <div className="mt-4 md:mt-0 flex-shrink-0 z-10">
         <div className="h-24 w-24 md:h-32 md:w-32 bg-sidebar-primary border-2 border-brand flex items-center justify-center rounded-full overflow-hidden shadow-lg">
-          <img
+          <Image
             src="/visionf1-logo.svg"
             alt="VisionF1"
+            width={200}
+            height={200}
             className="object-contain h-full w-full p-2"
             loading="eager"
           />
