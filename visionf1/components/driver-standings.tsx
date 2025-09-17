@@ -44,7 +44,7 @@ export function DriverStandings() {
   const columns: ColumnDef<DriverStanding>[] = [
     {
       accessorKey: "position",
-      header: "Pos",
+      header: "Position",
     },
     {
       accessorKey: "driver",
