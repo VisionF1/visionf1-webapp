@@ -21,8 +21,9 @@ import { Welcome } from "@/components/welcome"
 import { DriverStandings } from "@/components/driver-standings"
 import { TeamStandings } from "@/components/team-standings"
 import { Footer } from "@/components/footer"
+import { getDriverStandings } from "@/lib/api-requests";
 
-export default function Home() {
+export default async function Home() {
 
   // upcoming GP data (get from API later)
   const upcomingGP = {
@@ -33,6 +34,8 @@ export default function Home() {
     endDate: "2025-09-07",
     round: 15,
   }
+
+  const driverStandings = await getDriverStandings();
 
   return (
     <SidebarProvider>
@@ -83,7 +86,7 @@ export default function Home() {
             </div>
           </div>
           <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min">
-            <DriverStandings />
+            <DriverStandings data={driverStandings.data} />
           </div>
           <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min">
             <TeamStandings />
