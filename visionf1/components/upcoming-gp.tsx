@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Calendar, MapPin } from "lucide-react"
 import {
   Dialog,
@@ -26,50 +26,45 @@ interface UpcomingGPProps {
 }
 
 export function UpcomingGP({ gp }: UpcomingGPProps) {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
-  const [isLive, setIsLive] = useState(false);
-
-  useEffect(() => {
-    // run once immediately and then every second
-    setTimeLeft(calculateTimeLeft());
-    checkIfLive();
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-      checkIfLive();
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  function calculateTimeLeft() {
+  const calculateTimeLeft = useCallback(() => {
     const now = new Date();
     const start = new Date(gp.startDate);
     const end = new Date(gp.endDate);
     const difference = start.getTime() - now.getTime();
-    
+
     if (difference <= 0) {
-      // If started and inside weekend -> return zeros
-      if (now >= start && now <= end) {
-        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-      } else if (now > end) {
-        // If already passed, do not show counter
-        return null;
-      }
+      if (now >= start && now <= end) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      if (now > end) return null;
     }
-    
+
     return {
       days: Math.floor(difference / (1000 * 60 * 60 * 24)),
       hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
       minutes: Math.floor((difference / 1000 / 60) % 60),
-      seconds: Math.floor((difference / 1000) % 60)
+      seconds: Math.floor((difference / 1000) % 60),
     };
-  }
+  }, [gp.startDate, gp.endDate]);
 
-  function checkIfLive() {
+  const checkIfLive = useCallback(() => {
     const now = new Date();
     const start = new Date(gp.startDate);
     const end = new Date(gp.endDate);
-    setIsLive(now >= start && now <= end);
-  }
+    return now >= start && now <= end;
+  }, [gp.startDate, gp.endDate]);
+
+  const [timeLeft, setTimeLeft] = useState(() => calculateTimeLeft());
+  const [isLive, setIsLive] = useState(() => checkIfLive());
+
+  useEffect(() => {
+    // run once immediately and then every second
+    setTimeLeft(calculateTimeLeft());
+    setIsLive(checkIfLive());
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+      setIsLive(checkIfLive());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [calculateTimeLeft, checkIfLive]);
 
   const fmt = (d: Date) =>
     d.toLocaleDateString("en-US", { day: "numeric", month: "short", year: "numeric" });
