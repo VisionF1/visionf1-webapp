@@ -19,7 +19,7 @@ export function NavProjects({
     icon: LucideIcon
   }[]
 }) {
-  const { isMobile } = useSidebar()
+  useSidebar()
 
   return (
     <SidebarGroup>
