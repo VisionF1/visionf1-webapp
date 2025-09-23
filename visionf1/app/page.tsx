@@ -85,10 +85,10 @@ export default async function Home() {
               <UpcomingGP gp={upcomingGP} />
             </div>
           </div>
-          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min">
+          <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min">
             <DriverStandings data={driverStandings.data} />
           </div>
-          <div className="bg-muted/50 min-h-[100vh] flex-1 rounded-xl md:min-h-min">
+          <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min">
             <TeamStandings />
           </div>
           <Footer />
