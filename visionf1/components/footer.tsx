@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator"
 export function Footer() {
   return (
     <footer>
-      <Separator className="m-4 mb-6" />
+      <Separator className="mx-auto max-w-6xl my-4 mb-6" />
       <div className="mx-auto max-w-4xl px-4 pb-6 text-center text-[0.7rem] text-sidebar-ring leading-relaxed">
         <p className="mb-2">© 2025 VisionF1. All rights reserved.</p>
 
