@@ -74,7 +74,7 @@ export default async function Home() {
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
-          <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+          <div className="grid auto-rows-min gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
             <div className="bg-muted/50 aspect-video rounded-xl">
               <Welcome />
             </div>
@@ -83,6 +83,8 @@ export default async function Home() {
             </div>
             <div className="bg-muted/50 aspect-video rounded-xl">
               <UpcomingGP gp={upcomingGP} />
+            </div>
+            <div className="bg-muted/50 aspect-video rounded-xl hidden md:block lg:block xl:hidden">
             </div>
           </div>
           <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min">
