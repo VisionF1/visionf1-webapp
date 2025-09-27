@@ -31,8 +31,8 @@ export default async function Home() {
     countryCode: "it", // ISO alpha-2 in lowercase for flagcdn
     name: "Italian Grand Prix",
     circuit: "Autodromo Nazionale Monza",
-    startDate: "2025-09-05",
-    endDate: "2025-09-07",
+    startDate: "2025-09-29",
+    endDate: "2025-09-30",
     round: 15,
   }
 
