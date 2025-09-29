@@ -34,7 +34,7 @@ const data = {
   home: [
     {
       name: "Home",
-      url: "#",
+      url: "/",
       icon: HomeIcon,
     },
   ],
@@ -81,7 +81,7 @@ const data = {
   about: [
     {
       name: "About",
-      url: "#",
+      url: "/about",
       icon: InfoIcon,
     },
   ],
