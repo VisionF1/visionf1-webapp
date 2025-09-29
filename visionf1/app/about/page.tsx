@@ -19,7 +19,6 @@ import { SearchBar } from "@/components/search-bar"
 import { Footer } from "@/components/footer"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Avatar } from "@/components/ui/avatar"
-import Image from "next/image"
 
 export default async function Home() {
 
@@ -58,7 +57,7 @@ export default async function Home() {
             <div className="flex flex-col items-center text-center gap-2 w-full">
               <h1 className="text-5xl font-bold mt-4 mb-2">About Us</h1>
               <p className="text-lg text-muted-foreground max-w-2xl">
-                We're on a mission to use data science and machine learning to reveal new insights and predictions in Formula 1, combining our passion for racing and technology.
+                We&apos;re on a mission to use data science and machine learning to reveal new insights and predictions in Formula 1, combining our passion for racing and technology.
               </p>
             </div>
             {/* Story and Mission Columns */}
