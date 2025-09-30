@@ -75,12 +75,12 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
 
   return (
     <div className="@container rounded-xl p-4 h-full flex flex-col">
-      <div className="flex justify-between items-start mb-1 @xs:mb-2 @md:mb-3 3xl:mb-3">
-        <span className="text-[0.6rem] @xs:text-[0.6rem] @md:text-xs uppercase tracking-wide text-muted-foreground">
+      <div className="flex justify-between items-start mb-1 @xs:mb-1 @md:mb-3 @lg:mb-4 @xl:mb-5 3xl:mb-3">
+        <span className="text-[0.6rem] @xs:text-[0.6rem] @md:text-xs @lg:text-base @xl:text-large uppercase tracking-wide text-muted-foreground">
           Upcoming GP
         </span>
         {isLive && (
-          <span className="bg-red-600 text-white text-[0.6rem] @xs:text-xs px-2 py-1 rounded-md font-semibold">
+          <span className="bg-red-600 text-white text-[0.6rem] @xs:text-xs @md:text-xs @lg:text-base @xl:text-lg px-2 py-1 rounded-md font-semibold">
             LIVE
           </span>
         )}
@@ -90,34 +90,34 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
         {/* GP Info */}
         <div className="flex-1">
           <div className="flex items-center gap-3 mb-1 @xs:mb-3 @md:mb-4">
-            <div className="h-9 w-6 @xs:w-9 @xs:h-6 @sm:w-9 @sm:h-6 @md:w-12 @md:h-8">
+            <div className="h-9 w-6 @xs:w-9 @xs:h-6 @sm:w-9 @sm:h-6 @md:w-12 @md:h-8 @lg:w-15 @lg:h-10 @xl:w-18 @xl:h-12">
               <Image
                 src={`https://flagcdn.com/${gp.countryCode}.svg`}
                 alt={gp.countryCode}
-                width={48}
-                height={36}
+                width={64}
+                height={48}
                 className="object-contain"
               />
             </div>
             <div>
-              <h3 className="text-xs @xs:text-xs @sm:text-normal @md:text-lg font-semibold text-foreground">
+              <h3 className="text-xs @xs:text-xs @sm:text-normal @md:text-lg @lg:text-xl @xl:text-2xl font-semibold text-foreground">
                 {gp.name}
               </h3>
-              <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm text-muted-foreground">
+              <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm @lg:text-base @xl:text-lg text-muted-foreground">
                 {year} - Round {gp.round}
               </p>
             </div>
           </div>
           
           <div className="flex items-center gap-2 text-sm text-foreground">
-            <MapPin className="h-3 w-3 @md:h-4 @md:w-4 text-muted-foreground mb-1 @xs:mb-3" />
-            <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm text-foreground mb-1 @xs:mb-3">
+            <MapPin className="h-3 w-3 @md:h-4 @md:w-4 @lg:h-5 @lg:w-5 @xl:h-6 @xl:w-6 text-muted-foreground mb-1 @xs:mb-3" />
+            <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm @lg:text-base @xl:text-lg text-foreground mb-1 @xs:mb-3">
               {gp.circuit}
             </p>
           </div>
           
-          <div className="flex items-center gap-2 text-[0.6rem] @md:text-sm text-foreground">
-            <Calendar className="h-3 w-3 @md:h-4 @md:w-4 text-muted-foreground" />
+          <div className="flex items-center gap-2 text-[0.6rem] @md:text-sm @lg:text-base @xl:text-lg text-foreground">
+            <Calendar className="h-3 w-3 @md:h-4 @md:w-4 @lg:h-5 @lg:w-5 @xl:h-6 @xl:w-6 text-muted-foreground" />
             <time dateTime={gp.startDate}>{fmt(start)}</time>
             <span className="text-muted-foreground mx-1">-</span>
             <time dateTime={gp.endDate}>{fmt(end)}</time>
@@ -130,7 +130,7 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
             <DialogTrigger asChild>
               <button
                 type="button"
-                className="w-18 h-10 @xs:w-28 @xs:h-16 @sm:w-38 @sm:h-24 @md:w-42 @md:h-25 rounded-md"
+                className="w-18 h-10 @xs:w-28 @xs:h-16 @sm:w-38 @sm:h-24 @md:w-42 @md:h-25 @lg:w-50 @lg:h-28 @xl:w-56 @xl:h-34 rounded-md"
                 aria-label={`Open ${gp.circuit} image`}
               >
                 <Image
@@ -169,36 +169,36 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
 
       {timeLeft && !isLive ? (
         <div className="mt-auto">
-          <span className="text-[0.6rem] @md:text-sm text-muted-foreground block mb-0.5">Race weekend starts in</span>
+          <span className="text-[0.6rem] @md:text-sm @lg:text-base @xl:text-lg text-muted-foreground block mb-0.5">Race weekend starts in</span>
           <div className="grid grid-cols-4 gap-1">
-            <div className="bg-background rounded-md p-1 @md:p-2 text-center">
-              <span className="text-sm @md:text-lg font-bold">{timeLeft.days}</span>
+            <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
+              <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.days}</span>
               <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">days</span>
             </div>
-            <div className="bg-background rounded-md p-1 @md:p-2 text-center">
-              <span className="text-sm @md:text-lg font-bold">{timeLeft.hours}</span>
+            <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
+              <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.hours}</span>
               <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">hours</span>
             </div>
-            <div className="bg-background rounded-md p-1 @md:p-2 text-center">
-              <span className="text-sm @md:text-lg font-bold">{timeLeft.minutes}</span>
+            <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
+              <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.minutes}</span>
               <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">mins</span>
             </div>
-            <div className="bg-background rounded-md p-1 @md:p-2 text-center">
-              <span className="text-sm @md:text-lg font-bold">{timeLeft.seconds}</span>
+            <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
+              <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.seconds}</span>
               <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">secs</span>
             </div>
           </div>
         </div>
       ) : isLive ? (
         <div className="mt-auto text-center py-1.5 @sm:py-2.2 @md:py-3 bg-red-100 dark:bg-red-950/30 rounded-md">
-          <span className="text-xs @xs:text-sm @md:text-lg @font-bold text-red-600">LIVE NOW</span>
-          <p className="text-[0.5rem] @xs:text-[0.6rem] @md:text-sm text-muted-foreground mt-1">
+          <span className="text-xs @xs:text-sm @md:text-lg @lg:text-xl @xl:text-2xl @font-bold text-red-600">LIVE NOW</span>
+          <p className="text-[0.5rem] @xs:text-[0.6rem] @md:text-sm @lg:text-base @xl:text-lg text-muted-foreground mt-1">
             Event in progress
           </p>
         </div>
       ) : (
-        <div className="mt-auto text-center py-2.5 @sm:py-3.5 @md:py-5 bg-muted rounded-md">
-          <span className="text-xs @xs:text-sm @md:text-lg text-muted-foreground">
+        <div className="mt-auto text-center py-2.5 @sm:py-3.5 @md:py-5 @lg:py-6 @xl:py-7 bg-muted rounded-md">
+          <span className="text-xs @xs:text-sm @md:text-lg @lg:text-xl @xl:text-2xl text-muted-foreground">
             Event completed
           </span>
         </div>
