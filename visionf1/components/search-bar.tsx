@@ -1,7 +1,4 @@
-"use client"
-
 import { Input } from "@/components/ui/input"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { JSX, SVGProps } from "react"
 
 function SearchIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
@@ -25,14 +22,15 @@ function SearchIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
 }
 
 export function SearchBar() {
-  const isMobile = useIsMobile()
   return (
     <form className="relative">
       <SearchIcon className="absolute left-2 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
       <Input
         type="search"
-        placeholder={isMobile ? "" : "Search..."}
-        className="pl-8 bg-background text-foreground text-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 w-24 md:w-56"
+        placeholder={"Search..."}
+        className="pl-8 bg-background text-foreground text-sm focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
+               placeholder:text-transparent md:placeholder:text-muted-foreground
+               w-24 md:w-56"
       />
     </form>
   )
