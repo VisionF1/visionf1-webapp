@@ -20,7 +20,7 @@ export function Welcome() {
         </span>
 
         <p
-          className="text-[0.600rem] @2xs:text-[0.600rem] @xs:text-xs @sm:text-sm @md:text-base @lg:text-lg @xl:text-xl font-normal mt-2 max-w-md text-muted-foreground"
+          className="text-[0.600rem] @2xs:text-[0.600rem] @xs:text-xs @sm:text-sm @md:text-base @lg:text-lg @xl:text-xl font-normal mt-2 @lg:mt-4 @xl:mt-6 max-w-md text-muted-foreground"
           style={{ fontFamily: "Formula1-Display-Regular, sans-serif" }}
         >
           Your place for Formula 1 analysis, statistics and predictive models. Made by passionate students.
