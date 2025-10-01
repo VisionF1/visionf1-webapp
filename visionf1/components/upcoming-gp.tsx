@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { CldImage } from "next-cloudinary";
 import { useEffect, useState, useCallback } from "react";
 import { Calendar, MapPin } from "lucide-react"
 import {
@@ -15,6 +16,7 @@ import {
 interface GPData {
   countryCode: string;
   name: string;
+  circuitId: string;
   circuit: string;
   startDate: string;
   endDate: string;
@@ -133,29 +135,31 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
                 className="w-18 h-10 @xs:w-28 @xs:h-16 @sm:w-38 @sm:h-24 @md:w-42 @md:h-25 @lg:w-50 @lg:h-28 @xl:w-56 @xl:h-34 rounded-md"
                 aria-label={`Open ${gp.circuit} image`}
               >
-                <Image
-                  src={`/${gp.circuit}.svg`}
+                <CldImage
+                  src={`/${gp.circuitId}_white_outline`}
                   alt={gp.circuit}
                   width={320}
                   height={320}
                   className="object-cover w-full h-full"
+                  format="svg"
                 />
               </button>
             </DialogTrigger>
 
-            <DialogContent className="max-w-[50vw] sm:max-w-[45vw] p-0">
+            <DialogContent className="max-w-[95vw] lg:max-w-[65vw] p-0">
               <DialogHeader>
                 <DialogTitle className="sr-only">{gp.circuit}</DialogTitle>
                 <DialogClose className="absolute right-2 top-2 z-50" />
               </DialogHeader>
 
               <div className="w-full flex items-center justify-center bg-black/80">
-                <Image
-                  src={`/${gp.circuit}.avif`}
+                <CldImage
+                  src={gp.circuitId}
                   alt={gp.circuit}
-                  width={1252}
-                  height={704}
-                  className="object-contain max-h-[80vh] w-full"
+                  width={1920}
+                  height={1080}
+                  className="object-cover w-full h-full"
+                  format="webp"
                 />
               </div>
 

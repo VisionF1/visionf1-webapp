@@ -30,6 +30,7 @@ export default async function Home() {
   const upcomingGP = {
     countryCode: "it", // ISO alpha-2 in lowercase for flagcdn
     name: "Italian Grand Prix",
+    circuitId: "monza",
     circuit: "Autodromo Nazionale Monza",
     startDate: "2025-09-29",
     endDate: "2025-09-30",
