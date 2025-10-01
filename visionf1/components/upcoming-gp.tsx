@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { CldImage } from "next-cloudinary";
+import { useTheme } from "next-themes"
 import { useEffect, useState, useCallback } from "react";
 import { Calendar, MapPin } from "lucide-react"
 import {
@@ -56,6 +57,14 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
 
   const [timeLeft, setTimeLeft] = useState(() => calculateTimeLeft());
   const [isLive, setIsLive] = useState(() => checkIfLive());
+
+  // Theme-aware image selection (avoid hydration mismatch)
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const currentTheme = mounted ? (resolvedTheme ?? theme) : undefined;
+  const outlineSuffix = currentTheme === "dark" ? "white_outline" : "black_outline";
+  const smallCircuitSrc = `/${gp.circuitId}_${outlineSuffix}`;
 
   useEffect(() => {
     // run once immediately and then every second
@@ -136,7 +145,7 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
                 aria-label={`Open ${gp.circuit} image`}
               >
                 <CldImage
-                  src={`/${gp.circuitId}_white_outline`}
+                  src={smallCircuitSrc}
                   alt={gp.circuit}
                   width={320}
                   height={320}
