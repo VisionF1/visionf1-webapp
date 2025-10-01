@@ -210,8 +210,8 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
           </p>
         </div>
       ) : (
-        <div className="mt-auto text-center py-2.5 @sm:py-3.5 @md:py-5 @lg:py-6 @xl:py-7 bg-muted rounded-md">
-          <span className="text-xs @xs:text-sm @md:text-lg @lg:text-xl @xl:text-2xl text-muted-foreground">
+        <div className="mt-auto text-center py-2.5 @sm:py-3.5 @md:py-5 @lg:py-6 @xl:py-7 bg-primary/20 rounded-md">
+          <span className="text-xs @xs:text-sm @md:text-lg @lg:text-xl @xl:text-2xl">
             Event completed
           </span>
         </div>
