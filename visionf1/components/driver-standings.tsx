@@ -54,7 +54,7 @@ export function DriverStandings({ data: driverStandings }: { data: DriverStandin
         return (
           <div className="flex items-center gap-2">
             <Image
-              src={`https://flagcdn.com/${driver.nationalityCode}.svg`}
+              src={`https://flagcdn.com/${driver.nationalityCode.toLowerCase()}.svg`}
               alt={driver.nationality}
               width={24}
               height={18}

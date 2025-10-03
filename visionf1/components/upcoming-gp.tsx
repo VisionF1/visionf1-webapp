@@ -103,7 +103,7 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
           <div className="flex items-center gap-3 mb-1 @xs:mb-3 @md:mb-4">
             <div className="h-9 w-6 @xs:w-9 @xs:h-6 @sm:w-9 @sm:h-6 @md:w-12 @md:h-8 @lg:w-15 @lg:h-10 @xl:w-18 @xl:h-12">
               <Image
-                src={`https://flagcdn.com/${gp.countryCode}.svg`}
+                src={`https://flagcdn.com/${gp.countryCode.toLowerCase()}.svg`}
                 alt={gp.countryCode}
                 width={64}
                 height={48}
