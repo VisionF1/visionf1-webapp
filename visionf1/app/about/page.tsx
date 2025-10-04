@@ -19,7 +19,6 @@ import { ThemeToggler } from "@/components/theme-toggler"
 import { SearchBar } from "@/components/search-bar"
 import { Footer } from "@/components/footer"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
-import { Avatar } from "@/components/ui/avatar"
 import { CldImage } from "next-cloudinary"
 
 export default function Home() {
@@ -57,7 +56,6 @@ export default function Home() {
           <div className="flex flex-col gap-12 items-center w-full">
             {/* Main Heading and Mission */}
               <div className="flex flex-col items-center text-center gap-2 w-full">
-                {/* Removed single avatar above heading */}
                 <h1 className="text-5xl font-bold mt-4 mb-2">About Us</h1>
                 <p className="text-lg text-muted-foreground max-w-2xl">
                   We&apos;re on a mission to use data science and machine learning to reveal new insights and predictions in Formula 1, combining our passion for racing and technology.
