@@ -90,21 +90,6 @@ export default function Home() {
             <div className="flex flex-col items-center w-full">
               <h2 className="text-3xl font-bold mb-6">Meet the Team</h2>
               <div className="flex flex-row flex-wrap gap-10 justify-center w-full">
-                {/* Camilo Fabregas */}
-                <div className="flex flex-col items-center">
-                  <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
-                    <CldImage
-                      src="avatar"
-                      fill
-                      alt="Camilo Fabregas Avatar"
-                      crop="fill"
-                      className="object-contain"
-                      sizes="144px"
-                    />
-                  </div>
-                  <span className="font-bold text-lg">Camilo Fabregas</span>
-                  <span className="text-muted-foreground text-sm">Backend Developer</span>
-                </div>
                 {/* Alejo Fabregas */}
                 <div className="flex flex-col items-center">
                   <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
@@ -119,6 +104,21 @@ export default function Home() {
                   </div>
                   <span className="font-bold text-lg">Alejo Fabregas</span>
                   <span className="text-muted-foreground text-sm">Frontend Developer</span>
+                </div>
+                {/* Camilo Fabregas */}
+                <div className="flex flex-col items-center">
+                  <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
+                    <CldImage
+                      src="avatar"
+                      fill
+                      alt="Camilo Fabregas Avatar"
+                      crop="fill"
+                      className="object-contain"
+                      sizes="144px"
+                    />
+                  </div>
+                  <span className="font-bold text-lg">Camilo Fabregas</span>
+                  <span className="text-muted-foreground text-sm">Backend Developer</span>
                 </div>
                 {/* Francisco Sobral */}
                 <div className="flex flex-col items-center">
