@@ -1,3 +1,4 @@
+"use client";
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -19,8 +20,9 @@ import { SearchBar } from "@/components/search-bar"
 import { Footer } from "@/components/footer"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Avatar } from "@/components/ui/avatar"
+import { CldImage } from "next-cloudinary"
 
-export default async function Home() {
+export default function Home() {
 
   return (
     <SidebarProvider>
@@ -54,12 +56,13 @@ export default async function Home() {
         <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
           <div className="flex flex-col gap-12 items-center w-full">
             {/* Main Heading and Mission */}
-            <div className="flex flex-col items-center text-center gap-2 w-full">
-              <h1 className="text-5xl font-bold mt-4 mb-2">About Us</h1>
-              <p className="text-lg text-muted-foreground max-w-2xl">
-                We&apos;re on a mission to use data science and machine learning to reveal new insights and predictions in Formula 1, combining our passion for racing and technology.
-              </p>
-            </div>
+              <div className="flex flex-col items-center text-center gap-2 w-full">
+                {/* Removed single avatar above heading */}
+                <h1 className="text-5xl font-bold mt-4 mb-2">About Us</h1>
+                <p className="text-lg text-muted-foreground max-w-2xl">
+                  We&apos;re on a mission to use data science and machine learning to reveal new insights and predictions in Formula 1, combining our passion for racing and technology.
+                </p>
+              </div>
             {/* Story and Mission Columns */}
             <div className="flex flex-col md:flex-row gap-10 w-full max-w-5xl justify-center">
               <Card className="flex-1 min-w-[250px]">
@@ -89,27 +92,63 @@ export default async function Home() {
               <div className="flex flex-row flex-wrap gap-10 justify-center w-full">
                 {/* Camilo Fabregas */}
                 <div className="flex flex-col items-center">
-                  <Avatar className="w-36 h-36 mb-4" />
+                  <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
+                    <CldImage
+                      src="avatar"
+                      fill
+                      alt="Camilo Fabregas Avatar"
+                      crop="fill"
+                      className="object-contain"
+                      sizes="144px"
+                    />
+                  </div>
                   <span className="font-bold text-lg">Camilo Fabregas</span>
-                  <span className="text-muted-foreground text-sm">Data Engineer</span>
+                  <span className="text-muted-foreground text-sm">Backend Developer</span>
                 </div>
                 {/* Alejo Fabregas */}
                 <div className="flex flex-col items-center">
-                  <Avatar className="w-36 h-36 mb-4" />
+                  <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
+                    <CldImage
+                      src="avatar"
+                      fill
+                      alt="Alejo Fabregas Avatar"
+                      crop="fill"
+                      className="object-contain"
+                      sizes="144px"
+                    />
+                  </div>
                   <span className="font-bold text-lg">Alejo Fabregas</span>
-                  <span className="text-muted-foreground text-sm">Backend & ML Engineer</span>
+                  <span className="text-muted-foreground text-sm">Frontend Developer</span>
                 </div>
                 {/* Francisco Sobral */}
                 <div className="flex flex-col items-center">
-                  <Avatar className="w-36 h-36 mb-4" />
+                  <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
+                    <CldImage
+                      src="avatar"
+                      fill
+                      alt="Francisco Sobral Avatar"
+                      crop="fill"
+                      className="object-contain"
+                      sizes="144px"
+                    />
+                  </div>
                   <span className="font-bold text-lg">Francisco Sobral</span>
-                  <span className="text-muted-foreground text-sm">Frontend & Data Viz</span>
+                  <span className="text-muted-foreground text-sm">Machine Learning Engineer</span>
                 </div>
                 {/* Tomás Della Vecchia */}
                 <div className="flex flex-col items-center">
-                  <Avatar className="w-36 h-36 mb-4" />
+                  <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
+                    <CldImage
+                      src="avatar"
+                      fill
+                      alt="Tomás Della Vecchia Avatar"
+                      crop="fill"
+                      className="object-contain"
+                      sizes="144px"
+                    />
+                  </div>
                   <span className="font-bold text-lg">Tomás Della Vecchia</span>
-                  <span className="text-muted-foreground text-sm">Fullstack & DevOps</span>
+                  <span className="text-muted-foreground text-sm">Machine Learning Engineer</span>
                 </div>
               </div>
             </div>
