@@ -15,13 +15,17 @@ import {
 } from "@/components/ui/dialog";
 
 interface GPData {
-  countryCode: string;
+  id: string;
+  season: number;
+  round: number;
   name: string;
   circuitId: string;
   circuit: string;
+  countryCode: string;
+  country: string;
+  locality: string;
   startDate: string;
   endDate: string;
-  round: number;
 }
 
 interface UpcomingGPProps {

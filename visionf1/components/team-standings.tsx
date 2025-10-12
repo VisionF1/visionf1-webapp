@@ -3,27 +3,18 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "./data-table"
 import { CldImage } from 'next-cloudinary'
+import Image from "next/image"
 
 type TeamStanding = {
   position: number
   team: string
+  teamCode: string
+  nationality: string
+  nationalityCode: string
   points: number
 }
 
-const teamStandings: TeamStanding[] = [
-  { position: 1, team: "McLaren", points: 617 },
-  { position: 2, team: "Ferrari", points: 280 },
-  { position: 3, team: "Mercedes", points: 260 },
-  { position: 4, team: "Red Bull Racing", points: 239 },
-  { position: 5, team: "Williams", points: 86 },
-  { position: 6, team: "Aston Martin", points: 62 },
-  { position: 7, team: "Racing Bulls", points: 61 },
-  { position: 8, team: "Kick Sauber", points: 55 },
-  { position: 9, team: "Haas", points: 44 },
-  { position: 10, team: "Alpine", points: 20 },
-];
-
-export function TeamStandings() {
+export function TeamStandings({ data: teamStandings }: { data: TeamStanding[] }) {
   const columns: ColumnDef<TeamStanding>[] = [
     {
       accessorKey: "position",
@@ -46,6 +37,25 @@ export function TeamStandings() {
               />
             </div>
             <span>{driver.team}</span>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "nationality",
+      header: "Nationality",
+      cell: ({ row }) => {
+        const team = row.original;
+        return (
+          <div className="flex items-center gap-2">
+            <Image
+              src={`https://flagcdn.com/${team.nationalityCode.toLowerCase()}.svg`}
+              alt={team.nationality}
+              width={24}
+              height={18}
+              className="object-contain"
+            />
+            <span>{team.nationality}</span>
           </div>
         );
       },

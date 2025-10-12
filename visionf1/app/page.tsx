@@ -22,22 +22,14 @@ import { DriverStandings } from "@/components/driver-standings"
 import { TeamStandings } from "@/components/team-standings"
 import { PlaceholderBrand } from "@/components/placeholder-brand"
 import { Footer } from "@/components/footer"
-import { getDriverStandings } from "@/lib/api-requests";
+import { getDriverStandings, getTeamStandings, getDrivers, getUpcomingGP } from "@/lib/api-requests";
 
 export default async function Home() {
 
-  // upcoming GP data (get from API later)
-  const upcomingGP = {
-    countryCode: "it", // ISO alpha-2 in lowercase for flagcdn
-    name: "Italian Grand Prix",
-    circuitId: "monza",
-    circuit: "Autodromo Nazionale Monza",
-    startDate: "2025-09-29",
-    endDate: "2025-09-30",
-    round: 15,
-  }
-
   const driverStandings = await getDriverStandings();
+  const teamStandings = await getTeamStandings();
+  const drivers = await getDrivers();
+  const upcomingGP = await getUpcomingGP();
 
   return (
     <SidebarProvider>
@@ -81,10 +73,10 @@ export default async function Home() {
               <Welcome />
             </div>
             <div className="bg-muted/50 aspect-video rounded-xl">
-              <DriverImages />
+              <DriverImages data={drivers.data}/>
             </div>
             <div className="bg-muted/50 aspect-video rounded-xl">
-              <UpcomingGP gp={upcomingGP} />
+              <UpcomingGP gp={upcomingGP.data[0]} />
             </div>
             <div className="bg-muted/50 aspect-video rounded-xl hidden md:block lg:block xl:hidden">
               <PlaceholderBrand />
@@ -94,7 +86,7 @@ export default async function Home() {
             <DriverStandings data={driverStandings.data} />
           </div>
           <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min">
-            <TeamStandings />
+            <TeamStandings data={teamStandings.data} />
           </div>
           <Footer />
         </div>
