@@ -46,7 +46,7 @@ const data = {
       items: [
         {
           title: "Race Predictions",
-          url: "#",
+          url: "models/race-predictions",
         },
         {
           title: "Pit Probabilities",

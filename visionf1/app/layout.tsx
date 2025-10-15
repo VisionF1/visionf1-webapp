@@ -1,6 +1,24 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import { AppSidebar } from "@/components/app-sidebar";
+import { Footer } from "@/components/footer";
+import { ThemeToggler } from "@/components/theme-toggler";
+import { SearchBar } from "@/components/search-bar";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
 export const metadata: Metadata = {
   title: "VisionF1",
@@ -30,8 +48,45 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          
+          <SidebarProvider>
+            <AppSidebar />
+            <SidebarInset>
+              <header className="flex h-20 shrink-0 items-center gap-2 border-b bg-sidebar px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-16">
+                <div className="flex items-center gap-4 flex-1">
+                  <SidebarTrigger className="-ml-1" />
+                  <Separator
+                    orientation="vertical"
+                    className="mr-2 h-6"
+                  />
+                  {/* Site section Breadcrumb */}
+                  <div className="flex items-center gap-3">
+                    <Breadcrumb>
+                    <BreadcrumbList>
+                      <BreadcrumbItem className="hidden md:block">
+                        <BreadcrumbLink href="/">
+                          VisionF1
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      <BreadcrumbSeparator className="hidden md:block" />
+                      <BreadcrumbItem>
+                        <BreadcrumbPage>Dashboard</BreadcrumbPage>
+                      </BreadcrumbItem>
+                    </BreadcrumbList>
+                  </Breadcrumb>
+                  </div>
+                  {/* Search Bar and Dark Mode Button */}
+                  <div className="ml-auto">
+                    <div className="flex items-center gap-4">
+                      <SearchBar />
+                      <ThemeToggler />
+                    </div>
+                  </div>
+                </div>
+              </header>
+              {children}
+              <Footer />
+            </SidebarInset>
+          </SidebarProvider>
         </ThemeProvider>
       </body>
     </html>
