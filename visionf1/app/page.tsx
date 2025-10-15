@@ -4,7 +4,6 @@ import { Welcome } from "@/components/welcome"
 import { DriverStandings } from "@/components/driver-standings"
 import { TeamStandings } from "@/components/team-standings"
 import { PlaceholderBrand } from "@/components/placeholder-brand"
-import { Footer } from "@/components/footer"
 import { getDriverStandings, getTeamStandings, getDrivers, getUpcomingGP } from "@/lib/api-requests";
 
 export default async function Home() {
@@ -36,7 +35,6 @@ export default async function Home() {
       <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min">
         <TeamStandings data={teamStandings.data} />
       </div>
-      <Footer />
     </div>
   )
 }

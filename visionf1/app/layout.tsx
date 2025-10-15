@@ -5,14 +5,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { Footer } from "@/components/footer";
 import { ThemeToggler } from "@/components/theme-toggler";
 import { SearchBar } from "@/components/search-bar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import { BreadcrumbNav } from "@/components/breadcrumb-nav";
 import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
@@ -60,19 +53,7 @@ export default function RootLayout({
                   />
                   {/* Site section Breadcrumb */}
                   <div className="flex items-center gap-3">
-                    <Breadcrumb>
-                    <BreadcrumbList>
-                      <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink href="/">
-                          VisionF1
-                        </BreadcrumbLink>
-                      </BreadcrumbItem>
-                      <BreadcrumbSeparator className="hidden md:block" />
-                      <BreadcrumbItem>
-                        <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                      </BreadcrumbItem>
-                    </BreadcrumbList>
-                  </Breadcrumb>
+                    <BreadcrumbNav />
                   </div>
                   {/* Search Bar and Dark Mode Button */}
                   <div className="ml-auto">

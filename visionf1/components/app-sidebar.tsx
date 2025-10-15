@@ -68,7 +68,7 @@ const data = {
           url: "#",
         },
         {
-          title: "Qualy Head to Head",
+          title: "Quali Head to Head",
           url: "#",
         },
         {
