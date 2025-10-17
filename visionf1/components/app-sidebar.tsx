@@ -65,7 +65,7 @@ const data = {
       items: [
         {
           title: "Race Pace",
-          url: "#",
+          url: "/analytics/race-pace",
         },
         {
           title: "Quali Head to Head",
