@@ -16,7 +16,7 @@ type Driver = {
 export function DriverImages({ data: drivers }: { data: Driver[] }) {
   return (
     <div className="@container w-full h-full flex items-center justify-center p-2">
-  <Carousel className="w-full mx-auto relative">
+  <Carousel className="w-full mx-auto relative max-w-[700px]">
         <CarouselContent className="ml-0">
           {drivers.map((driver) => (
             <CarouselItem key={driver.driverCode} className="w-full h-[340px] flex flex-col justify-center items-center overflow-hidden">
