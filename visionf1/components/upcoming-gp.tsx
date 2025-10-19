@@ -115,7 +115,7 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
               />
             </div>
             <div>
-              <h3 className="text-xs @xs:text-xs @sm:text-normal @md:text-lg @lg:text-xl @xl:text-2xl font-semibold text-foreground">
+              <h3 className="text-xs @xs:text-xs @sm:text-normal @md:text-lg @lg:text-xl @xl:text-2xl font-semibold text-foreground truncate">
                 {gp.name}
               </h3>
               <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm @lg:text-base @xl:text-lg text-muted-foreground">
@@ -126,7 +126,7 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
           
           <div className="flex items-center gap-2 text-sm text-foreground">
             <MapPin className="h-3 w-3 @md:h-4 @md:w-4 @lg:h-5 @lg:w-5 @xl:h-6 @xl:w-6 text-muted-foreground mb-1 @xs:mb-3" />
-            <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm @lg:text-base @xl:text-lg text-foreground mb-1 @xs:mb-3">
+            <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm @lg:text-base @xl:text-lg text-foreground mb-1 @xs:mb-3 truncate">
               {gp.circuit}
             </p>
           </div>
@@ -145,7 +145,7 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
             <DialogTrigger asChild>
               <button
                 type="button"
-                className="w-18 h-10 @xs:w-28 @xs:h-16 @sm:w-38 @sm:h-24 @md:w-42 @md:h-25 @lg:w-50 @lg:h-28 @xl:w-56 @xl:h-34 rounded-md"
+                className="w-18 h-10 @xs:w-24 @xs:h-16 @sm:w-38 @sm:h-26 @md:w-42 @md:h-28 @lg:w-50 @lg:h-30 @xl:w-56 @xl:h-36 rounded-md"
                 aria-label={`Open ${gp.circuit} image`}
               >
                 <CldImage
