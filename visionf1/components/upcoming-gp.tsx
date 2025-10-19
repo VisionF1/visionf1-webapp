@@ -95,7 +95,7 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
           Upcoming GP
         </span>
         {isLive && (
-          <span className="bg-red-600 text-white text-[0.6rem] @xs:text-xs @md:text-xs @lg:text-base @xl:text-lg px-2 py-1 rounded-md font-semibold">
+          <span className="bg-red-600 text-white text-[0.6rem] @xs:text-[0.6rem] @md:text-xs @lg:text-base @xl:text-lg px-2 py-1 rounded-md font-semibold">
             LIVE
           </span>
         )}
