@@ -1,6 +1,6 @@
 "use client"
 
-import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, TooltipProps } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 
 import { ColumnDef } from "@tanstack/react-table";
@@ -34,6 +34,26 @@ function formatLapTime(sec: number) {
   const secStr = seconds.toString().padStart(2, "0");
   const millisStr = millis.toString().padStart(3, "0");
   return `${minutes}:${secStr}.${millisStr}`;
+}
+
+function CustomTooltip({ active, payload }: TooltipProps<any, any>) {
+  if (!active || !payload || payload.length === 0) return null;
+  const entry = payload[0];
+  const data = entry.payload;
+  const driverName = `${data.driver_first_name} ${data.driver_last_name}`;
+  const lapTime = formatLapTime(data.avg_laptime);
+  const color = data.driver_color;
+
+  return (
+    <div className="rounded-md border bg-popover px-3 py-2 text-popover-foreground shadow-sm text-xs">
+      <div className="font-semibold mb-1">{driverName}</div>
+      <div className="flex items-center gap-2">
+        <span className="block w-2 h-2 rounded-full" style={{ background: color }} />
+        <span className="text-muted-foreground">Average Lap Time:</span>
+        <span className="font-mono">{lapTime}</span>
+      </div>
+    </div>
+  );
 }
 
 const columns: ColumnDef<RacePaceRow>[] = [
@@ -105,7 +125,6 @@ const columns: ColumnDef<RacePaceRow>[] = [
 const chartConfig = {
   avg_laptime: {
     label: "Average Lap Time",
-    color: "#2563eb",
   },
   race_pace: {
     label: "Race Pace"
@@ -131,7 +150,7 @@ export default function RacePace() {
               domain={['dataMin - 0.2', 'dataMax + 0.2']} 
               tickFormatter={formatLapTime}
             />
-            <ChartTooltip content={<ChartTooltipContent labelKey="race_pace" nameKey="avg_laptime" />} />
+            <ChartTooltip content={<CustomTooltip />} />
             <ChartLegend className="pb-10" content={<ChartLegendContent />} />
             <Bar dataKey="avg_laptime" fill="var(--color-avg_laptime)" radius={4}>
               {racePaceData.map((entry, _idx) => (
