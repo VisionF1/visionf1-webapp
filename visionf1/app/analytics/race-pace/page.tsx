@@ -36,10 +36,10 @@ function formatLapTime(sec: number) {
   return `${minutes}:${secStr}.${millisStr}`;
 }
 
-function CustomTooltip({ active, payload }: TooltipProps<any, any>) {
+function CustomTooltip({ active, payload }: TooltipProps<number, string>) {
   if (!active || !payload || payload.length === 0) return null;
   const entry = payload[0];
-  const data = entry.payload;
+  const data = entry.payload as RacePaceRow;
   const driverName = `${data.driver_first_name} ${data.driver_last_name}`;
   const lapTime = formatLapTime(data.avg_laptime);
   const color = data.driver_color;
@@ -155,7 +155,7 @@ export default function RacePace() {
                 <ChartTooltip content={<CustomTooltip />} />
                 <ChartLegend className="pb-0" content={<ChartLegendContent />} />
                 <Bar dataKey="avg_laptime" fill="var(--color-avg_laptime)" radius={4}>
-                  {racePaceData.map((entry, _idx) => (
+                  {racePaceData.map((entry) => (
                     <Cell key={entry.driver} fill={entry.driver_color || "#2563eb"} />
                   ))}
                 </Bar>
