@@ -1,7 +1,7 @@
 "use client"
 
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, TooltipProps } from "recharts"
-import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
+import { ChartConfig, ChartContainer, ChartTooltip, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
@@ -134,31 +134,35 @@ const chartConfig = {
 export default function RacePace() {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
-      <div className="bg-muted/50 aspect-video min-h-min flex-1 rounded-xl md:min-h-min p-4">
-        <h2 className="text-lg font-semibold pb-4">2025 Dutch Grand Prix - Race Pace by Driver</h2>
-        <ChartContainer config={chartConfig} className="h-full w-full">
-          <BarChart accessibilityLayer data={racePaceData}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="driver"
-              tickLine={true}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
-            />
-            <YAxis
-              domain={['dataMin - 0.2', 'dataMax + 0.2']} 
-              tickFormatter={formatLapTime}
-            />
-            <ChartTooltip content={<CustomTooltip />} />
-            <ChartLegend className="pb-10" content={<ChartLegendContent />} />
-            <Bar dataKey="avg_laptime" fill="var(--color-avg_laptime)" radius={4}>
-              {racePaceData.map((entry, _idx) => (
-                <Cell key={entry.driver} fill={entry.driver_color || "#2563eb"} />
-              ))}
-            </Bar>
-          </BarChart>
-        </ChartContainer>
+      <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min p-4">
+        <div className="w-full overflow-x-auto">
+          <div className="min-w-[700px]">
+            <h2 className="text-lg font-semibold pb-4">Race Pace by Driver - 2025 Dutch Grand Prix</h2>
+            <ChartContainer config={chartConfig} className="h-full w-full max-h-[80vh]">
+              <BarChart accessibilityLayer data={racePaceData}>
+                <CartesianGrid vertical={false} />
+                <XAxis
+                  dataKey="driver"
+                  tickLine={true}
+                  tickMargin={10}
+                  axisLine={false}
+                  tickFormatter={(value) => value.slice(0, 3)}
+                />
+                <YAxis
+                  domain={['dataMin - 0.1', 'dataMax + 0.1']} 
+                  tickFormatter={formatLapTime}
+                />
+                <ChartTooltip content={<CustomTooltip />} />
+                <ChartLegend className="pb-0" content={<ChartLegendContent />} />
+                <Bar dataKey="avg_laptime" fill="var(--color-avg_laptime)" radius={4}>
+                  {racePaceData.map((entry, _idx) => (
+                    <Cell key={entry.driver} fill={entry.driver_color || "#2563eb"} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ChartContainer>
+          </div>
+        </div>
       </div>
       <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min">
         <div className="p-4 flex flex-col">
@@ -167,6 +171,5 @@ export default function RacePace() {
         </div>
       </div>
     </div>
-    
   )
 }
