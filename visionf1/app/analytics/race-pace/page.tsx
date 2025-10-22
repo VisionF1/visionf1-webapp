@@ -6,33 +6,14 @@ import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent, ChartLe
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 
-const racePaceData = [{'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'PIA', 'avg_laptime': 74.48166, 'std_laptime': 0.98182, 'race_pace_id': '2025_15_PIA'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'NOR', 'avg_laptime': 74.665288, 'std_laptime': 0.920907, 'race_pace_id': '2025_15_NOR'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'VER', 'avg_laptime': 75.104875, 'std_laptime': 1.047516, 'race_pace_id': '2025_15_VER'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'HAD', 'avg_laptime': 75.201928, 'std_laptime': 0.968081, 'race_pace_id': '2025_15_HAD'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'RUS', 'avg_laptime': 75.55991, 'std_laptime': 0.893123, 'race_pace_id': '2025_15_RUS'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'ANT', 'avg_laptime': 75.635259, 'std_laptime': 1.167985, 'race_pace_id': '2025_15_ANT'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'LEC', 'avg_laptime': 75.645255, 'std_laptime': 0.649396, 'race_pace_id': '2025_15_LEC'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'ALB', 'avg_laptime': 75.758285, 'std_laptime': 0.992501, 'race_pace_id': '2025_15_ALB'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'SAI', 'avg_laptime': 75.917153, 'std_laptime': 0.880626, 'race_pace_id': '2025_15_SAI'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'LAW', 'avg_laptime': 75.94266, 'std_laptime': 0.919475, 'race_pace_id': '2025_15_LAW'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'ALO', 'avg_laptime': 76.107673, 'std_laptime': 0.979049, 'race_pace_id': '2025_15_ALO'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'STR', 'avg_laptime': 76.148584, 'std_laptime': 0.838618, 'race_pace_id': '2025_15_STR'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'HAM', 'avg_laptime': 76.306714, 'std_laptime': 0.30864, 'race_pace_id': '2025_15_HAM'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'TSU', 'avg_laptime': 76.378259, 'std_laptime': 0.70597, 'race_pace_id': '2025_15_TSU'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'BEA', 'avg_laptime': 76.4475, 'std_laptime': 0.948318, 'race_pace_id': '2025_15_BEA'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'COL', 'avg_laptime': 76.469074, 'std_laptime': 0.926462, 'race_pace_id': '2025_15_COL'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'HUL', 'avg_laptime': 76.598415, 'std_laptime': 0.871526, 'race_pace_id': '2025_15_HUL'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'OCO', 'avg_laptime': 76.607327, 'std_laptime': 0.872183, 'race_pace_id': '2025_15_OCO'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'GAS', 'avg_laptime': 76.733535, 'std_laptime': 0.658684, 'race_pace_id': '2025_15_GAS'}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'BOR', 'avg_laptime': 76.759735, 'std_laptime': 0.848896, 'race_pace_id': '2025_15_BOR'}]
-
-const driverColors: Record<string, string> =  {
-  'VER': '#0600ef',
-  'TSU': '#0600ef',
-  'GAS': '#ff87bc',
-  'COL': '#ff87bc',
-  'ANT': '#27f4d2',
-  'RUS': '#27f4d2',
-  'ALO': '#00665f',
-  'STR': '#00665f',
-  'LEC': '#e80020',
-  'HAM': '#e80020',
-  'ALB': '#00a0dd',
-  'SAI': '#00a0dd',
-  'HUL': '#00e700',
-  'BOR': '#00e700',
-  'LAW': '#fcd700',
-  'HAD': '#fcd700',
-  'OCO': '#b6babd',
-  'BEA': '#b6babd',
-  'NOR': '#ff8000',
-  'PIA': '#ff8000',
-}
+const racePaceData = [{'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'PIA', 'driver_first_name': 'Oscar', 'driver_last_name': 'Piastri', 'driver_position': 1.0, 'driver_color': '#ff8000', 'avg_laptime': 74.48166, 'std_laptime': 0.98182, 'race_pace_id': '2025_15_PIA', 'race_pace_position': 1}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'NOR', 'driver_first_name': 'Lando', 'driver_last_name': 'Norris', 'driver_position': 18.0, 'driver_color': '#ff8000', 'avg_laptime': 74.665288, 'std_laptime': 0.920907, 'race_pace_id': '2025_15_NOR', 'race_pace_position': 2}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'VER', 'driver_first_name': 'Max', 'driver_last_name': 'Verstappen', 'driver_position': 2.0, 'driver_color': '#0600ef', 'avg_laptime': 75.104875, 'std_laptime': 1.047516, 'race_pace_id': '2025_15_VER', 'race_pace_position': 3}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'HAD', 'driver_first_name': 'Isack', 'driver_last_name': 'Hadjar', 'driver_position': 3.0, 'driver_color': '#fcd700', 'avg_laptime': 75.201928, 'std_laptime': 0.968081, 'race_pace_id': '2025_15_HAD', 'race_pace_position': 4}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'RUS', 'driver_first_name': 'George', 'driver_last_name': 'Russell', 'driver_position': 4.0, 'driver_color': '#27f4d2', 'avg_laptime': 75.55991, 'std_laptime': 0.893123, 'race_pace_id': '2025_15_RUS', 'race_pace_position': 5}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'ANT', 'driver_first_name': 'Kimi', 'driver_last_name': 'Antonelli', 'driver_position': 16.0, 'driver_color': '#27f4d2', 'avg_laptime': 75.635259, 'std_laptime': 1.167985, 'race_pace_id': '2025_15_ANT', 'race_pace_position': 6}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'LEC', 'driver_first_name': 'Charles', 'driver_last_name': 'Leclerc', 'driver_position': 19.0, 'driver_color': '#e80020', 'avg_laptime': 75.645255, 'std_laptime': 0.649396, 'race_pace_id': '2025_15_LEC', 'race_pace_position': 7}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'ALB', 'driver_first_name': 'Alexander', 'driver_last_name': 'Albon', 'driver_position': 5.0, 'driver_color': '#00a0dd', 'avg_laptime': 75.758285, 'std_laptime': 0.992501, 'race_pace_id': '2025_15_ALB', 'race_pace_position': 8}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'SAI', 'driver_first_name': 'Carlos', 'driver_last_name': 'Sainz', 'driver_position': 13.0, 'driver_color': '#00a0dd', 'avg_laptime': 75.917153, 'std_laptime': 0.880626, 'race_pace_id': '2025_15_SAI', 'race_pace_position': 9}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'LAW', 'driver_first_name': 'Liam', 'driver_last_name': 'Lawson', 'driver_position': 12.0, 'driver_color': '#fcd700', 'avg_laptime': 75.94266, 'std_laptime': 0.919475, 'race_pace_id': '2025_15_LAW', 'race_pace_position': 10}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'ALO', 'driver_first_name': 'Fernando', 'driver_last_name': 'Alonso', 'driver_position': 8.0, 'driver_color': '#00665f', 'avg_laptime': 76.107673, 'std_laptime': 0.979049, 'race_pace_id': '2025_15_ALO', 'race_pace_position': 11}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'STR', 'driver_first_name': 'Lance', 'driver_last_name': 'Stroll', 'driver_position': 7.0, 'driver_color': '#00665f', 'avg_laptime': 76.148584, 'std_laptime': 0.838618, 'race_pace_id': '2025_15_STR', 'race_pace_position': 12}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'HAM', 'driver_first_name': 'Lewis', 'driver_last_name': 'Hamilton', 'driver_position': 20.0, 'driver_color': '#e80020', 'avg_laptime': 76.306714, 'std_laptime': 0.30864, 'race_pace_id': '2025_15_HAM', 'race_pace_position': 13}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'TSU', 'driver_first_name': 'Yuki', 'driver_last_name': 'Tsunoda', 'driver_position': 9.0, 'driver_color': '#0600ef', 'avg_laptime': 76.378259, 'std_laptime': 0.70597, 'race_pace_id': '2025_15_TSU', 'race_pace_position': 14}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'BEA', 'driver_first_name': 'Oliver', 'driver_last_name': 'Bearman', 'driver_position': 6.0, 'driver_color': '#b6babd', 'avg_laptime': 76.4475, 'std_laptime': 0.948318, 'race_pace_id': '2025_15_BEA', 'race_pace_position': 15}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'COL', 'driver_first_name': 'Franco', 'driver_last_name': 'Colapinto', 'driver_position': 11.0, 'driver_color': '#ff87bc', 'avg_laptime': 76.469074, 'std_laptime': 0.926462, 'race_pace_id': '2025_15_COL', 'race_pace_position': 16}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'HUL', 'driver_first_name': 'Nico', 'driver_last_name': 'Hulkenberg', 'driver_position': 14.0, 'driver_color': '#00e700', 'avg_laptime': 76.598415, 'std_laptime': 0.871526, 'race_pace_id': '2025_15_HUL', 'race_pace_position': 17}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'OCO', 'driver_first_name': 'Esteban', 'driver_last_name': 'Ocon', 'driver_position': 10.0, 'driver_color': '#b6babd', 'avg_laptime': 76.607327, 'std_laptime': 0.872183, 'race_pace_id': '2025_15_OCO', 'race_pace_position': 18}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'GAS', 'driver_first_name': 'Pierre', 'driver_last_name': 'Gasly', 'driver_position': 17.0, 'driver_color': '#ff87bc', 'avg_laptime': 76.733535, 'std_laptime': 0.658684, 'race_pace_id': '2025_15_GAS', 'race_pace_position': 19}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'BOR', 'driver_first_name': 'Gabriel', 'driver_last_name': 'Bortoleto', 'driver_position': 15.0, 'driver_color': '#00e700', 'avg_laptime': 76.759735, 'std_laptime': 0.848896, 'race_pace_id': '2025_15_BOR', 'race_pace_position': 20}];
 
 type RacePaceRow = {
   driver: string;
+  driver_first_name: string;
+  driver_last_name: string;
+  driver_position: number;
+  race_pace_position: number;
   avg_laptime: number;
   std_laptime: number;
   event: string;
@@ -51,17 +32,17 @@ function formatLapTime(sec: number) {
 
 const columns: ColumnDef<RacePaceRow>[] = [
   {
-    accessorKey: "position",
-    header: "Position",
+    accessorKey: "race_pace_position",
+    header: "Race Pace Position",
   },
   {
     accessorKey: "driver",
     header: "Driver",
-    cell: ({ row }) => <span className="font-medium">{row.original.driver}</span>,
+    cell: ({ row }) => <span className="font-medium">{row.original.driver_first_name + ' ' + row.original.driver_last_name}</span>,
   },
   {
     accessorKey: "avg_laptime",
-    header: "Avg Lap Time (s)",
+    header: "Avg Lap Time",
     cell: ({ row }) => formatLapTime(row.original.avg_laptime),
   },
   {
@@ -69,11 +50,15 @@ const columns: ColumnDef<RacePaceRow>[] = [
     header: "Std Dev (s)",
     cell: ({ row }) => row.original.std_laptime.toFixed(3),
   },
+  {
+    accessorKey: "driver_position",
+    header: "Final Race Position",
+  },
 ];
 
 const chartConfig = {
   avg_laptime: {
-    label: "Average Lap Time (s)",
+    label: "Average Lap Time",
     color: "#2563eb",
   },
   race_pace: {
@@ -104,7 +89,7 @@ export default function RacePace() {
             <ChartLegend className="pb-10" content={<ChartLegendContent />} />
             <Bar dataKey="avg_laptime" fill="var(--color-avg_laptime)" radius={4}>
               {racePaceData.map((entry, _idx) => (
-                <Cell key={entry.driver} fill={driverColors[entry.driver] || "#2563eb"} />
+                <Cell key={entry.driver} fill={entry.driver_color || "#2563eb"} />
               ))}
             </Bar>
           </BarChart>
