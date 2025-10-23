@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { CldImage } from "next-cloudinary"
 
@@ -15,6 +16,13 @@ type Driver = {
 }
 
 export function DriverImages({ data: drivers }: { data: Driver[] }) {
+  const router = useRouter()
+
+  const handleDriverClick = (driver: Driver) => {
+    const driverPath = `/drivers/${driver.firstName.toLowerCase()}-${driver.lastName.toLowerCase()}`
+    router.push(driverPath)
+  }
+
   return (
     <div className="w-full h-full @container">
       <Carousel className="w-full h-full rounded-xl [&>div]:h-full relative">
@@ -24,18 +32,18 @@ export function DriverImages({ data: drivers }: { data: Driver[] }) {
               {/* Driver Info */}
               <div className="flex flex-col justify-center h-full flex-1 pr-4 pl-4 pr-48">            
                 {/* Driver Name */}
-                <div className="flex flex-col">
+                <div className="flex flex-col cursor-pointer" onClick={() => handleDriverClick(driver)}>
                   <span className="text-base @sm:text-lg @md:text-xl text-muted-foreground">
                     {driver.firstName}
                   </span>
-                  <span className="text-lg @xs:text-xl @sm:text-2xl @md:text-3xl @lg:text-4xl @[500px]:text-5xl @xl:text-6xl font-black text-primary leading-tight">
+                  <span className="text-lg @xs:text-xl @sm:text-2xl @md:text-3xl @lg:text-4xl @[500px]:text-5xl @xl:text-6xl font-black text-primary leading-tight hover:opacity-80 transition-opacity">
                     {driver.lastName.toUpperCase()}
                   </span>
                 </div>
 
                 {/* Driver Number */}
-                <div className="text-2xl @xs:text-3xl @sm:text-4xl @md:text-5xl @lg:text-6xl @[1152px]:text-7xl @xl:text-8xl font-black text-primary/50 mb-2">
-                  #{driver.driverNumber}
+                <div className="text-xl @xs:text-xl @sm:text-2xl @md:text-3xl @lg:text-4xl @[1152px]:text-5xl @xl:text-6xl font-black text-primary/50 mb-2">
+                  {driver.driverNumber}
                 </div>
                 
                 {/* Team and Flag */}
