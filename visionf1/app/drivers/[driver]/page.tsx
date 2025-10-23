@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation"
 
 type Props = {
-  params: {
+  params: Promise<{
     driver: string
-  }
+  }>
 }
 
 export default async function DriverDetail({ params }: Props) {
-  const { driver } = params
+  const { driver } = await params
 
   // TODO: Fetch driver data from your API or database using the driver slug
   if (!driver) {

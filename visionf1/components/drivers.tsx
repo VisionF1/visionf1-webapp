@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { CldImage } from "next-cloudinary"
 
@@ -67,12 +68,12 @@ export function DriverImages({ data: drivers }: { data: Driver[] }) {
                 
                 {/* Nationality */}
                 <div className="flex items-center gap-2 mt-2">
-                  <img
-                    src={`https://flagcdn.com/w40/${driver.nationalityCode2?.toLowerCase()}.png`}
+                  <Image
+                    src={`https://flagcdn.com/${driver.nationalityCode2?.toLowerCase()}.svg`}
                     alt={driver.nationalityCode3}
-                    width="40"
-                    height="20"
-                    className="rounded"
+                    width={24}
+                    height={18}
+                    className="object-contain"
                   />
                 </div>
               </div>
