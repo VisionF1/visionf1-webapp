@@ -1,18 +1,19 @@
 "use client";
 
 import React from "react";
+import { CheckIcon, ChevronsUpDownIcon } from "lucide-react";
+
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Command,
-  CommandInput,
-  CommandList,
   CommandEmpty,
-  CommandItem,
   CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
 } from "@/components/ui/command";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
-import { ChevronsUpDownIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 type GenericComboBoxProps<T> = {
   items: T[];
@@ -21,8 +22,9 @@ type GenericComboBoxProps<T> = {
   getLabel: (item: T) => string;
   getValue: (item: T) => string;
   placeholder?: string;
-  className?: string;
   width?: string;
+  emptyText?: string;
+  className?: string;
 };
 
 export function GenericComboBox<T>({
@@ -32,8 +34,9 @@ export function GenericComboBox<T>({
   getLabel,
   getValue,
   placeholder = "Select...",
+  width = "w-[200px]",
+  emptyText = "No results.",
   className,
-  width = "w-[220px]",
 }: GenericComboBoxProps<T>) {
   const [open, setOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
@@ -46,26 +49,30 @@ export function GenericComboBox<T>({
     [items, query, getLabel]
   );
 
-  const selectedLabel = React.useMemo(
-    () => items.find((i) => getValue(i) === value)?.let?.(() => undefined) ?? undefined,
-    // small placeholder to avoid linting unused, we'll compute below differently
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+  const selected = React.useMemo(
+    () => items.find((i) => getValue(i) === value) ?? null,
+    [items, value, getValue]
   );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className={cn(width, "justify-between", className)} role="combobox" aria-expanded={open}>
-          {value ? items.find((i) => getValue(i) === value)?.let?.(() => undefined) ?? items.find((i) => getValue(i) === value) && getLabel(items.find((i) => getValue(i) === value) as T) : placeholder}
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className={cn(width, "justify-between", className)}
+        >
+          {selected ? getLabel(selected) : placeholder}
           <ChevronsUpDownIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className={width + " p-0"}>
+
+      <PopoverContent className={cn(width, "p-0")}>
         <Command>
           <CommandInput placeholder={`Search ${placeholder.toLowerCase()}...`} onValueChange={setQuery} />
           <CommandList>
-            <CommandEmpty>No results.</CommandEmpty>
+            <CommandEmpty>{emptyText}</CommandEmpty>
             <CommandGroup>
               {filtered.map((item) => {
                 const id = getValue(item);
@@ -74,12 +81,15 @@ export function GenericComboBox<T>({
                   <CommandItem
                     key={id}
                     value={id}
-                    onSelect={() => {
-                      onChange(id === value ? null : id);
+                    onSelect={(currentValue: string) => {
+                      onChange(currentValue === value ? null : currentValue);
                       setOpen(false);
                     }}
                   >
-                    {label}
+                    <CheckIcon
+                      className={cn("mr-2 h-4 w-4", value === id ? "opacity-100" : "opacity-0")}
+                    />
+                    <span className="truncate">{label}</span>
                   </CommandItem>
                 );
               })}
