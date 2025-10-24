@@ -45,12 +45,14 @@ function CustomTooltip({ active, payload }: TooltipProps<number, string>) {
   const entry = payload[0];
   const data = entry.payload as RacePaceRow;
   const driverName = `${data.driver_first_name} ${data.driver_last_name}`;
+  const teamName = data.team_name;
   const lapTime = formatLapTime(data.avg_laptime);
   const color = data.driver_color;
 
   return (
     <div className="rounded-md border bg-popover px-3 py-2 text-popover-foreground shadow-sm text-xs">
       <div className="font-semibold mb-1">{driverName}</div>
+      <div className="mb-1">{teamName}</div>
       <div className="flex items-center gap-2">
         <span className="block w-2 h-2 rounded-full" style={{ background: color }} />
         <span className="text-muted-foreground">Average Lap Time:</span>
