@@ -10,6 +10,7 @@ type Driver = {
   lastName: string
   driverCode: string
   driverNumber: string
+  driverNationality: string
   nationalityCode2: string
   nationalityCode3: string
   team: string
@@ -47,8 +48,26 @@ export function DriverImages({ data: drivers }: { data: Driver[] }) {
                   {driver.driverNumber}
                 </div>
                 
-                {/* Team and Flag */}
+                {/* Nationality */}
                 <div className="flex items-center gap-2 mt-3">
+                  <div className="h-8 w-8 @sm:h-10 @sm:w-10 rounded">
+                    <Image
+                      src={`https://flagcdn.com/${driver.nationalityCode2?.toLowerCase()}.svg`}
+                      alt={driver.nationalityCode3}
+                      width={48}
+                      height={48}
+                      className="object-contain w-full h-full"
+                    />
+                  </div>
+                  
+                  {/* Nationality Name */}
+                  <span className="text-base @sm:text-lg @md:text-xl text-muted-foreground">
+                    {driver.driverNationality}
+                  </span>
+                </div>
+                
+                {/* Team and Logo */}
+                <div className="flex items-center gap-2 mt-2">
                   {/* Team Logo */}
                   <div className="h-8 w-8 @sm:h-10 @sm:w-10 rounded">
                     <CldImage
@@ -64,17 +83,6 @@ export function DriverImages({ data: drivers }: { data: Driver[] }) {
                   <span className="text-base @sm:text-lg @md:text-xl text-muted-foreground">
                     {driver.team}
                   </span>
-                </div>
-                
-                {/* Nationality */}
-                <div className="flex items-center gap-2 mt-2">
-                  <Image
-                    src={`https://flagcdn.com/${driver.nationalityCode2?.toLowerCase()}.svg`}
-                    alt={driver.nationalityCode3}
-                    width={24}
-                    height={18}
-                    className="object-contain"
-                  />
                 </div>
               </div>
 
