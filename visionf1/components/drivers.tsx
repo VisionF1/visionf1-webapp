@@ -61,7 +61,7 @@ export function DriverImages({ data: drivers }: { data: Driver[] }) {
                   </div>
                   
                   {/* Nationality Name */}
-                  <span className="text-base @sm:text-lg @md:text-xl text-muted-foreground">
+                  <span className="text-base @sm:text-lg @md:text-xl @lg:text-2xl text-muted-foreground">
                     {driver.driverNationality}
                   </span>
                 </div>
@@ -80,7 +80,7 @@ export function DriverImages({ data: drivers }: { data: Driver[] }) {
                   </div>
                   
                   {/* Team Name */}
-                  <span className="text-base @sm:text-lg @md:text-xl text-muted-foreground">
+                  <span className="text-base @sm:text-lg @md:text-xl @lg:text-2xl text-muted-foreground">
                     {driver.team}
                   </span>
                 </div>
