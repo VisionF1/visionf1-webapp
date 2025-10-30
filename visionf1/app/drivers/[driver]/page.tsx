@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import { DriverDetailCard } from "@/components/driver-detail-card"
+import { DriverRaces } from "@/components/driver-races"
 import { getDrivers } from "@/lib/api-requests"
 
 type Props = {
@@ -37,6 +38,7 @@ export default async function DriverDetail({ params }: Props) {
           <DriverDetailCard driver={driverData} />
         </div>
         <div className="bg-muted/50 aspect-video rounded-xl">
+          <DriverRaces driverCode={driverData.driverCode} />
         </div>
         <div className="bg-muted/50 aspect-video rounded-xl">
         </div>

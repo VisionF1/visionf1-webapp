@@ -33,3 +33,16 @@ export async function getUpcomingGP() {
   if (!res.ok) throw new Error("Failed to fetch upcoming GP");
   return res.json();
 }
+
+// GET: /events
+export async function getEvents(season?: number) {
+  const url = new URL(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/events`);
+  if (season) {
+    url.searchParams.append('season', season.toString());
+  }
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch events");
+  return res.json();
+}
