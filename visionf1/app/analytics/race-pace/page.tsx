@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { GenericComboBox } from "@/components/ui/combobox";
 
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, TooltipProps } from "recharts"
@@ -11,7 +11,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { CldImage } from 'next-cloudinary'
 
-const racePaceData = [{'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'PIA', 'driver_first_name': 'Oscar', 'driver_last_name': 'Piastri', 'driver_position': 1.0, 'driver_color': '#ff8000', 'team': 'mclaren', 'team_name': 'McLaren', 'team_color': 'F47600', 'avg_laptime': 74.48166, 'std_laptime': 0.98182, 'race_pace_id': '2025_15_PIA', 'race_pace_position': 1}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'NOR', 'driver_first_name': 'Lando', 'driver_last_name': 'Norris', 'driver_position': 18.0, 'driver_color': '#ff8000', 'team': 'mclaren', 'team_name': 'McLaren', 'team_color': 'F47600', 'avg_laptime': 74.665288, 'std_laptime': 0.920907, 'race_pace_id': '2025_15_NOR', 'race_pace_position': 2}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'VER', 'driver_first_name': 'Max', 'driver_last_name': 'Verstappen', 'driver_position': 2.0, 'driver_color': '#0600ef', 'team': 'red_bull', 'team_name': 'Red Bull Racing', 'team_color': '4781D7', 'avg_laptime': 75.104875, 'std_laptime': 1.047516, 'race_pace_id': '2025_15_VER', 'race_pace_position': 3}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'HAD', 'driver_first_name': 'Isack', 'driver_last_name': 'Hadjar', 'driver_position': 3.0, 'driver_color': '#fcd700', 'team': 'rb', 'team_name': 'Racing Bulls', 'team_color': '6C98FF', 'avg_laptime': 75.201928, 'std_laptime': 0.968081, 'race_pace_id': '2025_15_HAD', 'race_pace_position': 4}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'RUS', 'driver_first_name': 'George', 'driver_last_name': 'Russell', 'driver_position': 4.0, 'driver_color': '#27f4d2', 'team': 'mercedes', 'team_name': 'Mercedes', 'team_color': '00D7B6', 'avg_laptime': 75.55991, 'std_laptime': 0.893123, 'race_pace_id': '2025_15_RUS', 'race_pace_position': 5}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'ANT', 'driver_first_name': 'Kimi', 'driver_last_name': 'Antonelli', 'driver_position': 16.0, 'driver_color': '#27f4d2', 'team': 'mercedes', 'team_name': 'Mercedes', 'team_color': '00D7B6', 'avg_laptime': 75.635259, 'std_laptime': 1.167985, 'race_pace_id': '2025_15_ANT', 'race_pace_position': 6}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'LEC', 'driver_first_name': 'Charles', 'driver_last_name': 'Leclerc', 'driver_position': 19.0, 'driver_color': '#e80020', 'team': 'ferrari', 'team_name': 'Ferrari', 'team_color': 'ED1131', 'avg_laptime': 75.645255, 'std_laptime': 0.649396, 'race_pace_id': '2025_15_LEC', 'race_pace_position': 7}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'ALB', 'driver_first_name': 'Alexander', 'driver_last_name': 'Albon', 'driver_position': 5.0, 'driver_color': '#00a0dd', 'team': 'williams', 'team_name': 'Williams', 'team_color': '1868DB', 'avg_laptime': 75.758285, 'std_laptime': 0.992501, 'race_pace_id': '2025_15_ALB', 'race_pace_position': 8}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'SAI', 'driver_first_name': 'Carlos', 'driver_last_name': 'Sainz', 'driver_position': 13.0, 'driver_color': '#00a0dd', 'team': 'williams', 'team_name': 'Williams', 'team_color': '1868DB', 'avg_laptime': 75.917153, 'std_laptime': 0.880626, 'race_pace_id': '2025_15_SAI', 'race_pace_position': 9}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'LAW', 'driver_first_name': 'Liam', 'driver_last_name': 'Lawson', 'driver_position': 12.0, 'driver_color': '#fcd700', 'team': 'rb', 'team_name': 'Racing Bulls', 'team_color': '6C98FF', 'avg_laptime': 75.94266, 'std_laptime': 0.919475, 'race_pace_id': '2025_15_LAW', 'race_pace_position': 10}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'ALO', 'driver_first_name': 'Fernando', 'driver_last_name': 'Alonso', 'driver_position': 8.0, 'driver_color': '#00665f', 'team': 'aston_martin', 'team_name': 'Aston Martin', 'team_color': '229971', 'avg_laptime': 76.107673, 'std_laptime': 0.979049, 'race_pace_id': '2025_15_ALO', 'race_pace_position': 11}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'STR', 'driver_first_name': 'Lance', 'driver_last_name': 'Stroll', 'driver_position': 7.0, 'driver_color': '#00665f', 'team': 'aston_martin', 'team_name': 'Aston Martin', 'team_color': '229971', 'avg_laptime': 76.148584, 'std_laptime': 0.838618, 'race_pace_id': '2025_15_STR', 'race_pace_position': 12}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'HAM', 'driver_first_name': 'Lewis', 'driver_last_name': 'Hamilton', 'driver_position': 20.0, 'driver_color': '#e80020', 'team': 'ferrari', 'team_name': 'Ferrari', 'team_color': 'ED1131', 'avg_laptime': 76.306714, 'std_laptime': 0.30864, 'race_pace_id': '2025_15_HAM', 'race_pace_position': 13}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'TSU', 'driver_first_name': 'Yuki', 'driver_last_name': 'Tsunoda', 'driver_position': 9.0, 'driver_color': '#0600ef', 'team': 'red_bull', 'team_name': 'Red Bull Racing', 'team_color': '4781D7', 'avg_laptime': 76.378259, 'std_laptime': 0.70597, 'race_pace_id': '2025_15_TSU', 'race_pace_position': 14}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'BEA', 'driver_first_name': 'Oliver', 'driver_last_name': 'Bearman', 'driver_position': 6.0, 'driver_color': '#b6babd', 'team': 'haas', 'team_name': 'Haas F1 Team', 'team_color': '9C9FA2', 'avg_laptime': 76.4475, 'std_laptime': 0.948318, 'race_pace_id': '2025_15_BEA', 'race_pace_position': 15}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'COL', 'driver_first_name': 'Franco', 'driver_last_name': 'Colapinto', 'driver_position': 11.0, 'driver_color': '#ff87bc', 'team': 'alpine', 'team_name': 'Alpine', 'team_color': '00A1E8', 'avg_laptime': 76.469074, 'std_laptime': 0.926462, 'race_pace_id': '2025_15_COL', 'race_pace_position': 16}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'HUL', 'driver_first_name': 'Nico', 'driver_last_name': 'Hulkenberg', 'driver_position': 14.0, 'driver_color': '#00e700', 'team': 'sauber', 'team_name': 'Kick Sauber', 'team_color': '01C00E', 'avg_laptime': 76.598415, 'std_laptime': 0.871526, 'race_pace_id': '2025_15_HUL', 'race_pace_position': 17}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'OCO', 'driver_first_name': 'Esteban', 'driver_last_name': 'Ocon', 'driver_position': 10.0, 'driver_color': '#b6babd', 'team': 'haas', 'team_name': 'Haas F1 Team', 'team_color': '9C9FA2', 'avg_laptime': 76.607327, 'std_laptime': 0.872183, 'race_pace_id': '2025_15_OCO', 'race_pace_position': 18}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'GAS', 'driver_first_name': 'Pierre', 'driver_last_name': 'Gasly', 'driver_position': 17.0, 'driver_color': '#ff87bc', 'team': 'alpine', 'team_name': 'Alpine', 'team_color': '00A1E8', 'avg_laptime': 76.733535, 'std_laptime': 0.658684, 'race_pace_id': '2025_15_GAS', 'race_pace_position': 19}, {'season': 2025, 'round': 15, 'event': 'Dutch Grand Prix', 'driver': 'BOR', 'driver_first_name': 'Gabriel', 'driver_last_name': 'Bortoleto', 'driver_position': 15.0, 'driver_color': '#00e700', 'team': 'sauber', 'team_name': 'Kick Sauber', 'team_color': '01C00E', 'avg_laptime': 76.759735, 'std_laptime': 0.848896, 'race_pace_id': '2025_15_BOR', 'race_pace_position': 20}];
+import { getSeasons, getSummaryEvents, getRacePace } from "@/lib/api-requests";
 
 type RacePaceRow = {
   driver: string;
@@ -29,6 +29,17 @@ type RacePaceRow = {
   event: string;
   season: number;
   round: number;
+};
+
+type Season = number;
+
+type EventSummary = {
+  event_id: string;
+  season: number;
+  round: number;
+  event_name: string;
+  event_date: string;
+  event_status: string;
 };
 
 function formatLapTime(sec: number) {
@@ -120,7 +131,7 @@ const columns: ColumnDef<RacePaceRow>[] = [
   {
     accessorKey: "std_laptime",
     header: "Std Dev (s)",
-    cell: ({ row }) => row.original.std_laptime.toFixed(3),
+    cell: ({ row }) => row.original.std_laptime?.toFixed(3) || 'N/A',
   },
   {
     accessorKey: "driver_position",
@@ -138,28 +149,84 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export default function RacePace() {
+  const [seasons, setSeasons] = useState<Season[]>([]);
+  const [events, setEvents] = useState<EventSummary[]>([]);
+  const [racePaceData, setRacePaceData] = useState<RacePaceRow[]>([]);
+  const [selectedYear, setSelectedYear] = useState<string | null>(null);
+  const [selectedGP, setSelectedGP] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const years = useMemo(() => Array.from(new Set(racePaceData.map(d => d.season))).sort((a,b)=>b-a), [racePaceData]);
+  // Load seasons on component mount
+  useEffect(() => {
+    const loadSeasons = async () => {
+      try {
+        const seasonsResponse = await getSeasons();
+        setSeasons(seasonsResponse.data);
+      } catch (error) {
+        console.error("Error loading seasons:", error);
+      }
+    };
 
-  const gps = useMemo(() => {
-    const map = new Map<string, { id: string; label: string; season: number; round: number }>();
-    for (const d of racePaceData) {
-      const id = `${d.season}_${d.round}`;
-      if (!map.has(id)) map.set(id, { id, label: d.event, season: d.season, round: d.round });
-    }
-    return Array.from(map.values());
-  }, [racePaceData]);
+    loadSeasons();
+  }, []);
 
-  const [selectedYear, setSelectedYear] = useState<string | null>(String(years[0] ?? null));
-  const [selectedGP, setSelectedGP] = useState<string | null>(gps[0]?.id ?? null);
+  // Load events when a year is selected
+  useEffect(() => {
+    const loadEvents = async () => {
+      if (!selectedYear) return;
+      
+      try {
+        const eventsResponse = await getSummaryEvents(Number(selectedYear));
+        setEvents(eventsResponse.data);
+        setSelectedGP(null); // Reset selected GP
+        setRacePaceData([]); // Clear previous data
+      } catch (error) {
+        console.error("Error loading events:", error);
+        setEvents([]);
+      }
+    };
 
-  const filteredData = useMemo(
-    () =>
-      racePaceData.filter(d => {
-        const gpId = `${d.season}_${d.round}`;
-        return (selectedYear ? d.season === Number(selectedYear) : true) && (selectedGP ? gpId === selectedGP : true);
-      }),
-    [racePaceData, selectedYear, selectedGP]
+    loadEvents();
+  }, [selectedYear]);
+
+  // Load race pace data when a GP is selected
+  useEffect(() => {
+    const loadRacePace = async () => {
+      if (!selectedGP) return;
+      
+      try {
+        setLoading(true);
+        const [season, round] = selectedGP.split('_').map(Number);
+        const racePaceResponse = await getRacePace(season, round);
+        setRacePaceData(racePaceResponse.data.sort((a: RacePaceRow, b: RacePaceRow) => a.avg_laptime - b.avg_laptime));
+      } catch (error) {
+        console.error("Error loading race pace data:", error);
+        setRacePaceData([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadRacePace();
+  }, [selectedGP]);
+
+  const years = useMemo(() => 
+    seasons.map(season => String(season)).sort((a, b) => Number(b) - Number(a)), 
+    [seasons]
+  );
+
+  const gps = useMemo(() => 
+    events.map(event => ({
+      id: `${event.season}_${event.round}`,
+      label: event.event_name,
+      season: event.season,
+      round: event.round
+    })), 
+    [events]
+  );
+
+  const currentEvent = events.find(event => 
+    `${event.season}_${event.round}` === selectedGP
   );
 
   return (
@@ -167,58 +234,83 @@ export default function RacePace() {
       <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min p-4">
         <div className="w-full overflow-x-auto">
           <div className="min-w-[700px]">
-            <h2 className="text-lg font-semibold pb-4">Race Pace by Driver - 2025 Dutch Grand Prix</h2>
-            <GenericComboBox
-              className="mr-4"
-              items={years}
-              value={selectedYear}
-              onChange={setSelectedYear}
-              getLabel={(y) => String(y)}
-              getValue={(y) => String(y)}
-              placeholder="Year"
-              width="w-[140px]"
-            />
-            <GenericComboBox
-              items={gps}
-              value={selectedGP}
-              onChange={setSelectedGP}
-              getLabel={(g) => `${g.label} • ${g.season}`}
-              getValue={(g) => g.id}
-              placeholder="Grand Prix"
-              width="w-[280px]"
-            />
-            <ChartContainer config={chartConfig} className="h-full w-full max-h-[80vh] pt-4">
-              <BarChart accessibilityLayer data={racePaceData}>
-                <CartesianGrid vertical={false} />
-                <XAxis
-                  dataKey="driver"
-                  tickLine={true}
-                  tickMargin={10}
-                  axisLine={false}
-                  tickFormatter={(value) => value.slice(0, 3)}
-                />
-                <YAxis
-                  domain={['dataMin - 0.1', 'dataMax + 0.1']} 
-                  tickFormatter={formatLapTime}
-                />
-                <ChartTooltip content={<CustomTooltip />} />
-                <ChartLegend className="pb-0" content={<ChartLegendContent />} />
-                <Bar dataKey="avg_laptime" fill="var(--color-avg_laptime)" radius={4}>
-                  {racePaceData.map((entry) => (
-                    <Cell key={entry.driver} fill={entry.driver_color || "#2563eb"} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ChartContainer>
+            <h2 className="text-lg font-semibold pb-4">
+              {currentEvent ? `Race Pace by Driver - ${currentEvent.season} ${currentEvent.event_name}` : "Race Pace by Driver"}
+            </h2>
+            
+            <div className="flex gap-4 mb-0">
+              <GenericComboBox
+                items={years}
+                value={selectedYear}
+                onChange={setSelectedYear}
+                getLabel={(y) => String(y)}
+                getValue={(y) => String(y)}
+                placeholder="Select Year"
+                search_label="Year"
+                width="w-[160px]"
+              />
+              
+              <GenericComboBox
+                items={gps}
+                value={selectedGP}
+                onChange={setSelectedGP}
+                getLabel={(g) => `R${g.round} • ${g.label}`}
+                getValue={(g) => g.id}
+                placeholder="Select Grand Prix"
+                search_label="Grand Prix"
+                width="w-[340px]"
+              />
+            </div>
+
+            {loading ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="text-lg">Loading race pace data...</div>
+              </div>
+            ) : racePaceData.length > 0 ? (
+              <ChartContainer config={chartConfig} className="h-full w-full max-h-[76vh] pt-4">
+                <BarChart accessibilityLayer data={racePaceData}>
+                  <CartesianGrid vertical={false} />
+                  <XAxis
+                    dataKey="driver"
+                    tickLine={true}
+                    tickMargin={10}
+                    axisLine={false}
+                    tickFormatter={(value) => value.slice(0, 3)}
+                  />
+                  <YAxis
+                    domain={['dataMin - 0.1', 'dataMax + 0.1']} 
+                    tickFormatter={formatLapTime}
+                  />
+                  <ChartTooltip content={<CustomTooltip />} />
+                  <ChartLegend className="pb-0" content={<ChartLegendContent />} />
+                  <Bar dataKey="avg_laptime" fill="var(--color-avg_laptime)" radius={4}>
+                    {racePaceData.map((entry) => (
+                      <Cell key={entry.driver} fill={entry.driver_color || "#2563eb"} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ChartContainer>
+            ) : selectedGP ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="text-lg">No race pace data available for this event.</div>
+              </div>
+            ) : (
+              <div className="flex justify-center items-center h-64">
+                <div className="text-lg">Please select a Grand Prix to view race pace data.</div>
+              </div>
+            )}
           </div>
         </div>
       </div>
-      <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min">
-        <div className="p-4 flex flex-col">
-          <h2 className="text-lg font-semibold pb-4">Race Pace Detail</h2>
-          <DataTable columns={columns} data={racePaceData} />
+      
+      {racePaceData.length > 0 && (
+        <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min">
+          <div className="p-4 flex flex-col">
+            <h2 className="text-lg font-semibold pb-4">Race Pace Detail</h2>
+            <DataTable columns={columns} data={racePaceData} />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

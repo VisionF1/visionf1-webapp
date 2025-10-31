@@ -22,6 +22,7 @@ type GenericComboBoxProps<T> = {
   getLabel: (item: T) => string;
   getValue: (item: T) => string;
   placeholder?: string;
+  search_label?: string;
   width?: string;
   emptyText?: string;
   className?: string;
@@ -34,6 +35,7 @@ export function GenericComboBox<T>({
   getLabel,
   getValue,
   placeholder = "Select...",
+  search_label = "",
   width = "w-[200px]",
   emptyText = "No results.",
   className,
@@ -70,7 +72,7 @@ export function GenericComboBox<T>({
 
       <PopoverContent className={cn(width, "p-0")}>
         <Command>
-          <CommandInput placeholder={`Search ${placeholder.toLowerCase()}...`} onValueChange={setQuery} />
+          <CommandInput placeholder={`Search ${search_label}...`} onValueChange={setQuery} />
           <CommandList>
             <CommandEmpty>{emptyText}</CommandEmpty>
             <CommandGroup>
