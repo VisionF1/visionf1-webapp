@@ -3,6 +3,7 @@
 import * as React from "react"
 import { useMemo, useState, useEffect } from "react";
 import { GenericComboBox } from "@/components/ui/combobox";
+import { Spinner } from "@/components/ui/spinner"
 
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, TooltipProps } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
@@ -231,14 +232,14 @@ export default function RacePace() {
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
-      <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min p-4">
+      <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min p-4">
         <div className="w-full overflow-x-auto">
           <div className="min-w-[700px]">
             <h2 className="text-lg font-semibold pb-4">
               {currentEvent ? `Race Pace by Driver - ${currentEvent.season} ${currentEvent.event_name}` : "Race Pace by Driver"}
             </h2>
             
-            <div className="flex gap-4 mb-0">
+            <div className="flex flex-col sm:flex-row gap-4 mb-0">
               <GenericComboBox
                 items={years}
                 value={selectedYear}
@@ -247,7 +248,7 @@ export default function RacePace() {
                 getValue={(y) => String(y)}
                 placeholder="Select Year"
                 search_label="Year"
-                width="w-[160px]"
+                width="w-[320px]"
               />
               
               <GenericComboBox
@@ -258,12 +259,13 @@ export default function RacePace() {
                 getValue={(g) => g.id}
                 placeholder="Select Grand Prix"
                 search_label="Grand Prix"
-                width="w-[340px]"
+                width="w-[320px]"
               />
             </div>
 
             {loading ? (
               <div className="flex justify-center items-center h-64">
+                <Spinner className="size-6 mr-2"/>
                 <div className="text-lg">Loading race pace data...</div>
               </div>
             ) : racePaceData.length > 0 ? (
@@ -304,7 +306,7 @@ export default function RacePace() {
       </div>
       
       {racePaceData.length > 0 && (
-        <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min">
+        <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min">
           <div className="p-4 flex flex-col">
             <h2 className="text-lg font-semibold pb-4">Race Pace Detail</h2>
             <DataTable columns={columns} data={racePaceData} />
