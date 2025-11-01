@@ -234,7 +234,6 @@ export default function RacePace() {
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
       <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min p-4">
         <div className="w-full overflow-x-auto">
-          <div className="min-w-[700px]">
             <h2 className="text-lg font-semibold pb-4">
               {currentEvent ? `Race Pace by Driver - ${currentEvent.season} ${currentEvent.event_name}` : "Race Pace by Driver"}
             </h2>
@@ -269,29 +268,33 @@ export default function RacePace() {
                 <div className="text-lg">Loading race pace data...</div>
               </div>
             ) : racePaceData.length > 0 ? (
-              <ChartContainer config={chartConfig} className="h-full w-full max-h-[76vh] pt-4">
-                <BarChart accessibilityLayer data={racePaceData}>
-                  <CartesianGrid vertical={false} />
-                  <XAxis
-                    dataKey="driver"
-                    tickLine={true}
-                    tickMargin={10}
-                    axisLine={false}
-                    tickFormatter={(value) => value.slice(0, 3)}
-                  />
-                  <YAxis
-                    domain={['dataMin - 0.1', 'dataMax + 0.1']} 
-                    tickFormatter={formatLapTime}
-                  />
-                  <ChartTooltip content={<CustomTooltip />} />
-                  <ChartLegend className="pb-0" content={<ChartLegendContent />} />
-                  <Bar dataKey="avg_laptime" fill="var(--color-avg_laptime)" radius={4}>
-                    {racePaceData.map((entry) => (
-                      <Cell key={entry.driver} fill={entry.driver_color || "#2563eb"} />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ChartContainer>
+              <div className="w-full overflow-x-auto">
+                <div className="min-w-[700px]">
+                  <ChartContainer config={chartConfig} className="h-full w-full max-h-[76vh] pt-4">
+                    <BarChart accessibilityLayer data={racePaceData}>
+                      <CartesianGrid vertical={false} />
+                      <XAxis
+                        dataKey="driver"
+                        tickLine={true}
+                        tickMargin={10}
+                        axisLine={false}
+                        tickFormatter={(value) => value.slice(0, 3)}
+                      />
+                      <YAxis
+                        domain={['dataMin - 0.1', 'dataMax + 0.1']} 
+                        tickFormatter={formatLapTime}
+                      />
+                      <ChartTooltip content={<CustomTooltip />} />
+                      <ChartLegend className="pb-0" content={<ChartLegendContent />} />
+                      <Bar dataKey="avg_laptime" fill="var(--color-avg_laptime)" radius={4}>
+                        {racePaceData.map((entry) => (
+                          <Cell key={entry.driver} fill={entry.driver_color || "#2563eb"} />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ChartContainer>
+                </div>
+              </div>
             ) : selectedGP ? (
               <div className="flex justify-center items-center h-64">
                 <div className="text-lg">No race pace data available for this event.</div>
@@ -303,7 +306,6 @@ export default function RacePace() {
             )}
           </div>
         </div>
-      </div>
       
       {racePaceData.length > 0 && (
         <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min">
