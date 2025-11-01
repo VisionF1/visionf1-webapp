@@ -1,18 +1,19 @@
 "use client"
 
 import * as React from "react"
-import { useMemo, useState, useEffect } from "react";
-import { GenericComboBox } from "@/components/ui/combobox";
+import { useMemo, useState, useEffect } from "react"
+import { GenericComboBox } from "@/components/ui/combobox"
 import { Spinner } from "@/components/ui/spinner"
 
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, TooltipProps } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 
-import { ColumnDef } from "@tanstack/react-table";
-import { DataTable } from "@/components/data-table";
+import { ColumnDef } from "@tanstack/react-table"
+import { DataTable } from "@/components/data-table"
 import { CldImage } from 'next-cloudinary'
+import Image from "next/image"
 
-import { getSeasons, getSummaryEvents, getRacePace } from "@/lib/api-requests";
+import { getSeasons, getSummaryEvents, getRacePace } from "@/lib/api-requests"
 
 type RacePaceRow = {
   driver: string;
@@ -296,12 +297,36 @@ export default function RacePace() {
                 </div>
               </div>
             ) : selectedGP ? (
-              <div className="flex justify-center items-center h-64">
+              <div className="flex flex-col justify-center items-center text-center h-80 gap-10">
                 <div className="text-lg">No race pace data available for this event.</div>
+                <div className="flex-shrink-0 pb-2 px-2">
+                  <div className="h-20 w-20 @2xs:h-24 @2xs:w-24 @xs:h-28 @xs:w-28 @sm:h-36 @sm:w-36 @md:h-42 @md:w-42 @lg:h-46 @lg:w-46 @xl:h-56 @xl:w-56 bg-sidebar-primary border-2 border-brand flex items-center justify-center rounded-full overflow-hidden shadow-lg">
+                    <Image
+                      src="/visionf1-logo.svg"
+                      alt="VisionF1"
+                      width={200}
+                      height={200}
+                      className="object-contain h-full w-full p-1"
+                      loading="eager"
+                    />
+                  </div>
+                </div>
               </div>
             ) : (
-              <div className="flex justify-center items-center h-64">
+              <div className="flex flex-col justify-center items-center text-center h-80 gap-10">
                 <div className="text-lg">Please select a Grand Prix to view race pace data.</div>
+                <div className="flex-shrink-0 pb-2 px-2">
+                  <div className="h-20 w-20 @2xs:h-24 @2xs:w-24 @xs:h-28 @xs:w-28 @sm:h-36 @sm:w-36 @md:h-42 @md:w-42 @lg:h-46 @lg:w-46 @xl:h-56 @xl:w-56 bg-sidebar-primary border-2 border-brand flex items-center justify-center rounded-full overflow-hidden shadow-lg">
+                    <Image
+                      src="/visionf1-logo.svg"
+                      alt="VisionF1"
+                      width={200}
+                      height={200}
+                      className="object-contain h-full w-full p-1"
+                      loading="eager"
+                    />
+                  </div>
+                </div>
               </div>
             )}
           </div>

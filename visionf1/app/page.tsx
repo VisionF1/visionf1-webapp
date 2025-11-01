@@ -4,7 +4,7 @@ import { Welcome } from "@/components/welcome"
 import { DriverStandings } from "@/components/driver-standings"
 import { TeamStandings } from "@/components/team-standings"
 import { PlaceholderBrand } from "@/components/placeholder-brand"
-import { getDriverStandings, getTeamStandings, getDrivers, getUpcomingGP } from "@/lib/api-requests";
+import { getDriverStandings, getTeamStandings, getDrivers, getUpcomingGP } from "@/lib/api-requests"
 
 export default async function Home() {
 
