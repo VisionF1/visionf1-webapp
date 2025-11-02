@@ -48,7 +48,7 @@ export default async function DriverDetail({ params }: Props) {
 
         {/* Right side - Races and Team Car (70%) */}
         <div className="w-full sm:w-[70%] flex flex-col gap-4">
-          <div className="bg-muted/50 aspect-video rounded-xl flex-1 min-h-0">
+          <div className="bg-muted/50 aspect-video rounded-xl flex-1 min-h-0 sm:aspect-video min-h-92 sm:min-h-0">
             <DriverRaces driverCode={driverData.driverCode} />
           </div>
           {/* Team Car Card */}
