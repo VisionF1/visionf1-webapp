@@ -22,7 +22,7 @@ export default async function DriverDetail({ params }: Props) {
   let driverData
   try {
     const driversResponse = await getDrivers()
-    driverData = driversResponse.data.find((d: any) => {
+    driverData = driversResponse.data.find((d: { firstName: string; lastName: string }) => {
       const driverSlug = `${d.firstName.toLowerCase().replace(/ü/g, 'u')}-${d.lastName.toLowerCase().replace(/ü/g, 'u')}`
       return driverSlug === driver
     })
@@ -30,7 +30,7 @@ export default async function DriverDetail({ params }: Props) {
     if (!driverData) {
       notFound()
     }
-  } catch (error) {
+  } catch {
     notFound()
   }
 
