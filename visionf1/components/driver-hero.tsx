@@ -20,7 +20,7 @@ export function DriverHero({ driver }: { driver: Driver }) {
     <div className="w-full rounded-xl overflow-hidden bg-gradient-to-br from-muted/50 to-muted/40 relative flex flex-col gap-2 p-6 md:p-8">
       {/* Decorative background elements */}
       <div className="absolute inset-0 opacity-10 pointer-events-none flex items-center justify-center">
-        <div className="text-[250px] sm:text-[300px] md:text-[350px] lg:text-[120px] xl:text-[300px] 2xl:text-[400px] font-black text-white leading-none">
+        <div className="text-[250px] sm:text-[300px] md:text-[400px] lg:text-[200px] xl:text-[250px] 2xl:text-[400px] font-black text-white leading-none">
           {driver.driverNumber}
         </div>
       </div>
