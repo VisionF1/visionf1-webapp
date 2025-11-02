@@ -53,20 +53,20 @@ export async function DriverRaces({ driverCode }: { driverCode: string }) {
     // Fetch current year events
     const currentYearEvents = await getEvents(currentYear)
     const endedRaces = currentYearEvents.data
-      .filter((event: any) => event.event_status === "ended")
-      .map((race: any) => {
+      .filter((event: Race) => event.event_status === "ended")
+      .map((race: Race) => {
         const driverIndex = (race.driver_codes || []).indexOf(driverCode)
         return {
           ...race,
           driverPosition: driverIndex >= 0 ? driverIndex + 1 : undefined, // Index + 1 because arrays are 0-indexed
         }
       })
-      .filter((race: any) => race.driverPosition !== undefined)
-      .sort((a: any, b: any) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime())
+      .filter((race: Race & { driverPosition?: number }) => race.driverPosition !== undefined)
+      .sort((a: Race & { driverPosition?: number }, b: Race & { driverPosition?: number }) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime())
 
     allCurrentYearRaces = endedRaces
-  } catch (error) {
-    console.error("Error fetching driver races:", error)
+  } catch {
+    console.error("Error fetching driver races")
     return (
       <div className="p-4 flex flex-col">
         <h2 className="text-lg font-semibold pb-4">Season Races</h2>

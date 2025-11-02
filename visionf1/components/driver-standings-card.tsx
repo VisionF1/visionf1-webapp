@@ -28,7 +28,6 @@ type TeamStanding = {
 export function DriverStandingsCard({ driverCode, teamName }: { driverCode: string; teamName: string }) {
   const [driverStanding, setDriverStanding] = useState<(DriverStanding & { teamRank?: number; teamPoints?: number }) | null>(null)
   const [teamStanding, setTeamStanding] = useState<TeamStanding | null>(null)
-  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchStandings = async () => {
@@ -57,8 +56,6 @@ export function DriverStandingsCard({ driverCode, teamName }: { driverCode: stri
         }
       } catch (error) {
         console.error("Error fetching standings:", error)
-      } finally {
-        setLoading(false)
       }
     }
 

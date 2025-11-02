@@ -2,12 +2,7 @@
 
 import { CldImage } from "next-cloudinary"
 
-type Team = {
-  teamCode: string
-  teamName: string
-}
-
-export function TeamCarCard({ team, teamName }: { team: string; teamName: string }) {
+export function TeamCarCard({ teamName }: { team: string; teamName: string }) {
   const carImageUrl = `${teamName.toLowerCase()} car`
   
   return (
