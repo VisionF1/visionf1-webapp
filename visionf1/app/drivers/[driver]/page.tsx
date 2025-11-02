@@ -36,9 +36,9 @@ export default async function DriverDetail({ params }: Props) {
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
-      <div className="flex flex-col lg:flex-row gap-4 h-full lg:items-stretch">
+      <div className="flex flex-col 2xl:flex-row gap-4 h-full 2xl:items-stretch">
         {/* Left column - Hero and Standings (30%) */}
-        <div className="w-full lg:w-[30%] grid grid-cols-1 gap-4">
+        <div className="w-full 2xl:w-[30%] grid grid-cols-1 gap-4">
           <div className="rounded-xl">
             <DriverHero driver={driverData} />
           </div>
@@ -48,8 +48,8 @@ export default async function DriverDetail({ params }: Props) {
         </div>
 
         {/* Right side - Races and Team Car (70%) */}
-        <div className="w-full lg:w-[70%] flex flex-col gap-4">
-          <div className="bg-muted/50 aspect-video rounded-xl flex-1 min-h-0 lg:aspect-video min-h-92 lg:min-h-0">
+        <div className="w-full 2xl:w-[70%] flex flex-col gap-4">
+          <div className="bg-muted/50 aspect-video rounded-xl flex-1 min-h-0 2xl:aspect-video min-h-92 2xl:min-h-0">
             <DriverRaces driverCode={driverData.driverCode} />
           </div>
           {/* Team Car Card */}
