@@ -77,7 +77,7 @@ export async function DriverRaces({ driverCode }: { driverCode: string }) {
 
   return (
     <div className="w-full h-full @container">
-      <div className="bg-muted/50 rounded-xl h-full flex flex-col p-4">
+      <div className="rounded-xl h-full flex flex-col p-4">
         <h2 className="text-lg font-semibold pb-4">Season Races</h2>
         {allCurrentYearRaces.length === 0 ? (
           <div className="flex items-center justify-center flex-1">

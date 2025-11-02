@@ -108,7 +108,7 @@ export function DriverStandingsCard({ driverCode, teamName }: { driverCode: stri
                 <div className="flex items-center gap-1 flex-1 min-w-0">
                   <div className="h-5 w-5 @sm:h-6 @sm:w-6 rounded flex-shrink-0">
                     <CldImage
-                      src={teamStanding.teamCode}
+                      src={teamStanding.team}
                       alt={teamStanding.team}
                       width={32}
                       height={32}
