@@ -21,7 +21,9 @@ export function DriverImages({ data: drivers }: { data: Driver[] }) {
   const router = useRouter()
 
   const handleDriverClick = (driver: Driver) => {
-    const driverPath = `/drivers/${driver.firstName.toLowerCase()}-${driver.lastName.toLowerCase()}`
+    const firstName = driver.firstName.toLowerCase().replace(/ü/g, 'u')
+    const lastName = driver.lastName.toLowerCase().replace(/ü/g, 'u')
+    const driverPath = `/drivers/${firstName}-${lastName}`
     router.push(driverPath)
   }
 
