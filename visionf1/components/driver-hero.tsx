@@ -46,7 +46,7 @@ export function DriverHero({ driver }: { driver: Driver }) {
           <span className="block text-sm md:text-lg font-light text-white italic leading-tight mb-1">
             {driver.firstName}
           </span>
-          <span className="block text-3xl md:text-7xl tracking-wide font-black text-white leading-tight">
+          <span className="block text-5xl md:text-7xl tracking-wide font-black text-white leading-tight">
             {driver.lastName.toUpperCase()}
           </span>
         </div>
