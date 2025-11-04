@@ -1,18 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { CldImage } from "next-cloudinary";
 import { useTheme } from "next-themes"
 import { useEffect, useState, useCallback } from "react";
 import { Calendar, MapPin } from "lucide-react"
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
-} from "@/components/ui/dialog";
 
 interface GPData {
   id: string;
@@ -124,12 +117,12 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
             </div>
           </div>
           
-          <div className="flex items-center gap-2 text-sm text-foreground">
+          <Link href="/calendar" className="flex items-center gap-2 text-sm text-foreground hover:opacity-75 transition-opacity">
             <MapPin className="h-3 w-3 @md:h-4 @md:w-4 @lg:h-5 @lg:w-5 @xl:h-6 @xl:w-6 text-muted-foreground mb-1 @xs:mb-3" />
-            <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm @lg:text-base @xl:text-lg text-foreground mb-1 @xs:mb-3 truncate">
+            <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm @lg:text-base @xl:text-lg text-foreground mb-1 @xs:mb-3 truncate underline">
               {gp.circuit}
             </p>
-          </div>
+          </Link>
           
           <div className="flex items-center gap-2 text-[0.6rem] @md:text-sm @lg:text-base @xl:text-lg text-foreground">
             <Calendar className="h-3 w-3 @md:h-4 @md:w-4 @lg:h-5 @lg:w-5 @xl:h-6 @xl:w-6 text-muted-foreground" />
@@ -141,46 +134,22 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
         
         {/* Circuit Image */}
         <div className="flex-shrink-0">
-          <Dialog>
-            <DialogTrigger asChild>
-              <button
-                type="button"
-                className="w-18 h-13 @xs:w-24 @xs:h-16 @sm:w-38 @sm:h-26 @md:w-42 @md:h-28 @lg:w-50 @lg:h-30 @xl:w-56 @xl:h-36 rounded-md"
-                aria-label={`Open ${gp.circuit} image`}
-              >
-                <CldImage
-                  src={smallCircuitSrc}
-                  alt={gp.circuit}
-                  width={320}
-                  height={320}
-                  className="object-cover w-full h-full"
-                  format="svg"
-                />
-              </button>
-            </DialogTrigger>
-
-            <DialogContent className="max-w-[95vw] lg:max-w-[65vw] p-0">
-              <DialogHeader>
-                <DialogTitle className="sr-only">{gp.circuit}</DialogTitle>
-                <DialogClose className="absolute right-2 top-2 z-50" />
-              </DialogHeader>
-
-              <div className="w-full flex items-center justify-center bg-black/80">
-                <CldImage
-                  src={gp.circuitId}
-                  alt={gp.circuit}
-                  width={1920}
-                  height={1080}
-                  className="object-cover w-full h-full"
-                  format="webp"
-                />
-              </div>
-
-              <div className="p-4">
-                <p className="text-sm text-muted-foreground">{gp.circuit}</p>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <Link href="/calendar">
+            <button
+              type="button"
+              className="w-18 h-13 @xs:w-24 @xs:h-16 @sm:w-38 @sm:h-26 @md:w-42 @md:h-28 @lg:w-50 @lg:h-30 @xl:w-56 @xl:h-36 rounded-md hover:opacity-75 transition-opacity"
+              aria-label={`Navigate to calendar for ${gp.circuit}`}
+            >
+              <CldImage
+                src={smallCircuitSrc}
+                alt={gp.circuit}
+                width={320}
+                height={320}
+                className="object-cover w-full h-full"
+                format="svg"
+              />
+            </button>
+          </Link>
         </div>
       </div>
 
