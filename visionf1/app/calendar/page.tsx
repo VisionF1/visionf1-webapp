@@ -151,7 +151,7 @@ export default async function RaceCalendar() {
     }
 
     return (
-      <div className={`${bgClass} border ${borderClass} rounded-xl p-4 space-y-4 transition-all`}>
+      <div className={`${bgClass} border ${borderClass} rounded-xl p-4 space-y-4 transition-all @container`}>
         {/* Header with Round and Date */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2">
@@ -231,7 +231,7 @@ export default async function RaceCalendar() {
 
         {/* Circuit Image */}
         {race.circuit_id && (
-          <div className="mt-4 rounded-lg overflow-hidden h-100">
+          <div className="mt-4 rounded-lg overflow-hidden @sm:h-60 @md:h-65 @lg:h-75 @xl:h-100">
             <CldImage
               src={race.circuit_id}
               alt={race.circuit_name}
