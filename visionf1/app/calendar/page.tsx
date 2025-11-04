@@ -231,12 +231,12 @@ export default async function RaceCalendar() {
 
         {/* Circuit Image */}
         {race.circuit_id && (
-          <div className="mt-4 rounded-lg overflow-hidden h-32">
+          <div className="mt-4 rounded-lg overflow-hidden h-100">
             <CldImage
               src={race.circuit_id}
               alt={race.circuit_name}
-              width={800}
-              height={300}
+              width={450}
+              height={220}
               className="w-full h-full object-cover"
               format="webp"
             />
