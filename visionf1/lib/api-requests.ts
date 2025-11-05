@@ -35,14 +35,47 @@ export async function getUpcomingGP() {
 }
 
 // GET: /events
-export async function getEvents(season?: number) {
-  const url = new URL(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/events`);
-  if (season) {
-    url.searchParams.append('season', season.toString());
-  }
-  const res = await fetch(url.toString(), {
+export async function getEvents(year?: number) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/events${year ? `?season=${year}` : ''}`, {
     next: { revalidate: 3600 },
   });
   if (!res.ok) throw new Error("Failed to fetch events");
   return res.json();
 }
+
+// GET: /summary-events
+export async function getSummaryEvents(year?: number) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/summary-events${year ? `?season=${year}` : ''}`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch summary events");
+  return res.json();
+}
+
+// GET: /seasons
+export async function getSeasons() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/seasons`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch seasons");
+  return res.json();
+}
+
+// GET: /race-pace by season and round
+export async function getRacePace(season: number, round: number) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/race-pace?season=${season}&round=${round}`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch race pace");
+  return res.json();
+}
+
+// GET: /race-pace by event ID
+export async function getRacePaceByDriver(eventId: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/race-pace?event_id=${eventId}`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch race pace");
+  return res.json();
+}
+

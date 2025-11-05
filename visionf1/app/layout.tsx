@@ -32,7 +32,8 @@ export default function RootLayout({
         <link rel="apple-icon" sizes="180x180" href="/apple-icon.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon.png" />
         <link rel="mask-icon" href="/icon.svg" color="#33C8FF" />
-        <meta name="theme-color" content="#1d293d" />
+        <meta name="theme-color" media=".html.light" content="light" />
+        <meta name="theme-color" media=".html.dark" content="black" />
       </head>
       <body style={{ fontFamily: "Formula1-Display-Regular, F1Year, sans-serif" }}>
         <ThemeProvider
