@@ -49,11 +49,11 @@ export default async function DriverDetail({ params }: Props) {
 
         {/* Right side - Races and Team Car (70%) */}
         <div className="w-full 2xl:w-[70%] flex flex-col gap-4">
-          <div className="bg-muted/50 aspect-video rounded-xl flex-1 min-h-0 2xl:aspect-video min-h-92 2xl:min-h-0">
+          <div className="bg-muted/50 aspect-video rounded-xl flex-1 2xl:aspect-video min-h-92 2xl:min-h-0">
             <DriverRaces driverCode={driverData.driverCode} />
           </div>
           {/* Team Car Card */}
-          <div className="bg-muted/50 aspect-video rounded-xl flex-1 min-h-0 p-4 flex flex-col">
+          <div className="bg-muted/50 rounded-xl flex-1 min-h-0 p-4 flex flex-col">
             <TeamCarCard team={driverData.team} teamName={driverData.team} />
           </div>
         </div>
