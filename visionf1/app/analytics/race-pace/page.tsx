@@ -15,6 +15,7 @@ import Image from "next/image"
 
 import { getSeasons, getSummaryEvents, getRacePace } from "@/lib/api-requests"
 import { Season, EventSummary, RacePaceRow } from "@/lib/types"
+import { exportDataAsCSV } from "@/lib/csv-utils"
 
 function formatLapTime(sec: number) {
   const minutes = Math.floor(sec / 60);
@@ -47,83 +48,31 @@ function CustomTooltip({ active, payload }: TooltipProps<number, string>) {
   );
 }
 
-// Convert Race Pace data to CSV format
-function convertToCSV(data: RacePaceRow[]): string {
+// Exports Race Pace data as CSV with proper formatting
+export function exportRacePaceAsCSV(data: RacePaceRow[], filename: string): Promise<void> {
   const headers = [
-    'Race Pace Position',
-    'Driver',
-    'Team',
-    'Avg Lap Time',
-    'Std Dev (s)',
-    'Final Race Position'
+    { key: 'race_pace_position', label: 'Race Pace Position' },
+    { key: 'driver_name', label: 'Driver' },
+    { key: 'team_name', label: 'Team' },
+    { key: 'avg_laptime', label: 'Avg Lap Time' },
+    { key: 'std_laptime', label: 'Std Dev (s)' },
+    { key: 'driver_position', label: 'Final Race Position' },
   ];
 
-  const rows = data.map(row => [
-    row.race_pace_position,
-    `${row.driver_first_name} ${row.driver_last_name}`,
-    row.team_name,
-    formatLapTime(row.avg_laptime),
-    row.std_laptime?.toFixed(3) || 'N/A',
-    row.driver_position
-  ]);
+  const fieldTransformers = {
+    driver_name: (value: any, row: RacePaceRow) => 
+      `${row.driver_first_name} ${row.driver_last_name}`,
+    avg_laptime: (value: number) => formatLapTime(value),
+    std_laptime: (value: number) => value?.toFixed(3) || 'N/A',
+  };
 
-  return [headers, ...rows].map(row => 
-    row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',')
-  ).join('\n');
-}
+  // Add calculated field for driver name
+  const dataWithDriverName = data.map(row => ({
+    ...row,
+    driver_name: `${row.driver_first_name} ${row.driver_last_name}`
+  }));
 
-// Download CSV using File System Access API
-async function downloadCSVWithDialog(data: RacePaceRow[], filename: string) {
-  try {
-    // Check if browser supports File System Access API
-    if ('showSaveFilePicker' in window) {
-      const csv = convertToCSV(data);
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      
-      // Use API to show save file dialog
-      const fileHandle = await (window as any).showSaveFilePicker({
-        suggestedName: filename,
-        types: [
-          {
-            description: 'CSV Files',
-            accept: { 'text/csv': ['.csv'] },
-          },
-        ],
-      });
-
-      // Write file
-      const writable = await fileHandle.createWritable();
-      await writable.write(blob);
-      await writable.close();
-    } else {
-      // Fallback for browsers that do not support the API
-      downloadCSVDirect(data, filename);
-    }
-  } catch (error: any) {
-    // User canceled the dialog - do nothing
-    if (error.name !== 'AbortError') {
-      console.error('Error saving file:', error);
-      // Fallback to direct download if error or API not supported
-      downloadCSVDirect(data, filename);
-    }
-  }
-}
-
-// Fallback for direct download if File System Access API is not supported
-function downloadCSVDirect(data: RacePaceRow[], filename: string) {
-  const csv = convertToCSV(data);
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  
-  link.setAttribute('href', url);
-  link.setAttribute('download', filename);
-  link.style.visibility = 'hidden';
-  
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-  URL.revokeObjectURL(url);
+  return exportDataAsCSV(dataWithDriverName, filename, headers, fieldTransformers, true);
 }
 
 const columns: ColumnDef<RacePaceRow>[] = [
@@ -286,7 +235,7 @@ export default function RacePace() {
     if (racePaceData.length === 0) return;
 
     const filename = `race_pace_${selectedYear}_${currentEvent?.round || 'data'}_${currentEvent?.event_name || 'data'}.csv`.replace(/\s+/g, '_');
-    await downloadCSVWithDialog(racePaceData, filename);
+    await exportRacePaceAsCSV(racePaceData, filename);
   };
 
   return (
@@ -400,7 +349,7 @@ export default function RacePace() {
                 className="flex items-center px-4 py-2 bg-brand text-sm text-black rounded-md hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
               >
                 <Download className="mr-2 h-4 w-4" />
-                Export CSV
+                Export Data
               </button>
             </div>
             <DataTable columns={columns} data={racePaceData} />
