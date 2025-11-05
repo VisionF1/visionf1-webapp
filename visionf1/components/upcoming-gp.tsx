@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { CldImage } from "next-cloudinary";
-import { useTheme } from "next-themes"
 import { useEffect, useState, useCallback } from "react";
 import { Calendar, MapPin } from "lucide-react"
 import {
@@ -59,25 +58,23 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
     return now >= start && now <= end;
   }, [gp.startDate, gp.endDate]);
 
-  const [timeLeft, setTimeLeft] = useState(() => calculateTimeLeft());
-  const [isLive, setIsLive] = useState(() => checkIfLive());
-
-  // Theme-aware image selection (avoid hydration mismatch)
-  const { theme, resolvedTheme } = useTheme();
+  // Initialize as null to avoid hydration mismatch
+  const [timeLeft, setTimeLeft] = useState<ReturnType<typeof calculateTimeLeft> | null>(null);
+  const [isLive, setIsLive] = useState(false);
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  const currentTheme = mounted ? (resolvedTheme ?? theme) : undefined;
-  const outlineSuffix = currentTheme === "dark" ? "white_outline" : "black_outline";
-  const smallCircuitSrc = `/${gp.circuitId}_${outlineSuffix}`;
 
   useEffect(() => {
-    // run once immediately and then every second
+    setMounted(true);
+
+    // Run once after mounting and then every second
     setTimeLeft(calculateTimeLeft());
     setIsLive(checkIfLive());
+    
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
       setIsLive(checkIfLive());
     }, 1000);
+    
     return () => clearInterval(timer);
   }, [calculateTimeLeft, checkIfLive]);
 
@@ -148,14 +145,26 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
                 className="w-18 h-13 @xs:w-24 @xs:h-16 @sm:w-38 @sm:h-26 @md:w-42 @md:h-28 @lg:w-50 @lg:h-30 @xl:w-56 @xl:h-36 rounded-md"
                 aria-label={`Open ${gp.circuit} image`}
               >
-                <CldImage
-                  src={smallCircuitSrc}
-                  alt={gp.circuit}
-                  width={320}
-                  height={320}
-                  className="object-cover w-full h-full"
-                  format="svg"
-                />
+                <div className="relative w-full h-full">
+                  {/* Light mode */}
+                  <CldImage
+                    src={`/${gp.circuitId}_black_outline`}
+                    alt={gp.circuit}
+                    width={320}
+                    height={320}
+                    className="object-cover w-full h-full dark:hidden"
+                    format="svg"
+                  />
+                  {/* Dark mode */}
+                  <CldImage
+                    src={`/${gp.circuitId}_white_outline`}
+                    alt={gp.circuit}
+                    width={320}
+                    height={320}
+                    className="object-cover w-full h-full hidden dark:block"
+                    format="svg"
+                  />
+                </div>
               </button>
             </DialogTrigger>
 
@@ -184,47 +193,70 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
         </div>
       </div>
 
-      {timeLeft && !isLive ? (
-        <div className="mt-auto">
-          <span className="text-[0.6rem] @md:text-sm @lg:text-base @xl:text-lg text-muted-foreground block mb-0.5">Race weekend starts in</span>
-          <div className="grid grid-cols-4 gap-1">
-            <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
-              <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.days}</span>
-              <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">days</span>
+      {/* Countdown / LIVE / Completed */}
+      <div className="mt-auto">
+        {!mounted ? (
+          // Placeholder while waiting for mount
+          <>
+            <span className="text-[0.6rem] @md:text-sm @lg:text-base @xl:text-lg text-muted-foreground block mb-0.5">
+              Race weekend starts in
+            </span>
+            <div className="grid grid-cols-4 gap-1">
+              {["days", "hours", "mins", "secs"].map((label, i) => (
+                <div key={i} className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
+                  <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">--</span>
+                  <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">{label}</span>
+                </div>
+              ))}
             </div>
-            <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
-              <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.hours}</span>
-              <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">hours</span>
+          </>
+        ) : timeLeft && !isLive ? (
+          // Countdown
+          <>
+            <span className="text-[0.6rem] @md:text-sm @lg:text-base @xl:text-lg text-muted-foreground block mb-0.5">
+              Race weekend starts in
+            </span>
+            <div className="grid grid-cols-4 gap-1">
+              <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
+                <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.days}</span>
+                <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">days</span>
+              </div>
+              <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
+                <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.hours}</span>
+                <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">hours</span>
+              </div>
+              <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
+                <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.minutes}</span>
+                <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">mins</span>
+              </div>
+              <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
+                <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.seconds}</span>
+                <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">secs</span>
+              </div>
             </div>
-            <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
-              <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.minutes}</span>
-              <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">mins</span>
-            </div>
-            <div className="bg-background rounded-md p-1 @md:p-2 @lg:p-3 @xl:p-4 text-center">
-              <span className="text-sm @md:text-lg @lg:text-xl @xl:text-2xl font-bold">{timeLeft.seconds}</span>
-              <span className="text-[0.6rem] @md:text-xs text-muted-foreground block">secs</span>
-            </div>
+          </>
+        ) : isLive ? (
+          // Live Event
+          <div className="mt-auto text-center py-1.5 @sm:py-2.2 @md:py-3 bg-red-100 dark:bg-red-950/30 rounded-md">
+            <span className="text-xs @xs:text-sm @md:text-lg @lg:text-xl @xl:text-2xl @font-bold text-red-600">LIVE NOW</span>
+            <p className="text-[0.5rem] @xs:text-[0.6rem] @md:text-sm @lg:text-base @xl:text-lg text-muted-foreground mt-1">
+              Event in progress
+            </p>
           </div>
-        </div>
-      ) : isLive ? (
-        <div className="mt-auto text-center py-1.5 @sm:py-2.2 @md:py-3 bg-red-100 dark:bg-red-950/30 rounded-md">
-          <span className="text-xs @xs:text-sm @md:text-lg @lg:text-xl @xl:text-2xl @font-bold text-red-600">LIVE NOW</span>
-          <p className="text-[0.5rem] @xs:text-[0.6rem] @md:text-sm @lg:text-base @xl:text-lg text-muted-foreground mt-1">
-            Event in progress
-          </p>
-        </div>
-      ) : (
-        <div className="mt-auto text-center py-2.5 @sm:py-3.5 @md:py-5 @lg:py-6 @xl:py-7 bg-primary/20 rounded-md">
-          <span className="text-xs @xs:text-sm @md:text-lg @lg:text-xl @xl:text-2xl">
-            Event completed
+        ) : (
+          // Event Completed
+          <div className="mt-auto text-center py-2.5 @sm:py-3.5 @md:py-5 @lg:py-6 @xl:py-7 bg-primary/20 rounded-md">
+            <span className="text-xs @xs:text-sm @md:text-lg @lg:text-xl @xl:text-2xl">
+              Event completed
+            </span>
+          </div>
+        )}
+        {/*<div className="mt-3 md:mt-4 md:pt-1 border-t border-border text-center">
+          <span className="text-xs @xs:text-[0.6rem] @sm:text-[0.6rem] @md:text-xs text-muted-foreground">
+            Round {gp.round} of the Championship
           </span>
-        </div>
-      )}
-      {/*<div className="mt-3 md:mt-4 md:pt-1 border-t border-border text-center">
-        <span className="text-xs @xs:text-[0.6rem] @sm:text-[0.6rem] @md:text-xs text-muted-foreground">
-          Round {gp.round} of the Championship
-        </span>
-      </div>*/}
+        </div>*/}
+      </div>
     </div>
   );
 }
