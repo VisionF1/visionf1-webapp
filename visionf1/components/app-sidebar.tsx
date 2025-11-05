@@ -3,6 +3,7 @@
 import * as React from "react"
 import {
   Bot,
+  Calendar,
   ChartLineIcon,
   HomeIcon,
   InfoIcon,
@@ -76,6 +77,11 @@ const data = {
           url: "#",
         },
       ],
+    },
+    {
+      title: "Calendar",
+      url: "/calendar",
+      icon: Calendar,
     },
   ],
   about: [
