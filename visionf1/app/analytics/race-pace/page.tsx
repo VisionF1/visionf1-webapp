@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { useMemo, useState, useEffect } from "react"
 import { GenericComboBox } from "@/components/ui/combobox"
 import { Spinner } from "@/components/ui/spinner"
@@ -8,6 +7,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, TooltipProps } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 
+import { Download } from "lucide-react"
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "@/components/data-table"
 import { CldImage } from 'next-cloudinary'
@@ -45,6 +45,85 @@ function CustomTooltip({ active, payload }: TooltipProps<number, string>) {
       </div>
     </div>
   );
+}
+
+// Convert Race Pace data to CSV format
+function convertToCSV(data: RacePaceRow[]): string {
+  const headers = [
+    'Race Pace Position',
+    'Driver',
+    'Team',
+    'Avg Lap Time',
+    'Std Dev (s)',
+    'Final Race Position'
+  ];
+
+  const rows = data.map(row => [
+    row.race_pace_position,
+    `${row.driver_first_name} ${row.driver_last_name}`,
+    row.team_name,
+    formatLapTime(row.avg_laptime),
+    row.std_laptime?.toFixed(3) || 'N/A',
+    row.driver_position
+  ]);
+
+  return [headers, ...rows].map(row => 
+    row.map(field => `"${String(field).replace(/"/g, '""')}"`).join(',')
+  ).join('\n');
+}
+
+// Download CSV using File System Access API
+async function downloadCSVWithDialog(data: RacePaceRow[], filename: string) {
+  try {
+    // Check if browser supports File System Access API
+    if ('showSaveFilePicker' in window) {
+      const csv = convertToCSV(data);
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      
+      // Use API to show save file dialog
+      const fileHandle = await (window as any).showSaveFilePicker({
+        suggestedName: filename,
+        types: [
+          {
+            description: 'CSV Files',
+            accept: { 'text/csv': ['.csv'] },
+          },
+        ],
+      });
+
+      // Write file
+      const writable = await fileHandle.createWritable();
+      await writable.write(blob);
+      await writable.close();
+    } else {
+      // Fallback for browsers that do not support the API
+      downloadCSVDirect(data, filename);
+    }
+  } catch (error: any) {
+    // User canceled the dialog - do nothing
+    if (error.name !== 'AbortError') {
+      console.error('Error saving file:', error);
+      // Fallback to direct download if error or API not supported
+      downloadCSVDirect(data, filename);
+    }
+  }
+}
+
+// Fallback for direct download if File System Access API is not supported
+function downloadCSVDirect(data: RacePaceRow[], filename: string) {
+  const csv = convertToCSV(data);
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  link.style.visibility = 'hidden';
+  
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
 }
 
 const columns: ColumnDef<RacePaceRow>[] = [
@@ -203,6 +282,13 @@ export default function RacePace() {
     `${event.season}_${event.round}` === selectedGP
   );
 
+  const handleExportCSV = async () => {
+    if (racePaceData.length === 0) return;
+
+    const filename = `race_pace_${selectedYear}_${currentEvent?.round || 'data'}_${currentEvent?.event_name || 'data'}.csv`.replace(/\s+/g, '_');
+    await downloadCSVWithDialog(racePaceData, filename);
+  };
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
       <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min p-4">
@@ -307,7 +393,16 @@ export default function RacePace() {
       {racePaceData.length > 0 && (
         <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min">
           <div className="p-4 flex flex-col">
-            <h2 className="text-lg font-semibold pb-4">Race Pace Detail</h2>
+            <div className="flex justify-between items-center pb-4">
+              <h2 className="text-lg font-semibold">Race Pace Detail</h2>
+              <button 
+                onClick={handleExportCSV}
+                className="flex items-center px-4 py-2 bg-brand text-sm text-black rounded-md hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Export CSV
+              </button>
+            </div>
             <DataTable columns={columns} data={racePaceData} />
           </div>
         </div>
