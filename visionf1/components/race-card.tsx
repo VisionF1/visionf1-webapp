@@ -129,10 +129,10 @@ export function RaceCard({
       <div>
         <div className="flex items-center gap-2 mb-2">
           <Image src={`https://flagcdn.com/${countryCode}.svg`} alt={race.country} width={24} height={16} className="object-contain flex-shrink-0" />
-          <h3 className="text-2xl font-bold text-white">{race.country ?? ""}</h3>
+          <h3 className="text-2xl font-bold text-white">{race.event_name}</h3>
         </div>
         <p className="text-xs text-slate-400 uppercase tracking-widest">
-          FORMULA 1 {race.event_name.toUpperCase()} {raceDate.getFullYear()}
+          {race.circuit_name.toUpperCase()}
         </p>
       </div>
 

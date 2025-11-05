@@ -13,12 +13,6 @@ export default async function RaceCalendar() {
     races = racesResponse.data || [];
     races.sort((a: any, b: any) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime());
 
-    const lasVegas = races.find((r: any) => r.event_name?.includes("Las Vegas"));
-    if (lasVegas) {
-      const nowIso = new Date().toISOString();
-      races = races.map((r: any) => (r.event_id === lasVegas.event_id ? { ...r, event_date: nowIso } : r));
-    }
-
     const now = new Date();
     for (const race of races) {
       const raceStart = new Date(race.event_date);
