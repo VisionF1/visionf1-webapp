@@ -21,7 +21,9 @@ export function DriverImages({ data: drivers }: { data: Driver[] }) {
   const router = useRouter()
 
   const handleDriverClick = (driver: Driver) => {
-    const driverPath = `/drivers/${driver.firstName.toLowerCase()}-${driver.lastName.toLowerCase()}`
+    const firstName = driver.firstName.toLowerCase().replace(/ü/g, 'u')
+    const lastName = driver.lastName.toLowerCase().replace(/ü/g, 'u')
+    const driverPath = `/drivers/${firstName}-${lastName}`
     router.push(driverPath)
   }
 
@@ -87,7 +89,7 @@ export function DriverImages({ data: drivers }: { data: Driver[] }) {
               </div>
 
               {/* Driver Image */}
-              <div className="absolute right-4 top-1/2 -translate-y-1/2 aspect-square h-20 w-20 @2xs:h-24 @2xs:w-24 @xs:h-28 @xs:w-28 @sm:h-36 @sm:w-36 @md:h-42 @md:w-42 @lg:h-46 @lg:w-46 @xl:h-56 @xl:w-56 rounded-full overflow-hidden bg-brand border-2 border-sidebar-primary">
+              <div className="absolute right-4 top-1/2 -translate-y-1/2 aspect-square h-20 w-20 @2xs:h-24 @2xs:w-24 @xs:h-28 @xs:w-28 @sm:h-36 @sm:w-36 @md:h-42 @md:w-42 @lg:h-46 @lg:w-46 @xl:h-56 @xl:w-56 rounded-full overflow-hidden bg-brand border-2 border-sidebar-primary cursor-pointer hover:opacity-80 transition-opacity" onClick={() => handleDriverClick(driver)}>
                 <CldImage
                   src={driver.driverCode}
                   fill

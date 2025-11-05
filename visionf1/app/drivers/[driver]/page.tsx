@@ -1,4 +1,9 @@
 import { notFound } from "next/navigation"
+import { DriverHero } from "@/components/driver-hero"
+import { DriverRaces } from "@/components/driver-races"
+import { DriverStandingsCard } from "@/components/driver-standings-card"
+import { TeamCarCard } from "@/components/team-car-card"
+import { getDrivers } from "@/lib/api-requests"
 
 type Props = {
   params: Promise<{
@@ -9,24 +14,49 @@ type Props = {
 export default async function DriverDetail({ params }: Props) {
   const { driver } = await params
 
-  // TODO: Fetch driver data from your API or database using the driver slug
   if (!driver) {
+    notFound()
+  }
+
+  // Fetch all drivers and find the one matching the slug
+  let driverData
+  try {
+    const driversResponse = await getDrivers()
+    driverData = driversResponse.data.find((d: { firstName: string; lastName: string }) => {
+      const driverSlug = `${d.firstName.toLowerCase().replace(/ü/g, 'u')}-${d.lastName.toLowerCase().replace(/ü/g, 'u')}`
+      return driverSlug === driver
+    })
+
+    if (!driverData) {
+      notFound()
+    }
+  } catch {
     notFound()
   }
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
-      <div className="grid auto-rows-min gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-        <div className="bg-muted/50 aspect-video rounded-xl">
+      <div className="flex flex-col 2xl:flex-row gap-4 h-full 2xl:items-stretch">
+        {/* Left column - Hero and Standings (30%) */}
+        <div className="w-full 2xl:w-[30%] grid grid-cols-1 gap-4">
+          <div className="rounded-xl">
+            <DriverHero driver={driverData} />
+          </div>
+          <div className="rounded-xl">
+            <DriverStandingsCard driverCode={driverData.driverCode} teamName={driverData.team} />
+          </div>
         </div>
-        <div className="bg-muted/50 aspect-video rounded-xl">
+
+        {/* Right side - Races and Team Car (70%) */}
+        <div className="w-full 2xl:w-[70%] flex flex-col gap-4">
+          <div className="bg-muted/50 aspect-video rounded-xl flex-1 2xl:aspect-video min-h-92 2xl:min-h-0">
+            <DriverRaces driverCode={driverData.driverCode} />
+          </div>
+          {/* Team Car Card */}
+          <div className="bg-muted/50 rounded-xl flex-1 min-h-0 p-4 flex flex-col">
+            <TeamCarCard team={driverData.team} teamName={driverData.team} />
+          </div>
         </div>
-        <div className="bg-muted/50 aspect-video rounded-xl">
-        </div>
-      </div>
-      <div className="bg-muted/50 aspect-video min-h-min flex-1 rounded-xl md:min-h-min">
-      </div>
-      <div className="bg-muted/50 aspect-video min-h-min flex-1 rounded-xl md:min-h-min">
       </div>
     </div>
   )
