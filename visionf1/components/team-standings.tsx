@@ -29,7 +29,7 @@ export function TeamStandings({ data: teamStandings }: { data: TeamStanding[] })
           <div className="flex items-center gap-3">
             <div className="relative w-8 h-8 flex items-center justify-center rounded-full">
               <CldImage
-                src={driver.team}
+                src={driver.team.toLowerCase()}
                 width={24}
                 height={24}
                 alt={driver.team}
