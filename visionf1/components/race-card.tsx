@@ -129,7 +129,7 @@ export function RaceCard({
       <div>
         <div className="flex items-center gap-2 mb-2">
           <Image src={`https://flagcdn.com/${countryCode}.svg`} alt={race.country} width={24} height={16} className="object-contain flex-shrink-0" />
-          <h3 className="text-2xl font-bold text-white">{race.event_name}</h3>
+          <h3 className="text-xl md:text-2xl font-bold text-white">{race.event_name}</h3>
         </div>
         <p className="text-xs text-slate-400 uppercase tracking-widest">
           {race.circuit_name.toUpperCase()}
@@ -152,8 +152,10 @@ export function RaceCard({
       </div>
 
       {race.circuit_id && (
-        <div className="mt-4 rounded-lg overflow-hidden w-98 h-55 @sm:w-100 @sm:h-56 @md:w-115 @md:h-65 @lg:w-130 @lg:h-73 @xl:w-142 @xl:h-80">
-          <CldImage src={race.circuit_id} alt={race.circuit_name} width={450} height={254} className="w-full h-full object-cover" format="webp" />
+        <div className="mt-4 rounded-lg overflow-hidden flex justify-center">
+          <div className="w-80 h-45 @sm:w-100 @sm:h-56 @md:w-115 @md:h-65 @lg:w-130 @lg:h-73 @xl:w-142 @xl:h-80 @2xl:w-170 @2xl:h-95 @4xl:w-195 @4xl:h-110">
+            <CldImage src={race.circuit_id} alt={race.circuit_name} width={450} height={254} className="w-full h-full object-cover" format="webp" />
+          </div>
         </div>
       )}
     </div>
