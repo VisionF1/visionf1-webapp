@@ -1,17 +1,18 @@
 import { RaceCard } from "@/components/race-card";
 import { getEvents, getDrivers } from "@/lib/api-requests";
+import { Driver, Race } from "@/lib/types";
 
 
 export default async function RaceCalendar() {
   const currentYear = new Date().getFullYear();
   let races = [];
-  let driverCodeToTeamCode: { [key: string]: string } = {};
+  const driverCodeToTeamCode: { [key: string]: string } = {};
   let nextUpcomingRaceId: string | null = null;
 
   try {
     const racesResponse = await getEvents(currentYear);
     races = racesResponse.data || [];
-    races.sort((a: any, b: any) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime());
+    races.sort((a: Race, b: Race) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime());
 
     const now = new Date();
     for (const race of races) {
@@ -24,7 +25,7 @@ export default async function RaceCalendar() {
 
     const driversResponse = await getDrivers();
     const drivers = driversResponse.data || [];
-    drivers.forEach((driver: any) => {
+    drivers.forEach((driver: Driver) => {
       driverCodeToTeamCode[driver.driverCode] = driver.teamCode;
     });
   } catch (error) {
@@ -40,7 +41,7 @@ export default async function RaceCalendar() {
 
       {races.length > 0 ? (
         <div className="grid gap-4 grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3">
-          {races.map((race: any) => (
+          {races.map((race: Race) => (
             <RaceCard
               key={race.event_id}
               race={race}

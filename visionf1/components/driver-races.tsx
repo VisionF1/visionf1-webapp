@@ -1,5 +1,6 @@
-import { getEvents } from "@/lib/api-requests"
 import Image from "next/image"
+import { getEvents } from "@/lib/api-requests"
+import { Race } from "@/lib/types"
 
 // Map country names to country codes for flags
 const countryCodeMap: { [key: string]: string } = {
@@ -29,20 +30,6 @@ const countryCodeMap: { [key: string]: string } = {
 
 function getCountryCode(countryName: string): string {
   return countryCodeMap[countryName] || countryName.substring(0, 2).toLowerCase()
-}
-
-type Race = {
-  event_id: string
-  season: number
-  round: number
-  event_name: string
-  circuit_name: string
-  country: string
-  location: string
-  event_date: string
-  event_status?: string
-  driver_codes?: string[]
-  driver_names?: string[]
 }
 
 export async function DriverRaces({ driverCode }: { driverCode: string }) {

@@ -14,35 +14,7 @@ import { CldImage } from 'next-cloudinary'
 import Image from "next/image"
 
 import { getSeasons, getSummaryEvents, getRacePace } from "@/lib/api-requests"
-
-type RacePaceRow = {
-  driver: string;
-  driver_first_name: string;
-  driver_last_name: string;
-  driver_position: number;
-  driver_color: string;
-  team: string;
-  team_name: string;
-  team_color: string;
-  race_pace_id: string;
-  race_pace_position: number;
-  avg_laptime: number;
-  std_laptime: number;
-  event: string;
-  season: number;
-  round: number;
-};
-
-type Season = number;
-
-type EventSummary = {
-  event_id: string;
-  season: number;
-  round: number;
-  event_name: string;
-  event_date: string;
-  event_status: string;
-};
+import { Season, EventSummary, RacePaceRow } from "@/lib/types"
 
 function formatLapTime(sec: number) {
   const minutes = Math.floor(sec / 60);

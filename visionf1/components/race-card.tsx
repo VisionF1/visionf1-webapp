@@ -2,22 +2,7 @@
 
 import Image from "next/image";
 import { CldImage } from "next-cloudinary";
-
-type Race = {
-  event_id: string;
-  season: number;
-  round: number;
-  event_name: string;
-  country: string;
-  location: string;
-  circuit_name: string;
-  circuit_id: string;
-  event_date: string;
-  event_status: string;
-  driver_codes: string[];
-  driver_names: string[];
-  team_colors: string[];
-};
+import { Race } from "@/lib/types";
 
 // Map country names to country codes for flags
 const countryCodeMap: { [key: string]: string } = {
