@@ -1,6 +1,7 @@
 "use client"
 
 import { useMemo, useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { GenericComboBox } from "@/components/ui/combobox"
 import { Spinner } from "@/components/ui/spinner"
 
@@ -75,7 +76,7 @@ export function exportRacePaceAsCSV(data: RacePaceRow[], filename: string): Prom
   return exportDataAsCSV(dataWithDriverName, filename, headers, fieldTransformers, true);
 }
 
-const columns: ColumnDef<RacePaceRow>[] = [
+const getColumns = (handleDriverClick: (driverName: string) => void): ColumnDef<RacePaceRow>[] => [
   {
     accessorKey: "race_pace_position",
     header: "Race Pace Position",
@@ -85,22 +86,26 @@ const columns: ColumnDef<RacePaceRow>[] = [
     header: "Driver",
     cell: ({ row }) => {
       const race_pace_row = row.original;
+      const driverName = race_pace_row.driver_first_name + ' ' + race_pace_row.driver_last_name;
       return (
-        <div className="flex items-center gap-3">
+        <button
+          onClick={() => handleDriverClick(driverName)}
+          className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+        >
           <div className="relative w-8 h-8 rounded-full overflow-hidden">
             <CldImage
               src={race_pace_row.driver}
               width={32}
               height={32}
-              alt={race_pace_row.driver_first_name + ' ' + race_pace_row.driver_last_name}
+              alt={driverName}
               crop="fill"
               className="object-cover"
             />
           </div>
           <div>
-            <div className="font-medium">{race_pace_row.driver_first_name + ' ' + race_pace_row.driver_last_name}</div>
+            <div className="font-medium">{driverName}</div>
           </div>
-        </div>
+        </button>
       );
     },
   },
@@ -151,6 +156,20 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export default function RacePace() {
+  const router = useRouter()
+
+  const getDriverSlug = (driverName: string) => {
+    const [firstName, ...lastNameParts] = driverName.split(" ");
+    const lastName = lastNameParts.join(" ");
+    return `${firstName.toLowerCase().replace(/ü/g, "u")}-${lastName.toLowerCase().replace(/ü/g, "u")}`;
+  }
+
+  const handleDriverClick = (driverName: string) => {
+    const slug = getDriverSlug(driverName);
+    router.push(`/drivers/${slug}`);
+  }
+
+  const columns = getColumns(handleDriverClick);
   const [seasons, setSeasons] = useState<Season[]>([]);
   const [events, setEvents] = useState<EventSummary[]>([]);
   const [racePaceData, setRacePaceData] = useState<RacePaceRow[]>([]);
