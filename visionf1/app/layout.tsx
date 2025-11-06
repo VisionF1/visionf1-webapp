@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { Footer } from "@/components/footer";
 import { ThemeToggler } from "@/components/theme-toggler";
 import { SearchBar } from "@/components/search-bar";

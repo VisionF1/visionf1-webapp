@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation"
-import { DriverHero } from "@/components/driver-hero"
-import { DriverRaces } from "@/components/driver-races"
-import { DriverStandingsCard } from "@/components/driver-standings-card"
+import { DriverHero } from "@/components/driver/driver-hero"
+import { DriverRaces } from "@/components/driver/driver-races"
+import { DriverStandingsCard } from "@/components/driver/driver-standings-card"
 import { TeamCarCard } from "@/components/team-car-card"
 import { getDrivers } from "@/lib/api-requests"
 

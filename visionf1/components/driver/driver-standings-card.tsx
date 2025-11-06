@@ -1,29 +1,11 @@
 "use client";
 
-import { getDriverStandings, getTeamStandings } from "@/lib/api-requests"
 import Image from "next/image"
 import { CldImage } from "next-cloudinary"
 import { useEffect, useState } from "react"
+import { getDriverStandings, getTeamStandings } from "@/lib/api-requests"
+import { DriverStanding, TeamStanding } from "@/lib/types"
 
-type DriverStanding = {
-  position: number
-  driver: string
-  driverCode: string
-  nationality: string
-  nationalityCode: string
-  team: string
-  teamCode: string
-  points: number
-}
-
-type TeamStanding = {
-  position: number
-  team: string
-  teamCode: string
-  nationality: string
-  nationalityCode: string
-  points: number
-}
 
 export function DriverStandingsCard({ driverCode, teamName }: { driverCode: string; teamName: string }) {
   const [driverStanding, setDriverStanding] = useState<(DriverStanding & { teamRank?: number; teamPoints?: number }) | null>(null)

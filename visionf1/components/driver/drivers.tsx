@@ -4,18 +4,8 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel"
 import { CldImage } from "next-cloudinary"
+import { Driver } from "@/lib/types"
 
-type Driver = {
-  firstName: string
-  lastName: string
-  driverCode: string
-  driverNumber: string
-  driverNationality: string
-  nationalityCode2: string
-  nationalityCode3: string
-  team: string
-  teamCode: string
-}
 
 export function DriverImages({ data: drivers }: { data: Driver[] }) {
   const router = useRouter()

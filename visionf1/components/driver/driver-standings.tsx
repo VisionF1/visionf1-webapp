@@ -1,20 +1,11 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table"
-import { DataTable } from "./data-table"
+import { DataTable } from "../data-table"
 import { CldImage } from 'next-cloudinary'
 import Image from "next/image"
+import { DriverStanding } from "@/lib/types"
 
-type DriverStanding = {
-  position: number
-  driver: string
-  driverCode: string
-  nationality: string
-  nationalityCode: string
-  team: string
-  teamCode: string
-  points: number
-}
 
 export function DriverStandings({ data: driverStandings }: { data: DriverStanding[] }) {
   const columns: ColumnDef<DriverStanding>[] = [

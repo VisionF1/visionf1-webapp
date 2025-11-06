@@ -2,18 +2,8 @@
 
 import { CldImage } from "next-cloudinary"
 import Image from "next/image"
+import { Driver } from "@/lib/types"
 
-type Driver = {
-  firstName: string
-  lastName: string
-  driverCode: string
-  driverNumber: string
-  driverNationality: string
-  nationalityCode2: string
-  nationalityCode3: string
-  team: string
-  teamCode: string
-}
 
 export function DriverHero({ driver }: { driver: Driver }) {
   return (
