@@ -4,15 +4,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "./data-table"
 import { CldImage } from 'next-cloudinary'
 import Image from "next/image"
+import { TeamStanding } from "@/lib/types"
 
-type TeamStanding = {
-  position: number
-  team: string
-  teamCode: string
-  nationality: string
-  nationalityCode: string
-  points: number
-}
 
 export function TeamStandings({ data: teamStandings }: { data: TeamStanding[] }) {
   const columns: ColumnDef<TeamStanding>[] = [

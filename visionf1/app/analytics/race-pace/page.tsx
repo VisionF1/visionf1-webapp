@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { useMemo, useState, useEffect } from "react"
 import { GenericComboBox } from "@/components/ui/combobox"
 import { Spinner } from "@/components/ui/spinner"
@@ -8,41 +7,15 @@ import { Spinner } from "@/components/ui/spinner"
 import { Bar, BarChart, CartesianGrid, Cell, XAxis, YAxis, TooltipProps } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartLegend, ChartLegendContent } from "@/components/ui/chart"
 
+import { Download } from "lucide-react"
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "@/components/data-table"
 import { CldImage } from 'next-cloudinary'
 import Image from "next/image"
 
 import { getSeasons, getSummaryEvents, getRacePace } from "@/lib/api-requests"
-
-type RacePaceRow = {
-  driver: string;
-  driver_first_name: string;
-  driver_last_name: string;
-  driver_position: number;
-  driver_color: string;
-  team: string;
-  team_name: string;
-  team_color: string;
-  race_pace_id: string;
-  race_pace_position: number;
-  avg_laptime: number;
-  std_laptime: number;
-  event: string;
-  season: number;
-  round: number;
-};
-
-type Season = number;
-
-type EventSummary = {
-  event_id: string;
-  season: number;
-  round: number;
-  event_name: string;
-  event_date: string;
-  event_status: string;
-};
+import { Season, EventSummary, RacePaceRow } from "@/lib/types"
+import { exportDataAsCSV } from "@/lib/csv-utils"
 
 function formatLapTime(sec: number) {
   const minutes = Math.floor(sec / 60);
@@ -73,6 +46,33 @@ function CustomTooltip({ active, payload }: TooltipProps<number, string>) {
       </div>
     </div>
   );
+}
+
+// Exports Race Pace data as CSV with proper formatting
+export function exportRacePaceAsCSV(data: RacePaceRow[], filename: string): Promise<void> {
+  const headers = [
+    { key: 'race_pace_position', label: 'Race Pace Position' },
+    { key: 'driver_name', label: 'Driver' },
+    { key: 'team_name', label: 'Team' },
+    { key: 'avg_laptime', label: 'Avg Lap Time' },
+    { key: 'std_laptime', label: 'Std Dev (s)' },
+    { key: 'driver_position', label: 'Final Race Position' },
+  ];
+
+  const fieldTransformers = {
+    driver_name: (value: any, row: RacePaceRow) => 
+      `${row.driver_first_name} ${row.driver_last_name}`,
+    avg_laptime: (value: number) => formatLapTime(value),
+    std_laptime: (value: number) => value?.toFixed(3) || 'N/A',
+  };
+
+  // Add calculated field for driver name
+  const dataWithDriverName = data.map(row => ({
+    ...row,
+    driver_name: `${row.driver_first_name} ${row.driver_last_name}`
+  }));
+
+  return exportDataAsCSV(dataWithDriverName, filename, headers, fieldTransformers, true);
 }
 
 const columns: ColumnDef<RacePaceRow>[] = [
@@ -231,6 +231,13 @@ export default function RacePace() {
     `${event.season}_${event.round}` === selectedGP
   );
 
+  const handleExportCSV = async () => {
+    if (racePaceData.length === 0) return;
+
+    const filename = `race_pace_${selectedYear}_${currentEvent?.round || 'data'}_${currentEvent?.event_name || 'data'}.csv`.replace(/\s+/g, '_');
+    await exportRacePaceAsCSV(racePaceData, filename);
+  };
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
       <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min p-4">
@@ -335,7 +342,16 @@ export default function RacePace() {
       {racePaceData.length > 0 && (
         <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min">
           <div className="p-4 flex flex-col">
-            <h2 className="text-lg font-semibold pb-4">Race Pace Detail</h2>
+            <div className="flex justify-between items-center pb-4">
+              <h2 className="text-lg font-semibold">Race Pace Detail</h2>
+              <button 
+                onClick={handleExportCSV}
+                className="flex items-center px-4 py-2 bg-brand text-sm text-black rounded-md hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Export Data
+              </button>
+            </div>
             <DataTable columns={columns} data={racePaceData} />
           </div>
         </div>
