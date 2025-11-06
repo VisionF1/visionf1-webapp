@@ -3,6 +3,14 @@
 import Image from "next/image";
 import { CldImage } from "next-cloudinary";
 import { Race } from "@/lib/types";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 
 export function RaceCard({
@@ -106,11 +114,41 @@ export function RaceCard({
       </div>
 
       {race.circuit_id && (
-        <div className="mt-4 rounded-lg overflow-hidden flex justify-center">
-          <div className="w-80 h-45 @sm:w-100 @sm:h-56 @md:w-115 @md:h-65 @lg:w-130 @lg:h-73 @xl:w-142 @xl:h-80 @2xl:w-170 @2xl:h-95 @4xl:w-195 @4xl:h-110">
-            <CldImage src={race.circuit_id} alt={race.circuit_name} width={450} height={254} className="w-full h-full object-cover" format="webp" />
-          </div>
-        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <button
+              type="button"
+              className="mt-4 rounded-lg overflow-hidden flex justify-center w-full cursor-pointer hover:opacity-90 transition-opacity"
+              aria-label={`Open ${race.circuit_name} image`}
+            >
+              <div className="w-80 h-45 @sm:w-100 @sm:h-56 @md:w-115 @md:h-65 @lg:w-130 @lg:h-73 @xl:w-142 @xl:h-80 @2xl:w-170 @2xl:h-95 @4xl:w-195 @4xl:h-110">
+                <CldImage src={race.circuit_id} alt={race.circuit_name} width={450} height={254} className="w-full h-full object-cover" format="webp" />
+              </div>
+            </button>
+          </DialogTrigger>
+
+          <DialogContent className="max-w-[95vw] lg:max-w-[65vw] p-0">
+            <DialogHeader>
+              <DialogTitle className="sr-only">{race.circuit_name}</DialogTitle>
+              <DialogClose className="absolute right-2 top-2 z-50" />
+            </DialogHeader>
+
+            <div className="w-full flex items-center justify-center bg-black/80">
+              <CldImage
+                src={race.circuit_id}
+                alt={race.circuit_name}
+                width={1920}
+                height={1080}
+                className="object-cover w-full h-full"
+                format="webp"
+              />
+            </div>
+
+            <div className="p-4">
+              <p className="text-sm text-muted-foreground">{race.circuit_name}</p>
+            </div>
+          </DialogContent>
+        </Dialog>
       )}
     </div>
   );

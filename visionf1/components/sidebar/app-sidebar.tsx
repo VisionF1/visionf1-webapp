@@ -11,8 +11,8 @@ import {
 
 import { NavMain } from "@/components/nav-main"
 import { NavProjects } from "@/components/nav-projects"
-import { SidebarBrand } from "@/components/sidebar-brand"
-import { SidebarBottom } from "@/components/sidebar-bottom"
+import { SidebarBrand } from "@/components/sidebar/sidebar-brand"
+import { SidebarBottom } from "@/components/sidebar/sidebar-bottom"
 import {
   Sidebar,
   SidebarContent,

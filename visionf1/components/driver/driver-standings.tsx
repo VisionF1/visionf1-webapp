@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table"
-import { DataTable } from "./data-table"
+import { DataTable } from "../data-table"
 import { CldImage } from 'next-cloudinary'
 import Image from "next/image"
 import { DriverStanding } from "@/lib/types"
