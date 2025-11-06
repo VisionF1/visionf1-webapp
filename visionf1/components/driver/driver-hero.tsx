@@ -56,6 +56,24 @@ export function DriverHero({ driver }: { driver: Driver }) {
           <span>{driver.driverNationality}</span>
           <span className="text-white/50">|</span>
           <span>#{driver.driverNumber}</span>
+          
+          {/* Wikipedia Link */}
+          {driver.driverUrl && (
+            <>
+              <span className="text-white/50">|</span>
+              <a
+                href={driver.driverUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 px-2 py-1 hover:bg-white/20 transition-colors rounded bg-white/10"
+              >
+                <svg className="w-3 h-3" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Biography
+              </a>
+            </>
+          )}
         </div>
       </div>
 

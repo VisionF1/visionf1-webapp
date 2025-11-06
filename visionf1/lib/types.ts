@@ -1,4 +1,5 @@
 export type Driver = {
+  driverUrl: string
   firstName: string
   lastName: string
   driverCode: string
