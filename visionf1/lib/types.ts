@@ -16,6 +16,7 @@ export type Race = {
   round: number;
   event_name: string;
   country: string;
+  country_code: string;
   location: string;
   circuit_name: string;
   circuit_id: string;

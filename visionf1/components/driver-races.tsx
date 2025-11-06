@@ -2,35 +2,6 @@ import Image from "next/image"
 import { getEvents } from "@/lib/api-requests"
 import { Race } from "@/lib/types"
 
-// Map country names to country codes for flags
-const countryCodeMap: { [key: string]: string } = {
-  "Australia": "au",
-  "Bahrain": "bh",
-  "Saudi Arabia": "sa",
-  "China": "cn",
-  "Japan": "jp",
-  "Monaco": "mc",
-  "Canada": "ca",
-  "Spain": "es",
-  "Austria": "at",
-  "United Kingdom": "gb",
-  "Hungary": "hu",
-  "Belgium": "be",
-  "Netherlands": "nl",
-  "Italy": "it",
-  "Germany": "de",
-  "France": "fr",
-  "Singapore": "sg",
-  "United States": "us",
-  "Mexico": "mx",
-  "Brazil": "br",
-  "Abu Dhabi": "ae",
-  "UAE": "ae",
-}
-
-function getCountryCode(countryName: string): string {
-  return countryCodeMap[countryName] || countryName.substring(0, 2).toLowerCase()
-}
 
 export async function DriverRaces({ driverCode }: { driverCode: string }) {
   const currentYear = new Date().getFullYear()
@@ -77,7 +48,7 @@ export async function DriverRaces({ driverCode }: { driverCode: string }) {
                 <div className="text-xs @sm:text-sm text-muted-foreground">Race {race.round}</div>
                 <div className="flex items-center gap-1 mt-1">
                   <Image
-                    src={`https://flagcdn.com/${getCountryCode(race.country)}.svg`}
+                    src={`https://flagcdn.com/${race.country_code.toLocaleLowerCase()}.svg`}
                     alt={race.country}
                     width={20}
                     height={15}

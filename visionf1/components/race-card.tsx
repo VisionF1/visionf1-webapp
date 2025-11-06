@@ -4,36 +4,6 @@ import Image from "next/image";
 import { CldImage } from "next-cloudinary";
 import { Race } from "@/lib/types";
 
-// Map country names to country codes for flags
-const countryCodeMap: { [key: string]: string } = {
-  "Australia": "au",
-  "Bahrain": "bh",
-  "Saudi Arabia": "sa",
-  "China": "cn",
-  "Japan": "jp",
-  "Monaco": "mc",
-  "Canada": "ca",
-  "Spain": "es",
-  "Austria": "at",
-  "United Kingdom": "gb",
-  "Hungary": "hu",
-  "Belgium": "be",
-  "Netherlands": "nl",
-  "Italy": "it",
-  "Germany": "de",
-  "France": "fr",
-  "Singapore": "sg",
-  "United States": "us",
-  "Mexico": "mx",
-  "Brazil": "br",
-  "Abu Dhabi": "ae",
-  "UAE": "ae",
-  "United Arab Emirates": "ae",
-};
-
-function getCountryCode(countryName: string): string {
-  return countryCodeMap[countryName] || countryName.substring(0, 2).toLowerCase();
-}
 
 export function RaceCard({
   race,
@@ -47,7 +17,6 @@ export function RaceCard({
   const topThreeDrivers = race.driver_names.slice(0, 3);
   const topThreeDriverCodes = race.driver_codes.slice(0, 3);
   const raceDate = new Date(race.event_date);
-  const countryCode = getCountryCode(race.country);
   const now = new Date();
   const raceStart = new Date(race.event_date);
   const raceEnd = new Date(raceStart.getTime() + 3 * 24 * 60 * 60 * 1000);
@@ -113,7 +82,7 @@ export function RaceCard({
 
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <Image src={`https://flagcdn.com/${countryCode}.svg`} alt={race.country} width={24} height={16} className="object-contain flex-shrink-0" />
+          <Image src={`https://flagcdn.com/${race.country_code.toLocaleLowerCase()}.svg`} alt={race.country} width={24} height={16} className="object-contain flex-shrink-0" />
           <h3 className="text-xl md:text-2xl font-bold text-foreground">{race.event_name}</h3>
         </div>
         <p className="text-xs text-muted-foreground uppercase tracking-widest">
