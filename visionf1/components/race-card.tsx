@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
+import { ChevronDown } from "lucide-react";
 import { Race } from "@/lib/types";
 import {
   Dialog,
@@ -12,6 +13,11 @@ import {
   DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+} from "@/components/ui/collapsible";
 
 
 export function RaceCard({
@@ -42,6 +48,24 @@ export function RaceCard({
   function handleDriverClick(driverName: string) {
     const slug = getDriverSlug(driverName);
     router.push(`/drivers/${slug}`);
+  }
+
+  function renderDriverRow(driverName: string, actualIndex: number) {
+    const driverCode = race.driver_codes[actualIndex];
+    const teamColor = getDriverTeamColor(driverCode);
+    return (
+      <button
+        key={actualIndex}
+        onClick={() => handleDriverClick(driverName)}
+        className="bg-accent/50 rounded-md p-2 flex items-center gap-2 cursor-pointer hover:bg-accent transition-colors text-left w-full"
+      >
+        <div className="text-sm font-bold text-muted-foreground w-6 text-right">{actualIndex + 1}</div>
+        <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0" style={{ backgroundColor: teamColor ? `#${teamColor}` : undefined }}>
+          <CldImage src={driverCode} width={24} height={24} alt={driverName} crop="fill" className="object-cover" />
+        </div>
+        <p className="text-xs font-bold text-foreground truncate">{driverName}</p>
+      </button>
+    );
   }
 
   function getDriverTeamColor(driverCode: string) {
@@ -129,6 +153,33 @@ export function RaceCard({
           );
         })}
       </div>
+
+      {race.driver_names.length > 3 && (
+        <Collapsible className="space-y-2">
+          <CollapsibleTrigger className="flex items-center justify-between w-full px-3 py-2 text-sm font-semibold text-muted-foreground hover:bg-accent/50 rounded-lg transition-colors">
+            <span>View full standings</span>
+            <ChevronDown className="w-4 h-4 transition-transform duration-200" />
+          </CollapsibleTrigger>
+          
+          <CollapsibleContent className="space-y-1">
+            <div className="grid grid-cols-2 gap-2 pt-2">
+              {/* Left column - positions 1-10 */}
+              <div className="space-y-1">
+                {race.driver_names.slice(0, 10).map((driverName, index) => 
+                  renderDriverRow(driverName, index)
+                )}
+              </div>
+
+              {/* Right column - positions 11+ */}
+              <div className="space-y-1">
+                {race.driver_names.slice(10).map((driverName, index) => 
+                  renderDriverRow(driverName, index + 10)
+                )}
+              </div>
+            </div>
+          </CollapsibleContent>
+        </Collapsible>
+      )}
 
       {race.circuit_id && (
         <Dialog>
