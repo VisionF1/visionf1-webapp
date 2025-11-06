@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { CldImage } from "next-cloudinary";
+import { useRouter } from "next/navigation";
 import { Race } from "@/lib/types";
 import {
   Dialog,
@@ -22,6 +23,7 @@ export function RaceCard({
   isNextUpcoming: boolean;
   driverCodeToTeamCode: Record<string, string>;
 }) {
+  const router = useRouter();
   const topThreeDrivers = race.driver_names.slice(0, 3);
   const topThreeDriverCodes = race.driver_codes.slice(0, 3);
   const raceDate = new Date(race.event_date);
@@ -30,6 +32,17 @@ export function RaceCard({
   const raceEnd = new Date(raceStart.getTime() + 3 * 24 * 60 * 60 * 1000);
   const isLive = now >= raceStart && now <= raceEnd;
   const isUpcoming = isNextUpcoming;
+
+  function getDriverSlug(driverName: string) {
+    const [firstName, ...lastNameParts] = driverName.split(" ");
+    const lastName = lastNameParts.join(" ");
+    return `${firstName.toLowerCase().replace(/ü/g, "u")}-${lastName.toLowerCase().replace(/ü/g, "u")}`;
+  }
+
+  function handleDriverClick(driverName: string) {
+    const slug = getDriverSlug(driverName);
+    router.push(`/drivers/${slug}`);
+  }
 
   function getDriverTeamColor(driverCode: string) {
     if (!driverCode || !race.team_colors || !race.driver_codes) return undefined;
@@ -102,13 +115,17 @@ export function RaceCard({
         {topThreeDrivers.map((driverName, index) => {
           const teamColor = getDriverTeamColor(topThreeDriverCodes[index]);
           return (
-            <div key={index} className="bg-accent rounded-lg p-2 flex items-center justify-center gap-1">
+            <button
+              key={index}
+              onClick={() => handleDriverClick(driverName)}
+              className="bg-accent rounded-lg p-2 flex items-center justify-center gap-1 cursor-pointer hover:opacity-80 transition-opacity"
+            >
               <div className="text-base font-bold text-foreground mr-2">{index + 1}</div>
               <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0" style={{ backgroundColor: teamColor ? `#${teamColor}` : undefined }}>
                 <CldImage src={topThreeDriverCodes[index]} width={32} height={32} alt={driverName} crop="fill" className="object-cover" />
               </div>
               <p className="text-xs font-bold text-foreground uppercase leading-tight flex-shrink-0">{topThreeDriverCodes[index]}</p>
-            </div>
+            </button>
           );
         })}
       </div>
