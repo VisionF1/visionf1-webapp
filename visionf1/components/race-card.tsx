@@ -23,11 +23,11 @@ import {
 export function RaceCard({
   race,
   isNextUpcoming,
-  driverCodeToTeamCode,
+  driverCodeToTeamColor,
 }: {
   race: Race;
   isNextUpcoming: boolean;
-  driverCodeToTeamCode: Record<string, string>;
+  driverCodeToTeamColor: Record<string, string>;
 }) {
   const router = useRouter();
   const topThreeDrivers = race.driver_names.slice(0, 3);
@@ -52,7 +52,8 @@ export function RaceCard({
 
   function renderDriverRow(driverName: string, actualIndex: number) {
     const driverCode = race.driver_codes[actualIndex];
-    const teamColor = getDriverTeamColor(driverCode);
+    const teamColor = driverCodeToTeamColor[driverCode];
+    const bgColor = teamColor ? (teamColor.startsWith('#') ? teamColor : `#${teamColor}`) : undefined;
     return (
       <button
         key={actualIndex}
@@ -60,31 +61,12 @@ export function RaceCard({
         className="bg-accent/50 rounded-md p-2 flex items-center gap-2 cursor-pointer hover:bg-accent transition-colors text-left w-full"
       >
         <div className="text-sm font-bold text-muted-foreground w-6 text-right">{actualIndex + 1}</div>
-        <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0" style={{ backgroundColor: teamColor ? `#${teamColor}` : undefined }}>
+        <div className="w-6 h-6 rounded-full overflow-hidden flex-shrink-0" style={{ backgroundColor: bgColor }}>
           <CldImage src={driverCode} width={24} height={24} alt={driverName} crop="fill" className="object-cover" />
         </div>
         <p className="text-xs font-bold text-foreground truncate">{driverName}</p>
       </button>
     );
-  }
-
-  function getDriverTeamColor(driverCode: string) {
-    if (!driverCode || !race.team_colors || !race.driver_codes) return undefined;
-    const driverTeamCode = driverCodeToTeamCode[driverCode];
-    if (!driverTeamCode) return undefined;
-
-    const seen = new Set<string>();
-    let colorIndex = 0;
-    for (let i = 0; i < race.driver_codes!.length; i++) {
-      const codeAt = race.driver_codes![i];
-      const teamAt = driverCodeToTeamCode[codeAt];
-      if (teamAt && !seen.has(teamAt)) {
-        seen.add(teamAt);
-        if (teamAt === driverTeamCode) return race.team_colors?.[colorIndex];
-        colorIndex++;
-      }
-    }
-    return undefined;
   }
 
   const weekendStart = new Date(raceDate.getTime() - 2 * 24 * 60 * 60 * 1000);
@@ -137,7 +119,8 @@ export function RaceCard({
 
       <div className="grid grid-cols-3 gap-2">
         {topThreeDrivers.map((driverName, index) => {
-          const teamColor = getDriverTeamColor(topThreeDriverCodes[index]);
+          const teamColor = driverCodeToTeamColor[topThreeDriverCodes[index]];
+          const bgColor = teamColor ? (teamColor.startsWith('#') ? teamColor : `#${teamColor}`) : undefined;
           return (
             <button
               key={index}
@@ -145,7 +128,7 @@ export function RaceCard({
               className="bg-accent rounded-lg p-2 flex items-center justify-center gap-1 cursor-pointer hover:opacity-80 transition-opacity"
             >
               <div className="text-base font-bold text-foreground mr-2">{index + 1}</div>
-              <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0" style={{ backgroundColor: teamColor ? `#${teamColor}` : undefined }}>
+              <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0" style={{ backgroundColor: bgColor }}>
                 <CldImage src={topThreeDriverCodes[index]} width={32} height={32} alt={driverName} crop="fill" className="object-cover" />
               </div>
               <p className="text-xs font-bold text-foreground uppercase leading-tight flex-shrink-0">{topThreeDriverCodes[index]}</p>

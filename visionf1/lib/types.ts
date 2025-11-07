@@ -9,6 +9,7 @@ export type Driver = {
   nationalityCode3: string
   team: string
   teamCode: string
+  teamColor: string
 }
 
 export type Race = {
