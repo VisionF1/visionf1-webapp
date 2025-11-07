@@ -28,7 +28,7 @@ export default function DriversPage() {
         <p className="text-muted-foreground">F1 Championship Drivers</p>
       </div>
 
-      <div className="grid auto-rows-min gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
+      <div className="grid auto-rows-min gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
         {drivers.map((driver) => (
           <div
             key={driver.driverCode}
