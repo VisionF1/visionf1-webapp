@@ -1,11 +1,88 @@
+import { ColumnDef } from "@tanstack/react-table";
+import { DataTable } from "@/components/data-table";
+import { CldImage } from "next-cloudinary";
+import Image from "next/image";
+
 import { predictRace, getDrivers, getEvents } from "@/lib/api-requests";
-import { RacePrediction } from "@/lib/types";
+import { RacePrediction, RacePredictionRow } from "@/lib/types";
 
 const session_air_temp = 26;
 const session_track_temp = 35;
 const session_humidity = 60;
 const session_rainfall = 0;
 const circuit_type = "street";
+
+/*const columns: ColumnDef<RacePredictionRow>[] = [
+  {
+    accessorKey: "position",
+    header: "Position",
+  },
+  {
+    accessorKey: "driver",
+    header: "Driver",
+    cell: ({ row }) => {
+      const race_pace_row = row.original;
+      return (
+        <div className="flex items-center gap-3">
+          <div className="relative w-8 h-8 rounded-full overflow-hidden">
+            <CldImage
+              src={race_pace_row.driver}
+              width={32}
+              height={32}
+              alt={race_pace_row.driver_first_name + ' ' + race_pace_row.driver_last_name}
+              crop="fill"
+              className="object-cover"
+            />
+          </div>
+          <div>
+            <div className="font-medium">{race_pace_row.driver_first_name + ' ' + race_pace_row.driver_last_name}</div>
+          </div>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "team_name",
+    header: "Team",
+    cell: ({ row }) => {
+      const race_pace_row = row.original;
+      return (
+        <div className="flex items-center gap-3">
+          <div className="relative w-8 h-8 flex items-center justify-center rounded-full">
+            <CldImage
+              src={race_pace_row.team_name.toLowerCase()}
+              width={24}
+              height={24}
+              alt={race_pace_row.team}
+              className="object-contain w-full h-full"
+            />
+          </div>
+          <span>{race_pace_row.team_name}</span>
+        </div>
+      );
+    },
+  },
+];*/
+
+const columns: ColumnDef<RacePredictionRow>[] = [
+  {
+    accessorKey: "rank",
+    header: "Position",
+  },
+  {
+    accessorKey: "driver",
+    header: "Driver",
+  },
+  {
+    accessorKey: "team",
+    header: "Team",
+  },
+  {
+    accessorKey: "predicted_position",
+    header: "Prediction Score",
+  },
+];
+
 
 export default async function RacePredictions() {
   const drivers = (await getDrivers()).data;
@@ -37,25 +114,13 @@ export default async function RacePredictions() {
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
-      <div className="grid auto-rows-min gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
-        <div className="bg-muted/50 aspect-video rounded-xl">
+      <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min p-4">
+        <div className="w-full overflow-x-auto">
+            <h2 className="text-lg font-semibold pb-4">
+              Race Predictions
+            </h2>
+            <DataTable columns={columns} data={predictions} />
         </div>
-        <div className="bg-muted/50 aspect-video rounded-xl">
-        </div>
-        <div className="bg-muted/50 aspect-video rounded-xl">
-        </div>
-      </div>
-      <div className="bg-muted/50 aspect-video min-h-min flex-1 rounded-xl md:min-h-min">
-        <h3 className="text-lg font-semibold">Predictions</h3>
-        <ul>
-          {predictions.map((prediction) => (
-            <li key={prediction.driver}>
-              {prediction.driver} ({prediction.team}): {prediction.predicted_position} (Rank: {prediction.rank})
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="bg-muted/50 aspect-video min-h-min flex-1 rounded-xl md:min-h-min">
       </div>
     </div>
   );
