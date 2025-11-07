@@ -32,10 +32,10 @@ export function BreadcrumbNav() {
   return (
     <Breadcrumb>
       <BreadcrumbList>
-        <BreadcrumbItem className="hidden md:block">
+        <BreadcrumbItem>
           <BreadcrumbLink href="/">VisionF1</BreadcrumbLink>
         </BreadcrumbItem>
-        <BreadcrumbSeparator className="hidden md:block" />
+        <BreadcrumbSeparator />
         <BreadcrumbItem>
           <BreadcrumbPage className="capitalize">
             {currentPageName}
