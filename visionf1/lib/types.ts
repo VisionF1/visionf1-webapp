@@ -75,3 +75,10 @@ export type RacePaceRow = {
   season: number;
   round: number;
 };
+
+export type RacePrediction = {
+  driver: string;
+  team: string;
+  predicted_position: number;
+  rank: number;
+};

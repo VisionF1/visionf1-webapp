@@ -1,56 +1,39 @@
-import { predictRace } from "@/lib/api-requests";
+import { predictRace, getDrivers, getEvents } from "@/lib/api-requests";
+import { RacePrediction } from "@/lib/types";
 
-type RacePrediction = {
-  driver: string;
-  team: string;
-  predicted_position: number;
-  rank: number;
-}
-
-async function handlePredictRace(drivers: Array<{ driver: string; team: string; race_name: string; year: number; session_air_temp: number; session_track_temp: number; session_humidity: number; session_rainfall: number; circuit_type: string; }>) {
-  const response = await predictRace(drivers);
-  return response?.predictions as RacePrediction[] || [];
-}
-
-const drivers = [
-    {
-      "driver": "VER",
-      "team": "Red Bull Racing",
-      "race_name": "Singapore Grand Prix",
-      "year": 2025,
-      "session_air_temp": 26,
-      "session_track_temp": 35,
-      "session_humidity": 60,
-      "session_rainfall": 0,
-      "circuit_type": "street"
-    },
-    {
-      "driver": "HAM",
-      "team": "Ferrari",
-      "race_name": "Singapore Grand Prix",
-      "year": 2025,
-      "session_air_temp": 26,
-      "session_track_temp": 35,
-      "session_humidity": 60,
-      "session_rainfall": 0,
-      "circuit_type": "street"
-    },
-    {
-      "driver": "NOR",
-      "team": "McLaren",
-      "race_name": "Singapore Grand Prix",
-      "year": 2025,
-      "session_air_temp": 26,
-      "session_track_temp": 35,
-      "session_humidity": 60,
-      "session_rainfall": 0,
-      "circuit_type": "street"
-    }
-];
+const session_air_temp = 26;
+const session_track_temp = 35;
+const session_humidity = 60;
+const session_rainfall = 0;
+const circuit_type = "street";
 
 export default async function RacePredictions() {
-  const predictions: RacePrediction[] = await handlePredictRace(drivers);
-  console.log(predictions);
+  const drivers = (await getDrivers()).data;
+  
+  const currentYear = new Date().getFullYear();
+  const races = (await getEvents(currentYear)).data;
+
+  const selectedRace = races && races.length > 0 ? races[20] : null;
+  const raceName = selectedRace?.event_name ?? "Unknown Race";
+  const raceYear = selectedRace?.season ?? currentYear;
+
+  const input = (drivers || [])
+    .filter((d: any) => d.driverCode || d.driver)
+    .map((d: any) => ({
+      driver: (d.driverCode ?? d.driver ?? "Unknown Driver").toString(),
+      team: d.team ?? d.teamCode ?? "Unknown Team",
+      race_name: raceName,
+      year: raceYear,
+      session_air_temp,
+      session_track_temp,
+      session_humidity,
+      session_rainfall,
+      circuit_type,
+    }));
+
+  console.log("Prediction input:", input);
+
+  const predictions: RacePrediction[] = (await predictRace(input)).predictions;
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
