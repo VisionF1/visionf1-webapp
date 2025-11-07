@@ -73,7 +73,7 @@ export function DriverCard({ driver }: { driver: Driver }) {
   )
 }
 
-export function DriverImage({ driver }: { driver: Driver }) {
+export function DriverImage({ driver, useTeamColor = false }: { driver: Driver; useTeamColor?: boolean }) {
   const router = useRouter()
 
   const handleDriverClick = () => {
@@ -83,8 +83,16 @@ export function DriverImage({ driver }: { driver: Driver }) {
     router.push(driverPath)
   }
 
+  const bgColor = useTeamColor && driver.teamColor 
+    ? (driver.teamColor.startsWith('#') ? driver.teamColor : `#${driver.teamColor}`)
+    : undefined
+
   return (
-    <div className="absolute right-4 top-1/2 -translate-y-1/2 aspect-square h-20 w-20 @2xs:h-24 @2xs:w-24 @xs:h-28 @xs:w-28 @sm:h-36 @sm:w-36 @md:h-42 @md:w-42 @lg:h-46 @lg:w-46 @xl:h-56 @xl:w-56 rounded-full overflow-hidden bg-brand border-2 border-sidebar-primary cursor-pointer hover:opacity-80 transition-opacity" onClick={handleDriverClick}>
+    <div 
+      className={`absolute right-4 top-1/2 -translate-y-1/2 aspect-square h-20 w-20 @2xs:h-24 @2xs:w-24 @xs:h-28 @xs:w-28 @sm:h-36 @sm:w-36 @md:h-42 @md:w-42 @lg:h-46 @lg:w-46 @xl:h-56 @xl:w-56 rounded-full overflow-hidden border-2 border-sidebar-primary cursor-pointer hover:opacity-80 transition-opacity ${!useTeamColor ? 'bg-brand' : ''}`}
+      style={bgColor ? { backgroundColor: bgColor } : undefined}
+      onClick={handleDriverClick}
+    >
       <CldImage
         src={driver.driverCode}
         fill

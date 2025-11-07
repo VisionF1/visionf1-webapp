@@ -28,14 +28,14 @@ export default function DriversPage() {
         <p className="text-muted-foreground">F1 Championship Drivers</p>
       </div>
 
-      <div className="grid auto-rows-min gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+      <div className="grid auto-rows-min gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
         {drivers.map((driver) => (
           <div
             key={driver.driverCode}
             className="bg-muted/50 aspect-video rounded-xl flex items-center justify-between px-4 pl-0 relative @container"
           >
             <DriverCard driver={driver} />
-            <DriverImage driver={driver} />
+            <DriverImage driver={driver} useTeamColor={true} />
           </div>
         ))}
       </div>
