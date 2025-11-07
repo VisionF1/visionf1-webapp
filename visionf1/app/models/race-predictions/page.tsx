@@ -1,10 +1,13 @@
+"use client";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { CldImage } from "next-cloudinary";
 import Image from "next/image";
 
 import { predictRace, getDrivers, getEvents } from "@/lib/api-requests";
-import { RacePrediction, RacePredictionRow } from "@/lib/types";
+import { RacePrediction, RacePredictionRow, Driver } from "@/lib/types";
+
 
 const session_air_temp = 26;
 const session_track_temp = 35;
@@ -12,9 +15,9 @@ const session_humidity = 60;
 const session_rainfall = 0;
 const circuit_type = "street";
 
-/*const columns: ColumnDef<RacePredictionRow>[] = [
+const columns: ColumnDef<RacePredictionRow>[] = [
   {
-    accessorKey: "position",
+    accessorKey: "rank",
     header: "Position",
   },
   {
@@ -26,23 +29,23 @@ const circuit_type = "street";
         <div className="flex items-center gap-3">
           <div className="relative w-8 h-8 rounded-full overflow-hidden">
             <CldImage
-              src={race_pace_row.driver}
+              src={race_pace_row.driverCode}
               width={32}
               height={32}
-              alt={race_pace_row.driver_first_name + ' ' + race_pace_row.driver_last_name}
+              alt={race_pace_row.driverFirstName + ' ' + race_pace_row.driverLastName}
               crop="fill"
               className="object-cover"
             />
           </div>
           <div>
-            <div className="font-medium">{race_pace_row.driver_first_name + ' ' + race_pace_row.driver_last_name}</div>
+            <div className="font-medium">{race_pace_row.driverFirstName + ' ' + race_pace_row.driverLastName}</div>
           </div>
         </div>
       );
     },
   },
   {
-    accessorKey: "team_name",
+    accessorKey: "teamName",
     header: "Team",
     cell: ({ row }) => {
       const race_pace_row = row.original;
@@ -50,35 +53,20 @@ const circuit_type = "street";
         <div className="flex items-center gap-3">
           <div className="relative w-8 h-8 flex items-center justify-center rounded-full">
             <CldImage
-              src={race_pace_row.team_name.toLowerCase()}
+              src={race_pace_row.teamName.toLowerCase()}
               width={24}
               height={24}
-              alt={race_pace_row.team}
+              alt={race_pace_row.teamCode}
               className="object-contain w-full h-full"
             />
           </div>
-          <span>{race_pace_row.team_name}</span>
+          <span>{race_pace_row.teamName}</span>
         </div>
       );
     },
   },
-];*/
-
-const columns: ColumnDef<RacePredictionRow>[] = [
   {
-    accessorKey: "rank",
-    header: "Position",
-  },
-  {
-    accessorKey: "driver",
-    header: "Driver",
-  },
-  {
-    accessorKey: "team",
-    header: "Team",
-  },
-  {
-    accessorKey: "predicted_position",
+    accessorKey: "predictedPosition",
     header: "Prediction Score",
   },
 ];
@@ -108,9 +96,20 @@ export default async function RacePredictions() {
       circuit_type,
     }));
 
-  console.log("Prediction input:", input);
-
   const predictions: RacePrediction[] = (await predictRace(input)).predictions;
+
+  const predictions_enhanced: RacePredictionRow[] = predictions.map(pred => {
+          const driver = drivers.find((driver: Driver) => String(driver.driverCode).toUpperCase() === String(pred.driver).toUpperCase());
+          return {
+            driverCode: pred.driver,
+            driverFirstName: driver?.firstName ?? pred.driver,
+            driverLastName: driver?.lastName ?? "",
+            teamName: pred.team ?? driver?.team ?? "Unknown Team",
+            teamCode: driver?.teamCode,
+            predictedPosition: pred.predicted_position,
+            rank: pred.rank,
+          };
+        }).sort((a, b) => a.rank - b.rank);
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
@@ -119,7 +118,7 @@ export default async function RacePredictions() {
             <h2 className="text-lg font-semibold pb-4">
               Race Predictions
             </h2>
-            <DataTable columns={columns} data={predictions} />
+            <DataTable columns={columns} data={predictions_enhanced} />
         </div>
       </div>
     </div>
