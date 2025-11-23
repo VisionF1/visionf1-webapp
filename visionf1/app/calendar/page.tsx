@@ -16,8 +16,8 @@ export default async function RaceCalendar() {
 
     const now = new Date();
     for (const race of races) {
-      const raceStart = new Date(race.event_date);
-      if (raceStart > now) {
+      const raceEnd = new Date(new Date(race.event_date).getTime() + 3 * 60 * 60 * 1000);
+      if (raceEnd > now) {
         nextUpcomingRaceId = race.event_id;
         break;
       }

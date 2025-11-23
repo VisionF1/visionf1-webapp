@@ -35,6 +35,7 @@ export function RaceCard({
   const raceDate = new Date(race.event_date);
   const now = new Date();
   const raceStart = new Date(raceDate.getTime() - 2 * 24 * 60 * 60 * 1000);
+  raceStart.setHours(0, 0, 0, 0);
   const raceEnd = new Date(raceDate.getTime() + 3 * 60 * 60 * 1000);
   const isLive = now >= raceStart && now <= raceEnd;
   const isUpcoming = !isLive && isNextUpcoming;
