@@ -1,10 +1,12 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/data-table";
 import { Podium } from "@/components/podium";
 import { CldImage } from "next-cloudinary";
 import { RacePredictionRow } from "@/lib/types";
+import confetti from "canvas-confetti";
 
 
 interface RacePredictionsViewProps {
@@ -68,11 +70,50 @@ const columns: ColumnDef<RacePredictionRow>[] = [
 ];
 
 export function RacePredictionsView({ predictions }: RacePredictionsViewProps) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    const myConfetti = confetti.create(canvasRef.current, {
+      resize: true,
+      useWorker: true,
+    });
+
+    const end = Date.now() + 1000;
+    const colors = ["#eab308", "#ef4444", "#3b82f6"];
+
+    (function frame() {
+      myConfetti({
+        particleCount: 3,
+        angle: 60,
+        spread: 55,
+        origin: { x: 0, y: 0.8 }, // Start from bottom left
+        colors: colors,
+      });
+      myConfetti({
+        particleCount: 3,
+        angle: 120,
+        spread: 55,
+        origin: { x: 1, y: 0.8 }, // Start from bottom right
+        colors: colors,
+      });
+
+      if (Date.now() < end) {
+        requestAnimationFrame(frame);
+      }
+    })();
+
+    return () => {
+      myConfetti.reset();
+    };
+  }, []);
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
-      <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min p-4">
-        <div className="w-full overflow-x-auto">
+      <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min p-4 relative overflow-hidden">
+        <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-20" />
+        <div className="w-full overflow-x-auto relative z-10">
           <h2 className="text-lg font-semibold pb-4">
             Race Predictions
           </h2>

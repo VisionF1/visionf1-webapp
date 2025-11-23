@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
 import { motion } from "framer-motion";
-import confetti from "canvas-confetti";
 import { CldImage } from "next-cloudinary";
 import { cn } from "@/lib/utils";
 import { RacePredictionRow } from "@/lib/types";
@@ -13,33 +11,6 @@ interface PodiumProps {
 
 export function Podium({ drivers }: PodiumProps) {
   const podiumOrder = [drivers[1], drivers[0], drivers[2]];
-
-  useEffect(() => {
-    const end = Date.now() + 1000;
-    const colors = ["#eab308", "#ef4444", "#3b82f6"];
-
-    (function frame() {
-      confetti({
-        particleCount: 3,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors,
-      });
-      confetti({
-        particleCount: 3,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors,
-      });
-
-      if (Date.now() < end) {
-        requestAnimationFrame(frame);
-      }
-    })();
-  }, []);
-
 
   if (!drivers || drivers.length === 0) return null;
 
