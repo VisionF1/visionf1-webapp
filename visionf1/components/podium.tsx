@@ -17,7 +17,7 @@ export function Podium({ drivers }: PodiumProps) {
   return (
     <div className="w-full flex flex-col items-center justify-end min-h-[450px] mb-6 relative">
       <div className="absolute top-0 w-full h-full bg-gradient-to-b from-blue-500/5 to-transparent pointer-events-none rounded-xl" />
-      <div className="flex items-end justify-center gap-4 md:gap-8 w-full max-w-4xl z-10 px-4 mt-6">
+      <div className="flex items-end justify-center gap-4 md:gap-8 lg:gap-16 w-full max-w-4xl lg:max-w-6xl z-10 px-4 mt-6">
         {podiumOrder.map((driver, index) => {
           if (!driver) return null;
           const position = index === 1 ? 1 : index === 0 ? 2 : 3;
@@ -35,7 +35,7 @@ export function Podium({ drivers }: PodiumProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: delay }}
-              className="flex flex-col items-center w-1/3 max-w-[200px]"
+              className="flex flex-col items-center w-1/3 min-w-0 max-w-[200px] lg:max-w-[280px]"
             >
               <motion.div
                 initial={{ opacity: 0, scale: 0.5 }}
@@ -44,19 +44,19 @@ export function Podium({ drivers }: PodiumProps) {
                 className="relative mb-4 group"
               >
                 <div className={cn(
-                  "w-20 h-20 md:w-28 md:h-28 rounded-full border-4 overflow-hidden shadow-2xl relative z-10 bg-[#0f172a]",
+                  "w-20 h-20 md:w-28 md:h-28 lg:w-36 lg:h-36 rounded-full border-4 overflow-hidden shadow-2xl relative z-10 bg-[#0f172a]",
                   position === 1 ? "border-yellow-500 shadow-yellow-500/30" :
                     position === 2 ? "border-gray-400 shadow-gray-400/30" : "border-orange-600 shadow-orange-600/30"
                 )}>
-                  <CldImage src={driver.driverCode} width={120} height={120} alt={driver.driverLastName} crop="fill" className="object-cover w-full h-full" />
+                  <CldImage src={driver.driverCode} width={144} height={144} alt={driver.driverLastName} crop="fill" className="object-cover w-full h-full" />
                 </div>
                 <div className="absolute -bottom-2 -right-2 bg-slate-900 rounded-full p-1.5 border border-slate-700 z-20 shadow-lg">
-                  <CldImage src={driver.teamName.toLowerCase()} width={24} height={24} alt={driver.teamCode || "Team"} className="object-contain w-6 h-6" />
+                  <CldImage src={driver.teamName.toLowerCase()} width={32} height={32} alt={driver.teamCode || "Team"} className="object-contain w-6 h-6 lg:w-8 lg:h-8" />
                 </div>
               </motion.div>
               <div className="text-center mb-3 z-20">
-                <p className="font-bold text-sm md:text-lg text-white truncate max-w-[120px] md:max-w-none leading-tight">
-                  {driver.driverFirstName} <br className="hidden md:block" /> {driver.driverLastName}
+                <p className="font-bold text-sm md:text-lg lg:text-xl text-white truncate max-w-[120px] md:max-w-none leading-tight">
+                  {driver.driverFirstName} <br /> {driver.driverLastName}
                 </p>
               </div>
               <div className={cn("w-full relative flex justify-center items-end rounded-t-lg", heightClass)}>
