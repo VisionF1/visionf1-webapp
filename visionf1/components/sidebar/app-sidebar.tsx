@@ -51,10 +51,6 @@ const data = {
           url: "/models/race-predictions",
         },
         {
-          title: "Pit Probabilities",
-          url: "#",
-        },
-        {
           title: "Race Strategy",
           url: "#",
         },
