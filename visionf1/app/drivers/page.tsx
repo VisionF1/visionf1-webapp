@@ -45,7 +45,7 @@ export default function DriversPage() {
         <p className="text-muted-foreground">F1 Championship Drivers</p>
       </div>
 
-      <div className="grid auto-rows-min gap-4 grid-cols-1 2xl:grid-cols-2">
+      <div className="grid auto-rows-min gap-4 grid-cols-1 xl:grid-cols-2">
         {teams.map((teamGroup) => (
           <div
             key={teamGroup.teamCode}
