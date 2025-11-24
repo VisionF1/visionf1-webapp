@@ -79,3 +79,26 @@ export async function getRacePaceByDriver(eventId: string) {
   return res.json();
 }
 
+// POST: /predict-race
+export async function predictRace(drivers: Array<{
+  driver: string;
+  team: string;
+  race_name: string;
+  year: number;
+  session_air_temp: number;
+  session_track_temp: number;
+  session_humidity: number;
+  session_rainfall: number;
+  circuit_type: string;
+}>) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/predict-race`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(drivers),
+    next: { revalidate: 0 }, // No cache for predictions
+  });
+  if (!res.ok) throw new Error("Failed to fetch race prediction");
+  return res.json();
+}
