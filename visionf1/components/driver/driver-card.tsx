@@ -4,10 +4,34 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { CldImage } from "next-cloudinary"
 import { Driver } from "@/lib/types"
+import { useEffect, useState } from "react"
+import { getDriverStandings } from "@/lib/api-requests"
+import { DriverStanding } from "@/lib/types"
 
 
-export function DriverCard({ driver }: { driver: Driver }) {
+export function DriverCard({ driver, isTeamView = false }: { driver: Driver; isTeamView?: boolean }) {
   const router = useRouter()
+  const [driverStanding, setDriverStanding] = useState<DriverStanding | null>(null)
+
+  useEffect(() => {
+    if (isTeamView) {
+      const fetchStandings = async () => {
+        try {
+          const response = await getDriverStandings()
+          const driverData = response.data.find(
+            (d: DriverStanding) => d.driverCode === driver.driverCode
+          )
+          if (driverData) {
+            setDriverStanding(driverData)
+          }
+        } catch (error) {
+          console.error("Error fetching standings:", error)
+        }
+      }
+
+      fetchStandings()
+    }
+  }, [driver.driverCode, isTeamView])
 
   const handleDriverClick = () => {
     const firstName = driver.firstName.toLowerCase().replace(/ü/g, 'u')
@@ -51,24 +75,38 @@ export function DriverCard({ driver }: { driver: Driver }) {
         </span>
       </div>
       
-      {/* Team and Logo */}
-      <div className="flex items-center gap-2 mt-2">
-        {/* Team Logo */}
-        <div className="h-8 w-8 @xs:h-9 @xs:w-9 @sm:h-10 @sm:w-10 @md:h-11 @md:w-11 @lg:h-12 @lg:w-12 @xl:h-14 @xl:w-14 @2xl:h-16 @2xl:w-16 @4xl:h-20 @4xl:w-20 rounded">
-          <CldImage
-            src={driver.team}
-            alt={driver.team}
-            width={100}
-            height={100}
-            className="object-contain w-full h-full"
-          />
+      {/* Team and Logo OR Driver Points (conditional) */}
+      {!isTeamView ? (
+        <div className="flex items-center gap-2 mt-2">
+          {/* Team Logo */}
+          <div className="h-8 w-8 @xs:h-9 @xs:w-9 @sm:h-10 @sm:w-10 @md:h-11 @md:w-11 @lg:h-12 @lg:w-12 @xl:h-14 @xl:w-14 @2xl:h-16 @2xl:w-16 @4xl:h-20 @4xl:w-20 rounded">
+            <CldImage
+              src={driver.team}
+              alt={driver.team}
+              width={100}
+              height={100}
+              className="object-contain w-full h-full"
+            />
+          </div>
+          
+          {/* Team Name */}
+          <span className="text-sm @xs:text-base @sm:text-lg @md:text-xl @lg:text-2xl @xl:text-3xl @2xl:text-4xl @4xl:text-5xl text-sidebar-primary">
+            {driver.team}
+          </span>
         </div>
-        
-        {/* Team Name */}
-        <span className="text-sm @xs:text-base @sm:text-lg @md:text-xl @lg:text-2xl @xl:text-3xl @2xl:text-4xl @4xl:text-5xl text-sidebar-primary">
-          {driver.team}
-        </span>
-      </div>
+      ) : (
+        <div className="flex items-center gap-2 mt-2">
+          {/* Driver Points */}
+          <div className="flex items-baseline gap-1">
+            <span className="text-sm @xs:text-base @sm:text-lg @md:text-xl @lg:text-2xl @xl:text-3xl @2xl:text-4xl @4xl:text-5xl font-black text-primary">
+              {driverStanding?.points ?? 0}
+            </span>
+            <span className="text-xs @xs:text-xs @sm:text-sm @md:text-base @lg:text-lg @xl:text-xl @2xl:text-2xl text-muted-foreground">
+              pts
+            </span>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
