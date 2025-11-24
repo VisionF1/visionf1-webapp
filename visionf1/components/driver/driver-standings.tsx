@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation"
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "../data-table"
 import { CldImage } from 'next-cloudinary'
@@ -8,6 +9,18 @@ import { DriverStanding } from "@/lib/types"
 
 
 export function DriverStandings({ data: driverStandings }: { data: DriverStanding[] }) {
+  const router = useRouter()
+
+  const getDriverSlug = (driverName: string) => {
+    const [firstName, ...lastNameParts] = driverName.split(" ");
+    const lastName = lastNameParts.join(" ");
+    return `${firstName.toLowerCase().replace(/ü/g, "u")}-${lastName.toLowerCase().replace(/ü/g, "u")}`;
+  }
+
+  const handleDriverClick = (driverName: string) => {
+    const slug = getDriverSlug(driverName);
+    router.push(`/drivers/${slug}`);
+  }
   const columns: ColumnDef<DriverStanding>[] = [
     {
       accessorKey: "position",
@@ -19,7 +32,10 @@ export function DriverStandings({ data: driverStandings }: { data: DriverStandin
       cell: ({ row }) => {
         const driver = row.original;
         return (
-          <div className="flex items-center gap-3">
+          <button
+            onClick={() => handleDriverClick(driver.driver)}
+            className="flex items-center gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+          >
             <div className="relative w-8 h-8 rounded-full overflow-hidden">
               <CldImage
                 src={driver.driverCode}
@@ -33,7 +49,7 @@ export function DriverStandings({ data: driverStandings }: { data: DriverStandin
             <div>
               <div className="font-medium">{driver.driver}</div>
             </div>
-          </div>
+          </button>
         );
       },
     },

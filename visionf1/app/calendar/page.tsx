@@ -6,7 +6,7 @@ import { Driver, Race } from "@/lib/types";
 export default async function RaceCalendar() {
   const currentYear = new Date().getFullYear();
   let races = [];
-  const driverCodeToTeamCode: { [key: string]: string } = {};
+  const driverCodeToTeamColor: { [key: string]: string } = {};
   let nextUpcomingRaceId: string | null = null;
 
   try {
@@ -26,7 +26,7 @@ export default async function RaceCalendar() {
     const driversResponse = await getDrivers();
     const drivers = driversResponse.data || [];
     drivers.forEach((driver: Driver) => {
-      driverCodeToTeamCode[driver.driverCode] = driver.teamCode;
+      driverCodeToTeamColor[driver.driverCode] = driver.teamColor;
     });
   } catch (error) {
     console.error("Error fetching calendar data:", error);
@@ -46,7 +46,7 @@ export default async function RaceCalendar() {
               key={race.event_id}
               race={race}
               isNextUpcoming={race.event_id === nextUpcomingRaceId}
-              driverCodeToTeamCode={driverCodeToTeamCode}
+              driverCodeToTeamColor={driverCodeToTeamColor}
             />
           ))}
         </div>

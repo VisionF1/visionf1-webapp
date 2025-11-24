@@ -1,4 +1,5 @@
 export type Driver = {
+  driverUrl: string
   firstName: string
   lastName: string
   driverCode: string
@@ -8,6 +9,7 @@ export type Driver = {
   nationalityCode3: string
   team: string
   teamCode: string
+  teamColor: string
 }
 
 export type Race = {

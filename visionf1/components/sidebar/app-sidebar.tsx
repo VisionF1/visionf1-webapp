@@ -7,6 +7,7 @@ import {
   ChartLineIcon,
   HomeIcon,
   InfoIcon,
+  Users,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
@@ -82,6 +83,11 @@ const data = {
       title: "Calendar",
       url: "/calendar",
       icon: Calendar,
+    },
+    {
+      title: "Drivers",
+      url: "/drivers",
+      icon: Users,
     },
   ],
   about: [
