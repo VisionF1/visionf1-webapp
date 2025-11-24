@@ -92,7 +92,8 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
           Upcoming GP
         </span>
         {isLive && (
-          <span className="bg-red-600 text-white text-[0.6rem] @xs:text-[0.6rem] @md:text-xs @lg:text-base @xl:text-lg px-2 py-1 rounded-md font-semibold">
+          <span className="flex items-center gap-1 bg-red-600 text-white text-[0.6rem] @xs:text-[0.6rem] @md:text-xs @lg:text-base @xl:text-lg px-2 py-1 rounded-md font-semibold">
+            <div className="w-2 h-2 bg-red-200 rounded-full animate-pulse" />
             LIVE
           </span>
         )}
