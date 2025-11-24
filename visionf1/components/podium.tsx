@@ -68,7 +68,7 @@ export function Podium({ drivers }: PodiumProps) {
                 >
                   <span className="text-4xl md:text-6xl font-black opacity-40 select-none mix-blend-overlay">{position}</span>
                   <div className="mt-auto mb-4 text-xs font-mono opacity-70 font-semibold bg-black/20 px-2 py-1 rounded">
-                    {driver.predictedPosition.toFixed(2)} pts
+                    {driver.predictedPosition.toFixed(3)} pts
                   </div>
                 </motion.div>
               </div>
