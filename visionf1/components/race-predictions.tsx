@@ -184,6 +184,7 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
   const [selectedRaceId, setSelectedRaceId] = useState<string>("");
   const [selectedWeather, setSelectedWeather] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("Generating predictions...");
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -230,28 +231,53 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
     setIsLoading(true);
     setPredictions([]);
 
-    try {
-      const selectedRace = races.find(r => r.event_id === selectedRaceId);
-      const weather = WEATHER_SCENARIOS[selectedWeather as keyof typeof WEATHER_SCENARIOS];
-      const circuitType = CIRCUIT_TYPE_MAP[selectedRace?.event_name] || "hybrid";
+    // Loading simulation messages
+    const messages = [
+      "Initializing VisionF1 race prediction models...",
+      "Analyzing historical telemetry data...",
+      "Simulating weather impact on tire degradation...",
+      "Running race simulations...",
+    ];
 
-      const input = drivers
-        .filter((d: any) => d.driverCode || d.driver)
-        .map((d: any) => ({
-          driver: (d.driverCode ?? d.driver ?? "Unknown Driver").toString(),
-          team: d.team ?? d.teamCode ?? "Unknown Team",
-          race_name: selectedRace?.event_name || "Unknown Race",
-          year: selectedRace?.season || new Date().getFullYear(),
-          session_air_temp: weather.session_air_temp,
-          session_track_temp: weather.session_track_temp,
-          session_humidity: weather.session_humidity,
-          session_rainfall: weather.session_rainfall,
-          circuit_type: circuitType,
-        }));
+    // Start the API call in the background
+    const predictionPromise = (async () => {
+      try {
+        const selectedRace = races.find(r => r.event_id === selectedRaceId);
+        const weather = WEATHER_SCENARIOS[selectedWeather as keyof typeof WEATHER_SCENARIOS];
+        const circuitType = CIRCUIT_TYPE_MAP[selectedRace?.event_name] || "hybrid";
 
-      const response = await predictRace(input);
-      const preds = response.predictions;
+        const input = drivers
+          .filter((d: any) => d.driverCode || d.driver)
+          .map((d: any) => ({
+            driver: (d.driverCode ?? d.driver ?? "Unknown Driver").toString(),
+            team: d.team ?? d.teamCode ?? "Unknown Team",
+            race_name: selectedRace?.event_name || "Unknown Race",
+            year: selectedRace?.season || new Date().getFullYear(),
+            session_air_temp: weather.session_air_temp,
+            session_track_temp: weather.session_track_temp,
+            session_humidity: weather.session_humidity,
+            session_rainfall: weather.session_rainfall,
+            circuit_type: circuitType,
+          }));
 
+        const response = await predictRace(input);
+        return response.predictions;
+      } catch (error) {
+        console.error("Failed to predict race:", error);
+        return [];
+      }
+    })();
+
+    // Run the loading simulation loop
+    for (const msg of messages) {
+      setLoadingMessage(msg);
+      await new Promise(resolve => setTimeout(resolve, 800)); // 800ms * 5 = 4000ms
+    }
+
+    // Wait for the actual prediction if it's not done yet (it likely is)
+    const preds = await predictionPromise;
+
+    if (preds.length > 0) {
       const predictions_enhanced: RacePredictionRow[] = preds.map((pred: any) => {
         const driver = drivers.find((driver: Driver) => String(driver.driverCode).toUpperCase() === String(pred.driver).toUpperCase());
         return {
@@ -266,11 +292,9 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
       }).sort((a: any, b: any) => a.rank - b.rank);
 
       setPredictions(predictions_enhanced);
-    } catch (error) {
-      console.error("Failed to predict race:", error);
-    } finally {
-      setIsLoading(false);
     }
+
+    setIsLoading(false);
   };
 
   const selectedRaceName = selectedRaceId
@@ -330,9 +354,14 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
           </div>
 
           {isLoading ? (
-            <div className="flex justify-center items-center h-64">
-              <Spinner className="size-6 mr-2" />
-              <div className="text-lg">Generating predictions...</div>
+            <div className="flex flex-col justify-center items-center h-64 gap-4">
+              <div className="flex items-center">
+                <Spinner className="size-8 mr-3" />
+                <div className="text-xl font-medium animate-pulse">{loadingMessage}</div>
+              </div>
+              <div className="text-sm text-muted-foreground">
+                Please wait while our AI models process the race data...
+              </div>
             </div>
           ) : predictions.length > 0 ? (
             <div className="w-full overflow-x-auto relative">
