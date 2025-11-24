@@ -52,7 +52,7 @@ const data = {
         },
         {
           title: "Race Strategy",
-          url: "#",
+          url: "/models/race-strategy",
         },
       ],
     },
