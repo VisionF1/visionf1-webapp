@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { CldImage } from "next-cloudinary";
 import { GenericComboBox } from "@/components/ui/combobox";
+import { Button } from "@/components/ui/button";
 import { Strategy, StrategyRow } from "./strategy-row";
 
 const strategies: Strategy[] = [
@@ -40,18 +42,33 @@ interface RaceStrategyAnimationProps {
 
 export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
     const [selectedRaceId, setSelectedRaceId] = useState<string>("");
+    const [showStrategies, setShowStrategies] = useState(false);
+
+    const handlePredict = () => {
+        if (!selectedRaceId) return;
+        setShowStrategies(true);
+    };
+
+    const selectedRaceName = selectedRaceId
+        ? races.find(r => r.event_id === selectedRaceId)?.event_name
+        : "";
+
+    const selectedRaceYear = selectedRaceId
+        ? races.find(r => r.event_id === selectedRaceId)?.season
+        : "";
+
     return (
         <div className="w-full space-y-8 p-6 bg-card rounded-xl border border-border shadow-sm">
             <div className="space-y-2">
                 <h2 className="text-2xl font-display font-bold tracking-tight">
-                    Predicted Strategies
+                    Race Strategy {selectedRaceName && `- ${selectedRaceYear} ${selectedRaceName}`}
                 </h2>
                 <p className="text-muted-foreground">
                     Estimated race strategies based on tire degradation and pit stop analysis.
                 </p>
             </div>
 
-            <div className="mb-4">
+            <div className="flex flex-col sm:flex-row gap-4 mb-4 items-end">
                 <GenericComboBox
                     items={races}
                     value={selectedRaceId}
@@ -62,75 +79,104 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                     search_label="Grand Prix"
                     width="w-[320px]"
                 />
+
+                <Button
+                    className="w-full sm:w-auto min-w-[140px] px-4 py-2 bg-brand text-sm text-black rounded-md hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                    onClick={handlePredict}
+                    disabled={!selectedRaceId}
+                >
+                    Predict Race Strategy
+                </Button>
             </div>
 
-            <div className="flex flex-wrap gap-12 py-6">
-                <div className="flex items-center gap-4">
-                    <div className="relative w-20 h-20">
-                        <CldImage
-                            src="soft"
-                            alt="Soft Tire"
-                            width={120}
-                            height={120}
-                            className="w-full h-full object-contain"
-                        />
+            {showStrategies ? (
+                <>
+                    <div className="flex flex-wrap gap-12 py-6">
+                        <div className="flex items-center gap-4">
+                            <div className="relative w-20 h-20">
+                                <CldImage
+                                    src="soft"
+                                    alt="Soft Tire"
+                                    width={120}
+                                    height={120}
+                                    className="w-full h-full object-contain"
+                                />
+                            </div>
+                            <div className="flex flex-col leading-none">
+                                <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FF3B30]">
+                                    Red
+                                </span>
+                                <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FF3B30]">
+                                    Soft
+                                </span>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="relative w-20 h-20">
+                                <CldImage
+                                    src="medium"
+                                    alt="Medium Tire"
+                                    width={120}
+                                    height={120}
+                                    className="w-full h-full object-contain"
+                                />
+                            </div>
+                            <div className="flex flex-col leading-none">
+                                <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FFCC00]">
+                                    Yellow
+                                </span>
+                                <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FFCC00]">
+                                    Medium
+                                </span>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <div className="relative w-20 h-20">
+                                <CldImage
+                                    src="hard"
+                                    alt="Hard Tire"
+                                    width={120}
+                                    height={120}
+                                    className="w-full h-full object-contain"
+                                />
+                            </div>
+                            <div className="flex flex-col leading-none">
+                                <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#F2F2F7]">
+                                    White
+                                </span>
+                                <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#F2F2F7]">
+                                    Hard
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div className="flex flex-col leading-none">
-                        <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FF3B30]">
-                            Red
-                        </span>
-                        <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FF3B30]">
-                            Soft
-                        </span>
+
+                    <div className="space-y-6" key={selectedRaceId || "default"}>
+                        {strategies.map((strategy, index) => (
+                            <StrategyRow key={index} strategy={strategy} index={index} />
+                        ))}
+                    </div>
+                </>
+            ) : (
+                <div className="flex flex-col justify-center items-center text-center h-80 gap-10">
+                    <div className="text-lg">Select a Grand Prix to generate race strategy predictions.</div>
+                    <div className="text-sm text-muted-foreground max-w-md">
+                        These strategies are generated by AI using advanced machine learning models trained by the VisionF1 team.
+                    </div>
+                    <div className="flex-shrink-0 pb-2 px-2">
+                        <div className="h-20 w-20 @2xs:h-24 @2xs:w-24 @xs:h-28 @xs:w-28 @sm:h-36 @sm:w-36 @md:h-42 @md:w-42 @lg:h-46 @lg:w-46 @xl:h-56 @xl:w-56 bg-sidebar-primary border-2 border-brand flex items-center justify-center rounded-full overflow-hidden shadow-lg">
+                            <Image
+                                src="/visionf1-logo.svg"
+                                alt="VisionF1"
+                                width={200}
+                                height={200}
+                                className="object-contain h-full w-full p-1"
+                                loading="eager"
+                            />
+                        </div>
                     </div>
                 </div>
-                <div className="flex items-center gap-4">
-                    <div className="relative w-20 h-20">
-                        <CldImage
-                            src="medium"
-                            alt="Medium Tire"
-                            width={120}
-                            height={120}
-                            className="w-full h-full object-contain"
-                        />
-                    </div>
-                    <div className="flex flex-col leading-none">
-                        <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FFCC00]">
-                            Yellow
-                        </span>
-                        <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FFCC00]">
-                            Medium
-                        </span>
-                    </div>
-                </div>
-                <div className="flex items-center gap-4">
-                    <div className="relative w-20 h-20">
-                        <CldImage
-                            src="hard"
-                            alt="Hard Tire"
-                            width={120}
-                            height={120}
-                            className="w-full h-full object-contain"
-                        />
-                    </div>
-                    <div className="flex flex-col leading-none">
-                        <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#F2F2F7]">
-                            White
-                        </span>
-                        <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#F2F2F7]">
-                            Hard
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <div className="space-y-6" key={selectedRaceId || "default"}>
-                {strategies.map((strategy, index) => (
-                    <StrategyRow key={index} strategy={strategy} index={index} />
-                ))}
-            </div>
-
-
+            )}
         </div>
     );
 }
