@@ -143,7 +143,7 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
             <DialogTrigger asChild>
               <button
                 type="button"
-                className="w-18 h-13 @xs:w-24 @xs:h-16 @sm:w-38 @sm:h-26 @md:w-42 @md:h-28 @lg:w-50 @lg:h-30 @xl:w-56 @xl:h-36 rounded-md"
+                className="w-18 h-13 @xs:w-24 @xs:h-18 @sm:w-38 @sm:h-26 @md:w-42 @md:h-28 @lg:w-50 @lg:h-30 @xl:w-56 @xl:h-36 rounded-md"
                 aria-label={`Open ${gp.circuit} image`}
               >
                 <div className="relative w-full h-full">
