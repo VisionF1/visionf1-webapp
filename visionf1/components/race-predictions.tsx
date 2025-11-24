@@ -6,7 +6,7 @@ import { DataTable } from "@/components/data-table";
 import { Podium } from "@/components/podium";
 import { CldImage } from "next-cloudinary";
 import { RacePredictionRow, Driver } from "@/lib/types";
-import { Download } from "lucide-react";
+import { Download, Frown } from "lucide-react";
 import confetti from "canvas-confetti";
 import { Button } from "@/components/ui/button";
 import { GenericComboBox } from "@/components/ui/combobox";
@@ -185,6 +185,7 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
   const [selectedWeather, setSelectedWeather] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Generating predictions...");
+  const [error, setError] = useState<string | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -230,6 +231,7 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
 
     setIsLoading(true);
     setPredictions([]);
+    setError(null);
 
     // Loading simulation messages
     const messages = [
@@ -264,7 +266,7 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
         return response.predictions;
       } catch (error) {
         console.error("Failed to predict race:", error);
-        return [];
+        return null;
       }
     })();
 
@@ -277,7 +279,7 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
     // Wait for the actual prediction if it's not done yet (it likely is)
     const preds = await predictionPromise;
 
-    if (preds.length > 0) {
+    if (preds && preds.length > 0) {
       const predictions_enhanced: RacePredictionRow[] = preds.map((pred: any) => {
         const driver = drivers.find((driver: Driver) => String(driver.driverCode).toUpperCase() === String(pred.driver).toUpperCase());
         return {
@@ -292,6 +294,8 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
       }).sort((a: any, b: any) => a.rank - b.rank);
 
       setPredictions(predictions_enhanced);
+    } else {
+      setError("Unable to generate race predictions at this time. Our AI models are currently unavailable. Please try again later.");
     }
 
     setIsLoading(false);
@@ -353,7 +357,15 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
             </Button>
           </div>
 
-          {isLoading ? (
+          {error ? (
+            <div className="flex flex-col justify-center items-center h-64 gap-4 text-center">
+              <Frown className="size-16 text-muted-foreground mt-8" />
+              <div className="flex flex-col gap-1">
+                <div className="text-red-500/80 text-xl font-semibold mt-2">Prediction Failed</div>
+                <div className="text-muted-foreground max-w-md mt-4">{error}</div>
+              </div>
+            </div>
+          ) : isLoading ? (
             <div className="flex flex-col justify-center items-center h-64 gap-4">
               <div className="flex items-center">
                 <Spinner className="size-8 mr-3" />
