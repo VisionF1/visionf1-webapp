@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useDriverNavigation } from "@/hooks/use-driver-navigation"
 import { GenericComboBox } from "@/components/ui/combobox"
 import { Spinner } from "@/components/ui/spinner"
 
@@ -164,9 +165,10 @@ export default function RacePace() {
     return `${firstName.toLowerCase().replace(/ü/g, "u")}-${lastName.toLowerCase().replace(/ü/g, "u")}`;
   }
 
+  const { navigateToDriver } = useDriverNavigation()
+
   const handleDriverClick = (driverName: string) => {
-    const slug = getDriverSlug(driverName);
-    router.push(`/drivers/${slug}`);
+    navigateToDriver(driverName);
   }
 
   const columns = getColumns(handleDriverClick);

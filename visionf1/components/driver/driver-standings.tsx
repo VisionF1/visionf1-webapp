@@ -6,20 +6,15 @@ import { DataTable } from "../data-table"
 import { CldImage } from 'next-cloudinary'
 import Image from "next/image"
 import { DriverStanding } from "@/lib/types"
+import { useDriverNavigation } from "@/hooks/use-driver-navigation"
 
 
 export function DriverStandings({ data: driverStandings }: { data: DriverStanding[] }) {
   const router = useRouter()
-
-  const getDriverSlug = (driverName: string) => {
-    const [firstName, ...lastNameParts] = driverName.split(" ");
-    const lastName = lastNameParts.join(" ");
-    return `${firstName.toLowerCase().replace(/ü/g, "u")}-${lastName.toLowerCase().replace(/ü/g, "u")}`;
-  }
+  const { navigateToDriver } = useDriverNavigation()
 
   const handleDriverClick = (driverName: string) => {
-    const slug = getDriverSlug(driverName);
-    router.push(`/drivers/${slug}`);
+    navigateToDriver(driverName);
   }
   const columns: ColumnDef<DriverStanding>[] = [
     {
