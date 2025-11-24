@@ -6,17 +6,43 @@ import { DataTable } from "@/components/data-table";
 import { Podium } from "@/components/podium";
 import { CldImage } from "next-cloudinary";
 import { RacePredictionRow, Driver } from "@/lib/types";
+import { Download } from "lucide-react";
 import confetti from "canvas-confetti";
 import { Button } from "@/components/ui/button";
 import { GenericComboBox } from "@/components/ui/combobox";
 import { predictRace } from "@/lib/api-requests";
 import { Spinner } from "@/components/ui/spinner";
 import Image from "next/image";
+import { exportDataAsCSV } from "@/lib/csv-utils";
 
 
 interface RacePredictionsViewProps {
   drivers: Driver[];
   races: any[];
+}
+
+// Exports Race Prediction data as CSV with proper formatting
+export function exportPredictionsAsCSV(data: RacePredictionRow[], filename: string): Promise<void> {
+  const headers = [
+    { key: 'rank', label: 'Position' },
+    { key: 'driver_name', label: 'Driver' },
+    { key: 'teamName', label: 'Team' },
+    { key: 'predictedPosition', label: 'Prediction Score' },
+  ];
+
+  const fieldTransformers = {
+    driver_name: (value: any, row: RacePredictionRow) =>
+      `${row.driverFirstName} ${row.driverLastName}`,
+    predictedPosition: (value: number) => value?.toFixed(3) || 'N/A',
+  };
+
+  // Add calculated field for driver name
+  const dataWithDriverName = data.map(row => ({
+    ...row,
+    driver_name: `${row.driverFirstName} ${row.driverLastName}`
+  }));
+
+  return exportDataAsCSV(dataWithDriverName, filename, headers, fieldTransformers, true);
 }
 
 const CIRCUIT_TYPE_MAP: Record<string, string> = {
@@ -255,15 +281,23 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
     ? races.find(r => r.event_id === selectedRaceId)?.season
     : "";
 
+  const handleExportCSV = async () => {
+    if (predictions.length === 0) return;
+
+    const weatherLabel = selectedWeather ? WEATHER_SCENARIOS[selectedWeather as keyof typeof WEATHER_SCENARIOS]?.label : 'unknown';
+    const filename = `race_prediction_${selectedRaceYear}_${selectedRaceName}_${weatherLabel}.csv`.replace(/\s+/g, '_');
+    await exportPredictionsAsCSV(predictions, filename);
+  };
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
       <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min p-4">
         <div className="w-full overflow-x-auto">
-          <h2 className="text-lg font-semibold pb-4">
+          <h2 className="text-lg font-semibold pb-6">
             Race Predictions {selectedRaceName && `- ${selectedRaceYear} ${selectedRaceName}`}
           </h2>
 
-          <div className="flex flex-col sm:flex-row gap-4 mb-6 items-end">
+          <div className="flex flex-col sm:flex-row gap-4 mb-8 items-end">
             <GenericComboBox
               items={races}
               value={selectedRaceId}
@@ -333,7 +367,16 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
       {predictions.length > 0 && (
         <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min">
           <div className="p-4 flex flex-col">
-            <h2 className="text-lg font-semibold pb-4">Predicted Race Classification</h2>
+            <div className="flex justify-between items-center pb-4">
+              <h2 className="text-lg font-semibold">Predicted Race Classification</h2>
+              <button
+                onClick={handleExportCSV}
+                className="flex items-center px-4 py-2 bg-brand text-sm text-black rounded-md hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              >
+                <Download className="mr-2 h-4 w-4" />
+                Export Data
+              </button>
+            </div>
             <DataTable columns={columns} data={predictions} />
           </div>
         </div>

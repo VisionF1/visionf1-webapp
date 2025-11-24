@@ -15,7 +15,7 @@ export function Podium({ drivers }: PodiumProps) {
   if (!drivers || drivers.length === 0) return null;
 
   return (
-    <div className="w-full flex flex-col items-center justify-end min-h-[450px] mb-6 relative">
+    <div className="w-full flex flex-col items-center justify-end min-h-[450px] mb-4 relative">
       <div className="absolute top-0 w-full h-full bg-gradient-to-b from-blue-500/5 to-transparent pointer-events-none rounded-xl" />
       <div className="flex items-end justify-center gap-4 md:gap-8 lg:gap-16 w-full max-w-4xl lg:max-w-6xl z-10 px-4 mt-6">
         {podiumOrder.map((driver, index) => {
