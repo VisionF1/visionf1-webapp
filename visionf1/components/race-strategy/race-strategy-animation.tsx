@@ -43,10 +43,12 @@ interface RaceStrategyAnimationProps {
 export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
     const [selectedRaceId, setSelectedRaceId] = useState<string>("");
     const [showStrategies, setShowStrategies] = useState(false);
+    const [animationKey, setAnimationKey] = useState(0);
 
     const handlePredict = () => {
         if (!selectedRaceId) return;
         setShowStrategies(true);
+        setAnimationKey(prev => prev + 1);
     };
 
     const selectedRaceName = selectedRaceId
@@ -151,7 +153,7 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                         </div>
                     </div>
 
-                    <div className="space-y-6" key={selectedRaceId || "default"}>
+                    <div className="space-y-6" key={animationKey}>
                         {strategies.map((strategy, index) => (
                             <StrategyRow key={index} strategy={strategy} index={index} />
                         ))}
