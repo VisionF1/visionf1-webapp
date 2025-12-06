@@ -6,6 +6,8 @@ import { TeamStandings } from "@/components/team-standings"
 import { PlaceholderBrand } from "@/components/placeholder-brand"
 import { getDriverStandings, getTeamStandings, getDrivers, getUpcomingGP } from "@/lib/api-requests"
 
+import { ModelsCard, AnalyticsCard } from "@/components/home-navigation-cards"
+
 export default async function Home() {
 
   const driverStandings = await getDriverStandings();
@@ -20,15 +22,25 @@ export default async function Home() {
           <Welcome />
         </div>
         <div className="bg-muted/50 aspect-video rounded-xl">
-          <DriverImages data={drivers.data}/>
+          <DriverImages data={drivers.data} />
         </div>
         <div className="bg-muted/50 aspect-video rounded-xl">
           <UpcomingGP gp={upcomingGP.data[0]} />
         </div>
-        <div className="bg-muted/50 aspect-video rounded-xl hidden md:block lg:block xl:hidden">
+      </div>
+
+      <div className="grid gap-4 grid-cols-1 md:grid-cols-3 auto-rows-fr">
+        <div className="rounded-xl aspect-video">
+          <ModelsCard />
+        </div>
+        <div className="bg-muted/50 rounded-xl overflow-hidden aspect-video">
           <PlaceholderBrand />
         </div>
+        <div className="rounded-xl aspect-video">
+          <AnalyticsCard />
+        </div>
       </div>
+
       <div className="bg-muted/50 min-h-min flex-1 rounded-xl md:min-h-min">
         <DriverStandings data={driverStandings.data} />
       </div>
