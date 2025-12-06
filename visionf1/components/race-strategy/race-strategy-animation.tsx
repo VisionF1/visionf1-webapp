@@ -204,7 +204,7 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                         </div>
                     </div>
 
-                    <div className="space-y-6" key={animationKey}>
+                    <div className="space-y-6 mx-auto" key={animationKey}>
                         {strategies.map((strategy, index) => (
                             <StrategyRow key={index} strategy={strategy} index={index} />
                         ))}

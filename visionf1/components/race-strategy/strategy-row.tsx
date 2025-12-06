@@ -35,7 +35,7 @@ export function StrategyRow({ strategy, index }: StrategyRowProps) {
     };
 
     return (
-        <div className="flex flex-col gap-2 py-4">
+        <div className="flex flex-col gap-2 py-4 pl-2 pr-8">
             <div className="flex items-center justify-between">
                 <h3 className="font-display text-lg font-bold uppercase tracking-wider text-foreground">
                     {strategy.name}
@@ -45,7 +45,7 @@ export function StrategyRow({ strategy, index }: StrategyRowProps) {
                 </span>
             </div>
 
-            <div className="relative h-16 w-full rounded-xl bg-muted/20 p-2">
+            <div className="relative h-16 w-full rounded-xl bg-muted/20">
                 {/* Track Line */}
                 <div className="absolute top-1/2 left-0 h-0.5 w-full -translate-y-1/2 bg-muted-foreground/20" />
 
