@@ -6,35 +6,9 @@ import { CldImage } from "next-cloudinary";
 import { GenericComboBox } from "@/components/ui/combobox";
 import { Button } from "@/components/ui/button";
 import { Strategy, StrategyRow } from "./strategy-row";
-
-const strategies: Strategy[] = [
-    {
-        name: "Two-Stopper (Aggressive)",
-        totalLaps: 57,
-        stints: [
-            { compound: "soft", startLap: 0, endLap: 14 },
-            { compound: "hard", startLap: 14, endLap: 40 },
-            { compound: "medium", startLap: 40, endLap: 57 },
-        ],
-    },
-    {
-        name: "Two-Stopper (Balanced)",
-        totalLaps: 57,
-        stints: [
-            { compound: "medium", startLap: 0, endLap: 18 },
-            { compound: "hard", startLap: 18, endLap: 45 },
-            { compound: "soft", startLap: 45, endLap: 57 },
-        ],
-    },
-    {
-        name: "One-Stopper",
-        totalLaps: 57,
-        stints: [
-            { compound: "medium", startLap: 0, endLap: 24 },
-            { compound: "hard", startLap: 24, endLap: 57 },
-        ],
-    },
-];
+import { predictStrategy } from "@/lib/api-requests";
+import { Spinner } from "@/components/ui/spinner";
+import { AlertCircle } from "lucide-react";
 
 interface RaceStrategyAnimationProps {
     races: any[];
@@ -44,11 +18,83 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
     const [selectedRaceId, setSelectedRaceId] = useState<string>("");
     const [showStrategies, setShowStrategies] = useState(false);
     const [animationKey, setAnimationKey] = useState(0);
+    const [strategies, setStrategies] = useState<Strategy[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
-    const handlePredict = () => {
+    const handlePredict = async () => {
         if (!selectedRaceId) return;
-        setShowStrategies(true);
-        setAnimationKey(prev => prev + 1);
+
+        setIsLoading(true);
+        setError(null);
+        setShowStrategies(false);
+
+        try {
+            const race = races.find(r => r.event_id === selectedRaceId);
+            const circuit = race?.circuit_name;
+
+            // Hardcoded parameters for now as requested/implied, could be made dynamic later
+            const track_temp = 50.0;
+            const air_temp = 27.0;
+            const compounds = ["SOFT", "MEDIUM", "HARD"];
+            const max_stops = 3;
+            const fia_rule = true;
+            const top_k = 3;
+
+            const response = await predictStrategy(
+                circuit,
+                track_temp,
+                air_temp,
+                compounds,
+                max_stops,
+                fia_rule,
+                top_k
+            );
+
+            if (response && response.predictions) {
+                const mappedStrategies: Strategy[] = response.predictions.map((pred: any, index: number) => {
+                    // Calculate total laps from the last stint of the prediction
+                    const totalLaps = pred.stints[pred.stints.length - 1].end_lap;
+
+                    // Generate a descriptive name based on stop count and compounds
+                    // e.g., "1 Stop (Hard - Medium)" or "Fastest Strategy"
+                    // Using index 0 as "Optimal"
+                    let name = `Option ${index + 1}`;
+                    if (index === 0) name = "Optimal Strategy";
+                    else if (pred.stints.length > 2) name = "Aggressive (3-Stop)";
+                    else if (pred.stints.length === 1) name = "Conservative (1-Stop)";
+                    else name = `Alternative ${index}`;
+
+                    // Add probability to name if available
+                    if (pred.probability) {
+                        const prob = (pred.probability * 100).toFixed(0);
+                        name += ` (${prob}% probability)`;
+                    }
+
+                    return {
+                        name: name,
+                        totalLaps: totalLaps,
+                        stints: pred.stints.map((stint: any) => ({
+                            compound: stint.compound.toLowerCase(),
+                            startLap: stint.start_lap - 1,
+                            endLap: stint.end_lap
+                        }))
+                    };
+                });
+
+                setStrategies(mappedStrategies);
+                setShowStrategies(true);
+                setAnimationKey(prev => prev + 1);
+            } else {
+                throw new Error("Invalid response format");
+            }
+
+        } catch (err) {
+            console.error("Failed to predict strategy:", err);
+            setError("Failed to generate strategy predictions. Please try again.");
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const selectedRaceName = selectedRaceId
@@ -85,13 +131,27 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                 <Button
                     className="w-full sm:w-auto min-w-[140px] px-4 py-2 bg-brand text-sm text-black rounded-md hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                     onClick={handlePredict}
-                    disabled={!selectedRaceId}
+                    disabled={!selectedRaceId || isLoading}
                 >
-                    Predict Race Strategy
+                    {isLoading ? (
+                        <>
+                            <Spinner className="mr-2 h-4 w-4" />
+                            Analyzing...
+                        </>
+                    ) : (
+                        "Predict Race Strategy"
+                    )}
                 </Button>
             </div>
 
-            {showStrategies ? (
+            {error && (
+                <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 flex items-center gap-2">
+                    <AlertCircle className="h-5 w-5" />
+                    <p>{error}</p>
+                </div>
+            )}
+
+            {showStrategies && strategies.length > 0 ? (
                 <>
                     <div className="flex flex-wrap gap-12 py-6">
                         <div className="flex items-center gap-4">
@@ -159,7 +219,7 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                         ))}
                     </div>
                 </>
-            ) : (
+            ) : !isLoading && !showStrategies ? (
                 <div className="flex flex-col justify-center items-center text-center h-80 gap-10">
                     <div className="text-lg">Select a Grand Prix to generate race strategy predictions.</div>
                     <div className="text-sm text-muted-foreground max-w-md">
@@ -178,7 +238,7 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                         </div>
                     </div>
                 </div>
-            )}
+            ) : null}
         </div>
     );
 }

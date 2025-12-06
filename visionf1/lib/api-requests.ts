@@ -102,3 +102,33 @@ export async function predictRace(drivers: Array<{
   if (!res.ok) throw new Error("Failed to fetch race prediction");
   return res.json();
 }
+
+// POST: /predict-strategy
+export async function predictStrategy(
+  circuit: string,
+  track_temp: number,
+  air_temp: number,
+  compounds: string[],
+  max_stops: number,
+  fia_rule: boolean,
+  top_k: number,
+) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/predict-strategy`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      circuit,
+      track_temp,
+      air_temp,
+      compounds,
+      max_stops,
+      fia_rule,
+      top_k,
+    }),
+    next: { revalidate: 0 }, // No cache for predictions
+  });
+  if (!res.ok) throw new Error("Failed to fetch race strategy prediction");
+  return res.json();
+}
