@@ -20,6 +20,7 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
     const [animationKey, setAnimationKey] = useState(0);
     const [strategies, setStrategies] = useState<Strategy[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState("Generating strategies...");
     const [error, setError] = useState<string | null>(null);
 
     const handlePredict = async () => {
@@ -29,27 +30,51 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
         setError(null);
         setShowStrategies(false);
 
+        // Loading simulation messages
+        const messages = [
+            "Initializing strategy models...",
+            "Analyzing tire degradation data...",
+            "Simulating pit stop scenarios...",
+            "Optimizing race pace..."
+        ];
+
+        // Start the API call in the background
+        const predictionPromise = (async () => {
+            try {
+                const race = races.find(r => r.event_id === selectedRaceId);
+                const circuit = race?.circuit_name;
+
+                // Hardcoded parameters for now as requested/implied, could be made dynamic later
+                const track_temp = 50.0;
+                const air_temp = 27.0;
+                const compounds = ["SOFT", "MEDIUM", "HARD"];
+                const max_stops = 3;
+                const fia_rule = true;
+                const top_k = 3;
+
+                return await predictStrategy(
+                    circuit,
+                    track_temp,
+                    air_temp,
+                    compounds,
+                    max_stops,
+                    fia_rule,
+                    top_k
+                );
+            } catch (err) {
+                console.error("Failed to predict strategy:", err);
+                return null;
+            }
+        })();
+
+        // Run the loading simulation loop
+        for (const msg of messages) {
+            setLoadingMessage(msg);
+            await new Promise(resolve => setTimeout(resolve, 800));
+        }
+
         try {
-            const race = races.find(r => r.event_id === selectedRaceId);
-            const circuit = race?.circuit_name;
-
-            // Hardcoded parameters for now as requested/implied, could be made dynamic later
-            const track_temp = 50.0;
-            const air_temp = 27.0;
-            const compounds = ["SOFT", "MEDIUM", "HARD"];
-            const max_stops = 3;
-            const fia_rule = true;
-            const top_k = 3;
-
-            const response = await predictStrategy(
-                circuit,
-                track_temp,
-                air_temp,
-                compounds,
-                max_stops,
-                fia_rule,
-                top_k
-            );
+            const response = await predictionPromise;
 
             if (response && response.predictions) {
                 const mappedStrategies: Strategy[] = response.predictions.map((pred: any, index: number) => {
@@ -90,7 +115,6 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
             }
 
         } catch (err) {
-            console.error("Failed to predict strategy:", err);
             setError("Failed to generate strategy predictions. Please try again.");
         } finally {
             setIsLoading(false);
@@ -131,24 +155,29 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                             disabled={!selectedRaceId || isLoading}
                         >
                             {isLoading ? (
-                                <>
-                                    <Spinner className="mr-2 h-4 w-4" />
-                                    Analyzing...
-                                </>
+                                "Predicting..."
                             ) : (
                                 "Predict Race Strategy"
                             )}
                         </Button>
                     </div>
 
-                    {error && (
+                    {error ? (
                         <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-500 flex items-center gap-2">
                             <AlertCircle className="h-5 w-5" />
                             <p>{error}</p>
                         </div>
-                    )}
-
-                    {showStrategies && strategies.length > 0 ? (
+                    ) : isLoading ? (
+                        <div className="flex flex-col justify-center items-center h-64 gap-4">
+                            <div className="flex items-center">
+                                <Spinner className="size-8 mr-3" />
+                                <div className="text-xl font-medium animate-pulse">{loadingMessage}</div>
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                                Please wait while our AI models analyze the strategy...
+                            </div>
+                        </div>
+                    ) : showStrategies && strategies.length > 0 ? (
                         <>
                             <div className="flex flex-wrap gap-12 py-6">
                                 <div className="flex items-center gap-4">
@@ -207,7 +236,7 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                                 ))}
                             </div>
                         </>
-                    ) : !isLoading && !showStrategies ? (
+                    ) : (
                         <div className="flex flex-col justify-center items-center text-center h-80 gap-10">
                             <div className="text-lg">Select a Grand Prix to generate race strategy predictions.</div>
                             <div className="text-sm text-muted-foreground max-w-md">
@@ -226,7 +255,7 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                                 </div>
                             </div>
                         </div>
-                    ) : null}
+                    )}
                 </div>
             </div>
         </div>
