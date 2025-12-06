@@ -166,9 +166,6 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                             </div>
                             <div className="flex flex-col leading-none">
                                 <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FF3B30]">
-                                    Red
-                                </span>
-                                <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FF3B30]">
                                     Soft
                                 </span>
                             </div>
@@ -185,9 +182,6 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                             </div>
                             <div className="flex flex-col leading-none">
                                 <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FFCC00]">
-                                    Yellow
-                                </span>
-                                <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#FFCC00]">
                                     Medium
                                 </span>
                             </div>
@@ -203,9 +197,6 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                                 />
                             </div>
                             <div className="flex flex-col leading-none">
-                                <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#F2F2F7]">
-                                    White
-                                </span>
                                 <span className="font-display font-bold text-3xl uppercase tracking-wide text-[#F2F2F7]">
                                     Hard
                                 </span>
