@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation"
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "../data-table"
 import { CldImage } from 'next-cloudinary'
@@ -10,7 +9,6 @@ import { useDriverNavigation } from "@/hooks/use-driver-navigation"
 
 
 export function DriverStandings({ data: driverStandings }: { data: DriverStanding[] }) {
-  const router = useRouter()
   const { navigateToDriver } = useDriverNavigation()
 
   const handleDriverClick = (driverName: string) => {
@@ -55,13 +53,15 @@ export function DriverStandings({ data: driverStandings }: { data: DriverStandin
         const driver = row.original;
         return (
           <div className="flex items-center gap-2">
-            <Image
-              src={`https://flagcdn.com/${driver.nationalityCode.toLowerCase()}.svg`}
-              alt={driver.nationality}
-              width={24}
-              height={18}
-              className="object-contain"
-            />
+            <div className="relative w-6 h-5">
+              <Image
+                src={`https://flagcdn.com/${driver.nationalityCode.toLowerCase()}.svg`}
+                alt={driver.nationality}
+                fill
+                className="object-contain"
+                sizes="24px"
+              />
+            </div>
             <span>{driver.nationality}</span>
           </div>
         );
