@@ -38,7 +38,12 @@ export function StrategyRow({ strategy, index }: StrategyRowProps) {
         <div className="flex flex-col gap-2 py-4 pl-2 pr-8">
             <div className="flex items-center justify-between">
                 <h3 className="font-display text-lg font-bold uppercase tracking-wider text-foreground">
-                    {strategy.name}
+                    {strategy.name.split(" (")[0]}
+                    {strategy.name.includes(" (") && (
+                        <span className="text-muted-foreground font-normal text-base normal-case tracking-normal ml-2">
+                            ({strategy.name.split(" (")[1]}
+                        </span>
+                    )}
                 </h3>
                 <span className="text-sm text-muted-foreground">
                     {strategy.stints.length - 1} Stops
