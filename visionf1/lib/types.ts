@@ -94,3 +94,22 @@ export type RacePredictionRow = {
   predictedPosition: number;
   rank: number;
 };
+
+export type CleanAirRacePaceRow = {
+  driver: string;
+  driver_first_name: string;
+  driver_last_name: string;
+  driver_position: number;
+  driver_color: string;
+  team: string;
+  team_name: string;
+  team_color: string;
+  clean_air_race_pace_id: string;
+  clean_air_race_pace_position: number;
+  avg_laptime_clean_air: number;
+  std_laptime_clean_air: number;
+  clean_air_laps_count: number;
+  event: string;
+  season: number;
+  round: number;
+};

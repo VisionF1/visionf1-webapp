@@ -66,6 +66,10 @@ const data = {
           url: "/analytics/race-pace",
         },
         {
+          title: "Clean Air Race Pace",
+          url: "/analytics/clean-air-race-pace",
+        },
+        {
           title: "Quali Head to Head",
           url: "#",
         },
