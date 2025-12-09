@@ -97,6 +97,24 @@ export async function getCleanAirRacePaceByDriver(eventId: string) {
   return res.json();
 }
 
+// GET: /lap-time-distributions by season and round
+export async function getLapTimeDistributions(season: number, round: number) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/lap-time-distributions?season=${season}&round=${round}`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch race pace");
+  return res.json();
+}
+
+// GET: /lap-time-distributions by event ID
+export async function getLapTimeDistributionsByDriver(eventId: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/lap-time-distributions?event_id=${eventId}`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch race pace");
+  return res.json();
+}
+
 // POST: /predict-race
 export async function predictRace(drivers: Array<{
   driver: string;

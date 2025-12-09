@@ -70,6 +70,10 @@ const data = {
           url: "/analytics/clean-air-race-pace",
         },
         {
+          title: "Lap Time Distributions",
+          url: "/analytics/lap-time-distributions",
+        },
+        {
           title: "Quali Head to Head",
           url: "#",
         },

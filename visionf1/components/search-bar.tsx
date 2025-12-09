@@ -49,6 +49,7 @@ export function SearchBar() {
     { name: "Race Strategy", url: "/models/race-strategy", icon: Bot, type: "Page" },
     { name: "Race Pace", url: "/analytics/race-pace", icon: ChartLineIcon, type: "Page" },
     { name: "Clean Air Race Pace", url: "/analytics/clean-air-race-pace", icon: ChartLineIcon, type: "Page" },
+    { name: "Lap Time Distributions", url: "/analytics/lap-time-distributions", icon: ChartLineIcon, type: "Page" },
     { name: "Calendar", url: "/calendar", icon: Calendar, type: "Page" },
     { name: "Drivers", url: "/drivers", icon: Users, type: "Page" },
     { name: "About", url: "/about", icon: InfoIcon, type: "Page" },
