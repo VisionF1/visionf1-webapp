@@ -56,6 +56,36 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
 
   const sortedData = [...data].sort((a, b) => (a.race_pace_position || 99) - (b.race_pace_position || 99));
 
+  // Calculate Min/Max for custom ticks
+  const allTimes = sortedData.flatMap(d => d.laps.map(l => l.lap_time));
+  const minTime = Math.min(...allTimes);
+  const maxTime = Math.max(...allTimes);
+
+  // Generate ticks
+  const range = maxTime - minTime;
+  const step = range > 10 ? 1 : range > 5 ? 0.5 : 0.2;
+
+  const viewMin = minTime - step;
+  const viewMax = maxTime + step;
+
+  const tickVals: number[] = [];
+  for (let t = Math.floor(viewMin); t <= Math.ceil(viewMax); t += step) {
+    if (t >= viewMin && t <= viewMax) {
+      tickVals.push(t);
+    }
+  }
+
+  const formatLapTime = (sec: number) => {
+    const minutes = Math.floor(sec / 60);
+    const seconds = Math.floor(sec % 60);
+    const millis = Math.round((sec - minutes * 60 - seconds) * 1000);
+    const secStr = seconds.toString().padStart(2, "0");
+    const millisStr = millis.toString().padStart(3, "0");
+    return `${minutes}:${secStr}.${millisStr}`;
+  };
+
+  const tickText = tickVals.map(formatLapTime);
+
   // Prepare arrays
   const drivers: string[] = [];
   const times: number[] = [];
@@ -121,18 +151,17 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
         data={traces}
         layout={{
           autosize: true,
-          title: {
-            text: 'Lap Time Distributions',
-            font: { color: isDark ? '#fff' : '#000' }
-          },
+
           paper_bgcolor: 'rgba(0,0,0,0)',
           plot_bgcolor: 'rgba(0,0,0,0)',
           yaxis: {
-            title: 'Lap Time (s)',
             gridcolor: isDark ? '#333' : '#ddd',
             zerolinecolor: isDark ? '#333' : '#ddd',
             tickfont: { color: isDark ? '#aaa' : '#333' },
-            titlefont: { color: isDark ? '#aaa' : '#333' }
+            tickmode: 'array',
+            tickvals: tickVals,
+            ticktext: tickText,
+            range: [minTime - (range * 0.05), maxTime + (range * 0.05)]
           },
           xaxis: {
             tickfont: { color: isDark ? '#aaa' : '#333' },
