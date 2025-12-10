@@ -113,3 +113,29 @@ export type CleanAirRacePaceRow = {
   season: number;
   round: number;
 };
+
+export type Lap = {
+  lap_number: number;
+  lap_time: number;
+  compound: string | null;
+  tyre_life: number | null;
+};
+
+export type LapTimeDistributionRow = {
+  driver: string;
+  driver_first_name: string;
+  driver_last_name: string;
+  driver_position: number | null;
+  driver_color: string;
+  team: string | null;
+  team_name: string | null;
+  team_color: string;
+  lap_time_distribution_id: string;
+  race_pace_position: number | null;
+  avg_laptime: number | null;
+  std_laptime: number | null;
+  laps: Lap[];
+  event: string;
+  season: number;
+  round: number;
+};
