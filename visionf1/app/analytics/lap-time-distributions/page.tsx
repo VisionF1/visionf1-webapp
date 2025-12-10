@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   getSeasons,
@@ -14,26 +13,18 @@ import { Spinner } from "@/components/ui/spinner";
 import ViolinSwarmPlot from "@/components/charts/violin-swarm-plot";
 
 export default function LapTimeDistributionsPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
   const [seasons, setSeasons] = useState<number[]>([]);
   const [events, setEvents] = useState<Race[]>([]);
   const [data, setData] = useState<LapTimeDistributionRow[]>([]);
   const [loading, setLoading] = useState(false);
 
-  const seasonParam = searchParams.get("season");
-  const roundParam = searchParams.get("round");
-
-  const [selectedSeason, setSelectedSeason] = useState<string | null>(seasonParam || null);
-  const [selectedRound, setSelectedRound] = useState<string | null>(roundParam || null);
+  const [selectedSeason, setSelectedSeason] = useState<string | null>(null);
+  const [selectedRound, setSelectedRound] = useState<string | null>(null);
 
   // Fetch Seasons
   useEffect(() => {
     getSeasons().then((res) => {
       setSeasons(res.data);
-      if (!seasonParam && res.data.length > 0) {
-      }
     });
   }, []);
 
@@ -42,6 +33,7 @@ export default function LapTimeDistributionsPage() {
     if (selectedSeason) {
       getEvents(parseInt(selectedSeason)).then((res) => {
         setEvents(res.data);
+        setSelectedRound(null); // Reset round when season changes
       });
     } else {
       setEvents([]);
@@ -63,27 +55,6 @@ export default function LapTimeDistributionsPage() {
     }
   }, [selectedSeason, selectedRound]);
 
-  const handleSeasonChange = (value: string | null) => {
-    if (value) {
-      setSelectedSeason(value);
-      setSelectedRound(null); // Reset round
-      router.push(`?season=${value}`);
-    } else {
-      setSelectedSeason(null);
-      setSelectedRound(null);
-      router.push(`?`);
-    }
-  };
-
-  const handleEventChange = (value: string | null) => {
-    if (value) {
-      setSelectedRound(value);
-      router.push(`?season=${selectedSeason}&round=${value}`);
-    } else {
-      setSelectedRound(null);
-    }
-  };
-
   const yearItems = useMemo(() => seasons.map(s => String(s)).sort((a, b) => Number(b) - Number(a)), [seasons]);
 
   const currentEvent = events.find(e => e.round.toString() === selectedRound);
@@ -100,7 +71,7 @@ export default function LapTimeDistributionsPage() {
             <GenericComboBox
               items={yearItems}
               value={selectedSeason}
-              onChange={handleSeasonChange}
+              onChange={setSelectedSeason}
               getLabel={(y) => y}
               getValue={(y) => y}
               placeholder="Select Year"
@@ -111,7 +82,7 @@ export default function LapTimeDistributionsPage() {
             <GenericComboBox
               items={events}
               value={selectedRound}
-              onChange={handleEventChange}
+              onChange={setSelectedRound}
               getLabel={(e) => `R${e.round} • ${e.event_name}`}
               getValue={(e) => e.round.toString()}
               placeholder="Select Grand Prix"
