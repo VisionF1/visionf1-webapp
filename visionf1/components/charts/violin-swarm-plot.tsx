@@ -86,20 +86,18 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
 
   const tickText = tickVals.map(formatLapTime);
 
-  // Prepare arrays
-  const drivers: string[] = [];
-  const times: number[] = [];
-  const compounds: string[] = [];
-  const texts: string[] = [];
-  const pointColors: string[] = [];
-  const violinColors: string[] = []; // Not used if grouping by x
+  // Prepare arrays for single Scatter trace + Violin traces
+  const violinTraces: any[] = [];
+  const scatterX: number[] = [];
+  const scatterY: number[] = [];
+  const scatterColors: string[] = [];
+  const scatterText: string[] = [];
 
-  // We will make ONE trace that contains everything?
-  // If we want different violin colors (by team), we strictly need one trace per group (driver) OR use `transforms`.
-  // Let's use one trace per driver. It's clean for <30 drivers.
+  // Map drivers to numeric indices for custom X-axis
+  const driverNames = sortedData.map(d => d.driver);
+  const driverIndices = driverNames.map((_, i) => i);
 
-  const traces: any[] = sortedData.map((driverData) => {
-    // Extract laps for this driver
+  sortedData.forEach((driverData, index) => {
     const driverLaps = driverData.laps.map(l => ({
       time: l.lap_time,
       compound: l.compound,
@@ -107,43 +105,60 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
       tyreLife: l.tyre_life
     }));
 
-    const driverName = driverData.driver;
     const teamColor = driverData.team_color || "#777777";
+    const driverName = driverData.driver;
 
-    return {
+    // 1. Violin Trace (Shape only)
+    violinTraces.push({
       type: 'violin',
-      x: Array(driverLaps.length).fill(driverName),
+      x: Array(driverLaps.length).fill(index), // Use numeric index
       y: driverLaps.map(l => l.time),
-      text: driverLaps.map(l => `Lap ${l.lap}<br>${l.compound} (${l.tyreLife} laps)`),
       legendgroup: driverName,
-      scalegroup: 'race', // Standardize width across violins
       name: driverName,
-      box: {
-        visible: true
-      },
-      line: {
-        color: teamColor,
-      },
-      meanline: {
-        visible: true
-      },
-      points: 'all',
-      jitter: 0.5,
-      pointpos: 0,
-      marker: {
-        size: 5,
-        // Map individual point colors
-        color: driverLaps.map(l => COMPOUND_COLORS[l.compound?.toUpperCase() || ""] || COMPOUND_COLORS.TEST_UNKNOWN),
-        opacity: 0.8,
-        line: {
-          width: 1,
-          color: '#333'
-        }
-      },
-      fillcolor: `${teamColor}40`, // Add transparency (hex + 40 alpha approx 25%)
-      showlegend: false
-    };
+      line: { color: teamColor, width: 1.5 },
+      fillcolor: `${teamColor}40`,
+      points: false, // Disable built-in points
+      box: { visible: true, width: 0.1 },
+      meanline: { visible: true },
+      showlegend: false,
+      hoverinfo: 'y', // Show stats on hover? Or none? User focuses on points usually.
+      width: 0.8, // Adjust width relative to index spacing (1.0)
+      // spanmode: 'hard', // Removed to prevent clipping
+    });
+
+    // 2. Accumulate Scatter Points
+    driverLaps.forEach(l => {
+      // Jitter x: random between -0.3 and 0.3 relative to index
+      const jitter = (Math.random() - 0.5) * 0.4;
+      scatterX.push(index + jitter);
+      scatterY.push(l.time);
+
+      const color = COMPOUND_COLORS[l.compound?.toUpperCase() || ""] || COMPOUND_COLORS.TEST_UNKNOWN;
+      scatterColors.push(color);
+
+      const txt = `Lap ${l.lap}<br>${l.compound} (${l.tyreLife} laps)<br>Time: ${formatLapTime(l.time)}`;
+      scatterText.push(txt);
+    });
   });
+
+  // Combined Scatter Trace
+  const scatterTrace = {
+    type: 'scatter',
+    mode: 'markers',
+    x: scatterX,
+    y: scatterY,
+    text: scatterText,
+    hoverinfo: 'text',
+    marker: {
+      color: scatterColors,
+      size: 5,
+      opacity: 0.9,
+      line: { width: 1, color: '#333' }
+    },
+    showlegend: false
+  };
+
+  const traces = [...violinTraces, scatterTrace];
 
   return (
     <div className="w-full h-[600px] bg-card rounded-xl border p-4">
@@ -151,28 +166,34 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
         data={traces}
         layout={{
           autosize: true,
-
+          // title: removed
           paper_bgcolor: 'rgba(0,0,0,0)',
           plot_bgcolor: 'rgba(0,0,0,0)',
           yaxis: {
+            title: { text: "Lap Times", font: { color: isDark ? '#aaa' : '#333' } },
             gridcolor: isDark ? '#333' : '#ddd',
             zerolinecolor: isDark ? '#333' : '#ddd',
             tickfont: { color: isDark ? '#aaa' : '#333' },
             tickmode: 'array',
             tickvals: tickVals,
             ticktext: tickText,
-            range: [minTime - (range * 0.05), maxTime + (range * 0.05)]
+            range: [minTime - (range * 0.1), maxTime + (range * 0.1)] // Increased padding to 10%
           },
           xaxis: {
             tickfont: { color: isDark ? '#aaa' : '#333' },
             gridcolor: isDark ? '#333' : '#ddd',
+            tickmode: 'array',
+            tickvals: driverIndices,
+            ticktext: driverNames,
+            tickangle: -45,
+            range: [-0.5, driverIndices.length - 0.5] // Ensure margins
           },
           hovermode: 'closest',
-          margin: { t: 40, r: 20, l: 60, b: 40 }
+          margin: { t: 10, r: 10, l: 80, b: 80 }
         }}
         useResizeHandler={true}
         style={{ width: "100%", height: "100%" }}
-        config={{ displayModeBar: false }}
+        config={{ displayModeBar: false, scrollZoom: true }}
       />
     </div>
   );
