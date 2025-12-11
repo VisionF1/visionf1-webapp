@@ -161,32 +161,44 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
   const traces = [...violinTraces, scatterTrace];
 
   return (
-    <div className="w-full h-[600px] bg-card rounded-xl border p-4">
+    <div className="w-full h-[600px] bg-card rounded-xl border p-1">
       <Plot
         data={traces}
         layout={{
           autosize: true,
-          // title: removed
           paper_bgcolor: 'rgba(0,0,0,0)',
           plot_bgcolor: 'rgba(0,0,0,0)',
+          font: {
+            family: 'Formula1-Display-Regular, sans-serif',
+          },
+          hoverlabel: {
+            font: {
+              family: 'Formula1-Display-Regular, sans-serif',
+            },
+          },
           yaxis: {
-            title: { text: "Lap Times", font: { color: isDark ? '#aaa' : '#333' } },
             gridcolor: isDark ? '#333' : '#ddd',
             zerolinecolor: isDark ? '#333' : '#ddd',
-            tickfont: { color: isDark ? '#aaa' : '#333' },
+            tickfont: {
+              color: isDark ? '#aaa' : '#333',
+              family: 'Formula1-Display-Regular, sans-serif',
+            },
             tickmode: 'array',
             tickvals: tickVals,
             ticktext: tickText,
-            range: [minTime - (range * 0.1), maxTime + (range * 0.1)] // Increased padding to 10%
+            range: [minTime - (range * 0.1), maxTime + (range * 0.1)]
           },
           xaxis: {
-            tickfont: { color: isDark ? '#aaa' : '#333' },
+            tickfont: {
+              color: isDark ? '#aaa' : '#333',
+              family: 'Formula1-Display-Regular, sans-serif',
+            },
             gridcolor: isDark ? '#333' : '#ddd',
             tickmode: 'array',
             tickvals: driverIndices,
             ticktext: driverNames,
-            tickangle: -45,
-            range: [-0.5, driverIndices.length - 0.5] // Ensure margins
+            //tickangle: -45,
+            range: [-0.5, driverIndices.length - 0.5]
           },
           hovermode: 'closest',
           margin: { t: 10, r: 10, l: 80, b: 80 }
@@ -195,6 +207,10 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
         style={{ width: "100%", height: "100%" }}
         config={{ displayModeBar: false, scrollZoom: true }}
       />
+
+      <div className="flex justify-center -mt-10">
+        <span className="text-sm text-muted-foreground font-medium">Lap Times per Driver and Compound</span>
+      </div>
     </div>
   );
 }
