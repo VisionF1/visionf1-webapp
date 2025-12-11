@@ -86,12 +86,22 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
 
   const tickText = tickVals.map(formatLapTime);
 
-  // Prepare arrays for single Scatter trace + Violin traces
+  // Prepare arrays for Scatter traces + Violin traces
   const violinTraces: any[] = [];
+  const scatterTraces: any[] = [];
   const scatterX: number[] = [];
   const scatterY: number[] = [];
   const scatterColors: string[] = [];
-  const scatterText: string[] = [];
+  const scatterCustomData: Array<{
+    driverFullName: string;
+    teamName: string;
+    teamColor: string;
+    lap: number;
+    compound: string;
+    compoundColor: string;
+    tyreLife: number;
+    lapTime: string;
+  }> = [];
 
   // Map drivers to numeric indices for custom X-axis
   const driverNames = sortedData.map(d => d.driver);
@@ -107,6 +117,8 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
 
     const teamColor = driverData.team_color || "#777777";
     const driverName = driverData.driver;
+    const driverFullName = `${driverData.driver_first_name} ${driverData.driver_last_name}`;
+    const teamName = driverData.team_name || "Unknown";
 
     // 1. Violin Trace (Shape only)
     violinTraces.push({
@@ -126,39 +138,70 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
       // spanmode: 'hard', // Removed to prevent clipping
     });
 
-    // 2. Accumulate Scatter Points
+    // 2. Accumulate Scatter Points with custom data
     driverLaps.forEach(l => {
-      // Jitter x: random between -0.3 and 0.3 relative to index
       const jitter = (Math.random() - 0.5) * 0.4;
       scatterX.push(index + jitter);
       scatterY.push(l.time);
 
-      const color = COMPOUND_COLORS[l.compound?.toUpperCase() || ""] || COMPOUND_COLORS.TEST_UNKNOWN;
-      scatterColors.push(color);
+      const compoundColor = COMPOUND_COLORS[l.compound?.toUpperCase() || ""] || COMPOUND_COLORS.TEST_UNKNOWN;
+      scatterColors.push(compoundColor);
 
-      const txt = `Lap ${l.lap}<br>${l.compound} (${l.tyreLife} laps)<br>Time: ${formatLapTime(l.time)}`;
-      scatterText.push(txt);
+      scatterCustomData.push({
+        driverFullName,
+        teamName,
+        teamColor,
+        lap: l.lap,
+        compound: l.compound || "Unknown",
+        compoundColor,
+        tyreLife: l.tyreLife || 0,
+        lapTime: formatLapTime(l.time),
+      });
     });
+
+    // Create scatter trace for this driver (to have per-driver hover styling)
+    if (scatterX.length > 0) {
+      const startIdx = scatterX.length - driverLaps.length;
+      const driverScatterX = scatterX.slice(startIdx);
+      const driverScatterY = scatterY.slice(startIdx);
+      const driverScatterColors = scatterColors.slice(startIdx);
+      const driverCustomData = scatterCustomData.slice(startIdx);
+
+      scatterTraces.push({
+        type: 'scatter',
+        mode: 'markers',
+        x: driverScatterX,
+        y: driverScatterY,
+        customdata: driverCustomData,
+        hovertemplate:
+          '<b>%{customdata.driverFullName}</b><br>' +
+          '%{customdata.teamName}<br><br>' +
+          'Lap %{customdata.lap}<br>' +
+          '%{customdata.compound} (%{customdata.tyreLife} laps)<br>' +
+          'Time: %{customdata.lapTime}' +
+          '<extra></extra>',
+        hoverlabel: {
+          bgcolor: isDark ? '#1e293b' : '#ffffff',
+          bordercolor: teamColor,
+          font: {
+            family: 'Formula1-Display-Regular, sans-serif',
+            size: 12,
+            color: isDark ? '#f1f5f9' : '#1e293b',
+          },
+          namelength: 0,
+        },
+        marker: {
+          color: driverScatterColors,
+          size: 5,
+          opacity: 0.9,
+          line: { width: 1, color: '#333' }
+        },
+        showlegend: false
+      });
+    }
   });
 
-  // Combined Scatter Trace
-  const scatterTrace = {
-    type: 'scatter',
-    mode: 'markers',
-    x: scatterX,
-    y: scatterY,
-    text: scatterText,
-    hoverinfo: 'text',
-    marker: {
-      color: scatterColors,
-      size: 5,
-      opacity: 0.9,
-      line: { width: 1, color: '#333' }
-    },
-    showlegend: false
-  };
-
-  const traces = [...violinTraces, scatterTrace];
+  const traces = [...violinTraces, ...scatterTraces];
 
   return (
     <div className="w-full h-[600px] bg-card rounded-xl border p-1">
