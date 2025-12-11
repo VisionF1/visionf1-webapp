@@ -23,37 +23,6 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
   const { theme } = useTheme();
   const isDark = theme === "dark";
 
-  // Flatten data for Plotly
-  // We need arrays for x (driver), y (time), and color/text (compound)
-  // But Plotly Violin with 'transforms' or simply multiple traces is better for specific coloring per point? 
-  // Plotly Violin 'points' attribute doesn't easily support *different* colors for points vs violin body if using single trace.
-  // HOWEVER, standard way: One Violin trace per driver? No, that's too many traces.
-  // One trace with x=driver_array, y=time_array is best.
-
-  // Actually, to get multiple colors for points (compounds) inside a single driver's violin... that's tricky in single trace.
-  // Strategy:
-  // 1. Create one Violin trace PER DRIVER to control the violin color (usually team color).
-  // 2. BUT the points need to be colored by COMPOUND.
-  // 3. AND we want the violin itself to be the driver/team color? Or just generic?
-  // User wants "estéticamente lo más parecido a los gráficos de race pace" (which are typically team colored violins).
-  // AND "swarm plots" (points) typically colored by compound.
-
-  // This is hard to do in a single trace per driver because `marker.color` applies to all points.
-  // Workaround: Use Violin trace for the shape (points=false) and a separate Scatter(mode='markers') trace for the swarm points.
-  // We need to construct the X-coordinates for the scatter points manually to simulate "swarm/jitter" or just use strip plot.
-  // Plotly Box/Violin handles jitter automatically.
-
-  // Let's try: 
-  // Traces for Violins (one per driver, team color, points=false).
-  // Traces for Points? No, we can have ONE Scatter trace for ALL points if we map x=driver, y=time. 
-  // But standard Scatter doesn't jitter in X. We need jitter.
-
-  // Simpler approach that usually looks good:
-  // One Violin trace per driver. 
-  // set `points='all'`, `pointpos=0`, `jitter=0.4`.
-  // formatting the marker colors array? 
-  // Plotly allows an array for `marker.color`.
-
   const sortedData = [...data].sort((a, b) => (a.race_pace_position || 99) - (b.race_pace_position || 99));
 
   // Calculate Min/Max for custom ticks
@@ -203,56 +172,61 @@ export default function ViolinSwarmPlot({ data }: ViolinSwarmPlotProps) {
 
   const traces = [...violinTraces, ...scatterTraces];
 
+  // Calculate min-width based on number of drivers (50px per driver minimum)
+  const chartMinWidth = Math.max(700, sortedData.length * 50);
+
   return (
-    <div className="w-full h-[600px] bg-card rounded-xl border p-1">
-      <Plot
-        data={traces}
-        layout={{
-          autosize: true,
-          paper_bgcolor: 'rgba(0,0,0,0)',
-          plot_bgcolor: 'rgba(0,0,0,0)',
-          font: {
-            family: 'Formula1-Display-Regular, sans-serif',
-          },
-          hoverlabel: {
+    <div className="w-full h-[600px] bg-card rounded-xl border p-1 overflow-x-auto">
+      <div style={{ minWidth: `${chartMinWidth}px`, height: '100%' }}>
+        <Plot
+          data={traces}
+          layout={{
+            autosize: true,
+            paper_bgcolor: 'rgba(0,0,0,0)',
+            plot_bgcolor: 'rgba(0,0,0,0)',
             font: {
               family: 'Formula1-Display-Regular, sans-serif',
             },
-          },
-          yaxis: {
-            gridcolor: isDark ? '#333' : '#ddd',
-            zerolinecolor: isDark ? '#333' : '#ddd',
-            tickfont: {
-              color: isDark ? '#aaa' : '#333',
-              family: 'Formula1-Display-Regular, sans-serif',
+            hoverlabel: {
+              font: {
+                family: 'Formula1-Display-Regular, sans-serif',
+              },
             },
-            tickmode: 'array',
-            tickvals: tickVals,
-            ticktext: tickText,
-            range: [minTime - (range * 0.1), maxTime + (range * 0.1)]
-          },
-          xaxis: {
-            tickfont: {
-              color: isDark ? '#aaa' : '#333',
-              family: 'Formula1-Display-Regular, sans-serif',
+            yaxis: {
+              gridcolor: isDark ? '#333' : '#ddd',
+              zerolinecolor: isDark ? '#333' : '#ddd',
+              tickfont: {
+                color: isDark ? '#aaa' : '#333',
+                family: 'Formula1-Display-Regular, sans-serif',
+              },
+              tickmode: 'array',
+              tickvals: tickVals,
+              ticktext: tickText,
+              range: [minTime - (range * 0.1), maxTime + (range * 0.1)]
             },
-            gridcolor: isDark ? '#333' : '#ddd',
-            tickmode: 'array',
-            tickvals: driverIndices,
-            ticktext: driverNames,
-            //tickangle: -45,
-            range: [-0.5, driverIndices.length - 0.5]
-          },
-          hovermode: 'closest',
-          margin: { t: 10, r: 10, l: 80, b: 80 }
-        }}
-        useResizeHandler={true}
-        style={{ width: "100%", height: "100%" }}
-        config={{ displayModeBar: false, scrollZoom: true }}
-      />
+            xaxis: {
+              tickfont: {
+                color: isDark ? '#aaa' : '#333',
+                family: 'Formula1-Display-Regular, sans-serif',
+              },
+              gridcolor: isDark ? '#333' : '#ddd',
+              tickmode: 'array',
+              tickvals: driverIndices,
+              ticktext: driverNames,
+              //tickangle: -45,
+              range: [-0.5, driverIndices.length - 0.5]
+            },
+            hovermode: 'closest',
+            margin: { t: 10, r: 10, l: 80, b: 80 }
+          }}
+          useResizeHandler={true}
+          style={{ width: "100%", height: "100%" }}
+          config={{ displayModeBar: false, scrollZoom: true }}
+        />
 
-      <div className="flex justify-center -mt-10">
-        <span className="text-sm text-muted-foreground font-medium">Lap Times per Driver and Compound</span>
+        <div className="flex justify-center -mt-10">
+          <span className="text-sm text-muted-foreground font-medium">Lap Times per Driver and Compound</span>
+        </div>
       </div>
     </div>
   );
