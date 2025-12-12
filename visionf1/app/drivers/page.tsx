@@ -1,7 +1,6 @@
-import { DriverCard, DriverImage } from "@/components/driver/driver-card"
+import { DriverCard, DriverImage, TeamLogo } from "@/components/driver/driver-card"
 import { getDrivers, getDriverStandings } from "@/lib/api-requests"
 import { Driver, DriverStanding } from "@/lib/types"
-import { TeamLogo } from "@/components/team/team-logo"
 
 export default async function DriversPage() {
   const [driversRes, standingsRes] = await Promise.all([

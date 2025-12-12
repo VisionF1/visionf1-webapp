@@ -123,3 +123,15 @@ export function DriverImage({ driver, useTeamColor = false }: { driver: Driver; 
     </div>
   )
 }
+
+export function TeamLogo({ team }: { team: string }) {
+  return (
+    <CldImage
+      src={team}
+      alt={team}
+      width={100}
+      height={100}
+      className="object-contain w-full h-full"
+    />
+  )
+}
