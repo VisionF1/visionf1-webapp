@@ -1,26 +1,22 @@
-"use client"
-
 import { DriverCard, DriverImage } from "@/components/driver/driver-card"
-import { getDrivers } from "@/lib/api-requests"
-import { Driver } from "@/lib/types"
-import { useEffect, useState } from "react"
-import { CldImage } from "next-cloudinary"
+import { getDrivers, getDriverStandings } from "@/lib/api-requests"
+import { Driver, DriverStanding } from "@/lib/types"
+import { TeamLogo } from "@/components/team/team-logo"
 
-export default function DriversPage() {
-  const [drivers, setDrivers] = useState<Driver[]>([])
+export default async function DriversPage() {
+  const [driversRes, standingsRes] = await Promise.all([
+    getDrivers(),
+    getDriverStandings()
+  ])
 
-  useEffect(() => {
-    const fetchDrivers = async () => {
-      try {
-        const response = await getDrivers()
-        setDrivers(response.data || [])
-      } catch (error) {
-        console.error("Error fetching drivers:", error)
-      }
-    }
+  const drivers: Driver[] = driversRes.data || []
+  const standingsMap: Record<string, number> = {}
 
-    fetchDrivers()
-  }, [])
+  if (standingsRes.data) {
+    standingsRes.data.forEach((s: DriverStanding) => {
+      standingsMap[s.driverCode] = s.points
+    })
+  }
 
   // Group drivers by team
   const groupedByTeam = drivers.reduce((acc, driver) => {
@@ -54,13 +50,7 @@ export default function DriversPage() {
             {/* Team Header */}
             <div className="flex items-center gap-3 mb-4">
               <div className="h-10 w-10 rounded flex-shrink-0">
-                <CldImage
-                  src={teamGroup.team}
-                  alt={teamGroup.team}
-                  width={100}
-                  height={100}
-                  className="object-contain w-full h-full"
-                />
+                <TeamLogo team={teamGroup.team} />
               </div>
               <h2 className="text-xl font-bold text-sidebar-primary">{teamGroup.team}</h2>
             </div>
@@ -72,7 +62,11 @@ export default function DriversPage() {
                   key={driver.driverCode}
                   className="bg-muted/50 aspect-video rounded-lg flex items-center justify-between px-4 pl-0 relative @container"
                 >
-                  <DriverCard driver={driver} isTeamView={true} />
+                  <DriverCard
+                    driver={driver}
+                    isTeamView={true}
+                    points={standingsMap[driver.driverCode]}
+                  />
                   <DriverImage driver={driver} useTeamColor={true} />
                 </div>
               ))}
