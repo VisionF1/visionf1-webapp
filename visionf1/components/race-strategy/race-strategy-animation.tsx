@@ -42,7 +42,7 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
         const predictionPromise = (async () => {
             try {
                 const race = races.find(r => r.event_id === selectedRaceId);
-                const circuit = race?.circuit_name;
+                const circuit = race?.location;
 
                 // Hardcoded parameters for now as requested/implied, could be made dynamic later
                 const track_temp = 50.0;
@@ -99,10 +99,10 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                     return {
                         name: name,
                         totalLaps: totalLaps,
-                        stints: pred.stints.map((stint: any) => ({
+                        stints: pred.stints.map((stint: any, i: number) => ({
                             compound: stint.compound.toLowerCase(),
                             startLap: stint.start_lap - 1,
-                            endLap: stint.end_lap
+                            endLap: i === pred.stints.length - 1 ? stint.end_lap - 1 : stint.end_lap
                         }))
                     };
                 });
