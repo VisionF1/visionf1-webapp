@@ -79,22 +79,29 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
             if (response && response.predictions) {
                 const mappedStrategies: Strategy[] = response.predictions.map((pred: any, index: number) => {
                     // Calculate total laps from the last stint of the prediction
-                    const totalLaps = pred.stints[pred.stints.length - 1].end_lap;
+                    const totalLaps = pred.stints[pred.stints.length - 1].end_lap - 1;
 
                     // Generate a descriptive name based on stop count and compounds
                     // e.g., "1 Stop (Hard - Medium)" or "Fastest Strategy"
                     // Using index 0 as "Optimal"
                     let name = `Option ${index + 1}`;
-                    if (index === 0) name = "Optimal Strategy";
-                    else if (pred.stints.length > 2) name = "Aggressive (3-Stop)";
-                    else if (pred.stints.length === 1) name = "Conservative (1-Stop)";
-                    else name = `Alternative ${index}`;
 
-                    // Add probability to name if available
-                    if (pred.probability) {
-                        const prob = (pred.probability * 100).toFixed(0);
-                        name += ` (${prob}% probability)`;
-                    }
+                    const startCompound = pred.stints[0].compound.toUpperCase();
+                    const stops = pred.stints.length - 1;
+
+                    const strategyNames: Record<string, Record<number, string>> = {
+                        HARD: { 1: "Conservative", 2: "Inverted", 3: "Late-Push" },
+                        MEDIUM: { 1: "Standard", 2: "Balanced", 3: "Push" },
+                        SOFT: { 1: "Stretch", 2: "Aggressive", 3: "Sprint" }
+                    };
+
+                    const descriptiveName = strategyNames[startCompound]?.[stops] || `Alternative ${index}`;
+
+                    if (index === 0) name = "Optimal Strategy";
+                    else name = descriptiveName;
+
+                    const prob = (pred.probability * 100).toFixed(0);
+                    name += ` (${prob}% probability)`;
 
                     return {
                         name: name,
