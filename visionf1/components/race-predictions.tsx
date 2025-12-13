@@ -240,10 +240,8 @@ export function RacePredictionsView({ drivers, nextRace }: RacePredictionsViewPr
           </h2>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-8 items-end">
-            <div className="flex flex-col gap-2 w-full sm:w-[320px]">
-              <div className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 items-center text-muted-foreground bg-muted/50 cursor-not-allowed">
-                {nextRace ? `${nextRace.season} R${nextRace.round} • ${nextRace.race_name}` : "Loading next race..."}
-              </div>
+            <div className="flex h-9 w-full sm:w-[320px] rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 items-center text-muted-foreground bg-muted/50 cursor-not-allowed">
+              {nextRace ? `R${nextRace.round ?? '?'} • ${nextRace.season} • ${nextRace.race_name}` : "Loading next race..."}
             </div>
 
             <GenericComboBox
@@ -255,10 +253,11 @@ export function RacePredictionsView({ drivers, nextRace }: RacePredictionsViewPr
               placeholder="Select Weather"
               search_label="Weather"
               width="w-[320px]"
+              className="h-9"
             />
 
             <Button
-              className="w-full sm:w-auto min-w-[140px] px-4 py-2 bg-brand text-sm text-black rounded-md hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+              className="w-full sm:w-auto min-w-[140px] px-4 py-2 bg-brand text-sm text-black rounded-md hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors h-10"
               onClick={handlePredict}
               disabled={!nextRace || !selectedWeather || isLoading}
             >
