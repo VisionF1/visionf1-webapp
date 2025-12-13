@@ -141,6 +141,23 @@ export async function predictRace(race_name: string, weather_scenario: string) {
   return res.json();
 }
 
+// POST: /predict-quali
+export async function predictQuali(race_name: string, weather_scenario: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_PREDICTIONS_API_URL}/predict-quali`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      race_name,
+      weather_scenario,
+    }),
+    next: { revalidate: 0 }, // No cache for predictions
+  });
+  if (!res.ok) throw new Error("Failed to fetch race prediction");
+  return res.json();
+}
+
 // POST: /predict-strategy
 export async function predictStrategy(
   circuit: string,

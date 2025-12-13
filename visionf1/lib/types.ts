@@ -99,6 +99,26 @@ export type RacePredictionRow = {
   confidence: number;
 };
 
+export type QualiPrediction = {
+  driver: string;
+  team: string;
+  race_name: string;
+  pred_rank: number;
+  pred_best_quali_lap: string;
+  gap_to_pole: string;
+};
+
+export type QualiPredictionRow = {
+  driverCode: string;
+  driverFirstName: string;
+  driverLastName: string;
+  teamName: string;
+  teamCode: string;
+  rank: number;
+  bestQualiLap: string;
+  gapToPole: string;
+};
+
 export type CleanAirRacePaceRow = {
   driver: string;
   driver_first_name: string;

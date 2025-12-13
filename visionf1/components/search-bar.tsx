@@ -46,6 +46,7 @@ export function SearchBar() {
   const pages = [
     { name: "Home", url: "/", icon: HomeIcon, type: "Page" },
     { name: "Race Predictions", url: "/models/race-predictions", icon: Bot, type: "Page" },
+    { name: "Quali Predictions", url: "/models/quali-predictions", icon: Bot, type: "Page" },
     { name: "Race Strategy", url: "/models/race-strategy", icon: Bot, type: "Page" },
     { name: "Race Pace", url: "/analytics/race-pace", icon: ChartLineIcon, type: "Page" },
     { name: "Clean Air Race Pace", url: "/analytics/clean-air-race-pace", icon: ChartLineIcon, type: "Page" },

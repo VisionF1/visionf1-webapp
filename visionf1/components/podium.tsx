@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 import { CldImage } from "next-cloudinary";
 import { cn } from "@/lib/utils";
-import { RacePredictionRow } from "@/lib/types";
+import { RacePredictionRow, QualiPredictionRow } from "@/lib/types";
 
 interface PodiumProps {
-  drivers: RacePredictionRow[];
+  drivers: (RacePredictionRow | QualiPredictionRow)[];
 }
 
 export function Podium({ drivers }: PodiumProps) {
@@ -28,6 +28,9 @@ export function Podium({ drivers }: PodiumProps) {
               ? "bg-gradient-to-t from-gray-500/40 to-gray-400/10 border-t-4 border-gray-400 text-gray-400 shadow-[0_0_30px_rgba(156,163,175,0.1)]"
               : "bg-gradient-to-t from-orange-700/40 to-orange-600/10 border-t-4 border-orange-600 text-orange-600 shadow-[0_0_30px_rgba(234,88,12,0.1)]";
           const delay = position === 1 ? 0.4 : position === 2 ? 0.2 : 0.6;
+
+          const displayText = (driver as QualiPredictionRow).bestQualiLap
+            ?? (`${(driver as RacePredictionRow).score?.toFixed(3) ?? (driver as RacePredictionRow).predictedPosition.toFixed(3)} pts`);
 
           return (
             <motion.div
@@ -68,7 +71,7 @@ export function Podium({ drivers }: PodiumProps) {
                 >
                   <span className="text-4xl md:text-6xl font-black opacity-40 select-none mix-blend-overlay">{position}</span>
                   <div className="mt-auto mb-4 text-xs font-mono opacity-70 font-semibold bg-black/20 px-2 py-1 rounded">
-                    {driver.score?.toFixed(3) ?? driver.predictedPosition.toFixed(3)} pts
+                    {displayText}
                   </div>
                 </motion.div>
               </div>

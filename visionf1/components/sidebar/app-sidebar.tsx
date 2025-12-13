@@ -51,6 +51,10 @@ const data = {
           url: "/models/race-predictions",
         },
         {
+          title: "Quali Predictions",
+          url: "/models/quali-predictions",
+        },
+        {
           title: "Race Strategy",
           url: "/models/race-strategy",
         },
