@@ -51,12 +51,16 @@ const data = {
           url: "/models/race-predictions",
         },
         {
-          title: "Pit Probabilities",
-          url: "#",
+          title: "Quali Predictions",
+          url: "/models/quali-predictions",
+        },
+        {
+          title: "Race + Quali",
+          url: "/models/race-quali-predictions",
         },
         {
           title: "Race Strategy",
-          url: "#",
+          url: "/models/race-strategy",
         },
       ],
     },
@@ -68,6 +72,14 @@ const data = {
         {
           title: "Race Pace",
           url: "/analytics/race-pace",
+        },
+        {
+          title: "Clean Air Race Pace",
+          url: "/analytics/clean-air-race-pace",
+        },
+        {
+          title: "Lap Time Distributions",
+          url: "/analytics/lap-time-distributions",
         },
         {
           title: "Quali Head to Head",
