@@ -84,7 +84,7 @@ export function RaceStrategyAnimation({ races }: RaceStrategyAnimationProps) {
                     // Generate a descriptive name based on stop count and compounds
                     // e.g., "1 Stop (Hard - Medium)" or "Fastest Strategy"
                     // Using index 0 as "Optimal"
-                    let name = `Option ${index + 1}`;
+                    let name;
 
                     const startCompound = pred.stints[0].compound.toUpperCase();
                     const stops = pred.stints.length - 1;

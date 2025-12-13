@@ -6,7 +6,7 @@ import { DataTable } from "@/components/data-table";
 import { Podium } from "@/components/podium";
 import { CldImage } from "next-cloudinary";
 import { RacePredictionRow, QualiPredictionRow, Driver } from "@/lib/types";
-import { Download, Frown, Info } from "lucide-react";
+import { Download, Frown } from "lucide-react";
 import confetti from "canvas-confetti";
 import { Button } from "@/components/ui/button";
 import { GenericComboBox } from "@/components/ui/combobox";

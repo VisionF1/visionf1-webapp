@@ -1,7 +1,6 @@
 "use client"
 
 import { useMemo, useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 import { useDriverNavigation } from "@/hooks/use-driver-navigation"
 import { GenericComboBox } from "@/components/ui/combobox"
 import { Spinner } from "@/components/ui/spinner"
@@ -165,7 +164,6 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export default function CleanAirRacePace() {
-  const router = useRouter()
 
   const { navigateToDriver } = useDriverNavigation()
 

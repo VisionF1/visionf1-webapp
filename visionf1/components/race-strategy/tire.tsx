@@ -12,12 +12,6 @@ interface TireProps {
 }
 
 export function Tire({ compound, className, duration = 2, delay = 0 }: TireProps) {
-    const colors = {
-        soft: "text-[#FF3B30]", // Red
-        medium: "text-[#FFCC00]", // Yellow
-        hard: "text-[#F2F2F7]", // White
-    };
-
     // Calculate rotations based on duration (e.g., 2 rotations per second)
     const rotationAngle = duration * 360 * 2;
 

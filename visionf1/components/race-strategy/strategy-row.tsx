@@ -28,12 +28,6 @@ export function StrategyRow({ strategy, index }: StrategyRowProps) {
         hard: "bg-[#F2F2F7]",
     };
 
-    const borderColors = {
-        soft: "border-[#FF3B30]",
-        medium: "border-[#FFCC00]",
-        hard: "border-[#F2F2F7]",
-    };
-
     return (
         <div className="flex flex-col gap-2 py-4 pl-2 pr-8">
             <div className="flex items-center justify-between">
