@@ -79,26 +79,128 @@ export async function getRacePaceByDriver(eventId: string) {
   return res.json();
 }
 
+// GET: /clean-air-race-pace by season and round
+export async function getCleanAirRacePace(season: number, round: number) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/clean-air-race-pace?season=${season}&round=${round}`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch race pace");
+  return res.json();
+}
+
+// GET: /clean-air-race-pace by event ID
+export async function getCleanAirRacePaceByDriver(eventId: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/clean-air-race-pace?event_id=${eventId}`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch race pace");
+  return res.json();
+}
+
+// GET: /lap-time-distributions by season and round
+export async function getLapTimeDistributions(season: number, round: number) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/lap-time-distributions?season=${season}&round=${round}`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch race pace");
+  return res.json();
+}
+
+// GET: /lap-time-distributions by event ID
+export async function getLapTimeDistributionsByDriver(eventId: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/lap-time-distributions?event_id=${eventId}`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch race pace");
+  return res.json();
+}
+
+// GET: /config-next-race
+export async function getConfigNextRace() {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_PREDICTIONS_API_URL}/config-next-race`, {
+    next: { revalidate: 3600 },
+  });
+  if (!res.ok) throw new Error("Failed to fetch race pace");
+  return res.json();
+}
+
 // POST: /predict-race
-export async function predictRace(drivers: Array<{
-  driver: string;
-  team: string;
-  race_name: string;
-  year: number;
-  session_air_temp: number;
-  session_track_temp: number;
-  session_humidity: number;
-  session_rainfall: number;
-  circuit_type: string;
-}>) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/predict-race`, {
+export async function predictRace(race_name: string, weather_scenario: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_PREDICTIONS_API_URL}/predict-race`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(drivers),
+    body: JSON.stringify({
+      race_name,
+      weather_scenario,
+    }),
     next: { revalidate: 0 }, // No cache for predictions
   });
   if (!res.ok) throw new Error("Failed to fetch race prediction");
+  return res.json();
+}
+
+// POST: /predict-quali
+export async function predictQuali(race_name: string, weather_scenario: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_PREDICTIONS_API_URL}/predict-quali`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      race_name,
+      weather_scenario,
+    }),
+    next: { revalidate: 0 }, // No cache for predictions
+  });
+  if (!res.ok) throw new Error("Failed to fetch race prediction");
+  return res.json();
+}
+
+// POST: /predict-all
+export async function predictAll(race_name: string, weather_scenario: string) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_PREDICTIONS_API_URL}/predict-all`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      race_name,
+      weather_scenario,
+    }),
+    next: { revalidate: 0 }, // No cache for predictions
+  });
+  if (!res.ok) throw new Error("Failed to fetch race prediction");
+  return res.json();
+}
+
+// POST: /predict-strategy
+export async function predictStrategy(
+  circuit: string,
+  track_temp: number,
+  air_temp: number,
+  compounds: string[],
+  max_stops: number,
+  fia_rule: boolean,
+  top_k: number,
+) {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_VISIONF1_API_URL}/predict-strategy`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      circuit,
+      track_temp,
+      air_temp,
+      compounds,
+      max_stops,
+      fia_rule,
+      top_k,
+    }),
+    next: { revalidate: 0 }, // No cache for predictions
+  });
+  if (!res.ok) throw new Error("Failed to fetch race strategy prediction");
   return res.json();
 }

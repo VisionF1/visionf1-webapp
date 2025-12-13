@@ -32,45 +32,10 @@ export const CIRCUIT_TYPE_MAP: Record<string, string> = {
     "Dutch Grand Prix": "hybrid",
 };
 
-export const WEATHER_SCENARIOS = {
-    "dry": {
-        label: "Dry (Ideal)",
-        session_air_temp: 26.0,
-        session_track_temp: 35.0,
-        session_humidity: 45.0,
-        session_rainfall: 0,
-        description: "Dry and ideal conditions"
-    },
-    "hot": {
-        label: "Hot (Thermal Stress)",
-        session_air_temp: 35.0,
-        session_track_temp: 50.0,
-        session_humidity: 70.0,
-        session_rainfall: 0,
-        description: "Very hot conditions (thermal stress)"
-    },
-    "wet": {
-        label: "Wet (Light Rain)",
-        session_air_temp: 18.0,
-        session_track_temp: 22.0,
-        session_humidity: 85.0,
-        session_rainfall: 1,
-        description: "Wet conditions (light rain)"
-    },
-    "storm": {
-        label: "Storm (Extreme)",
-        session_air_temp: 15.0,
-        session_track_temp: 18.0,
-        session_humidity: 95.0,
-        session_rainfall: 1,
-        description: "Extreme conditions (storm)"
-    },
-    "cold": {
-        label: "Cold (Winter)",
-        session_air_temp: 12.0,
-        session_track_temp: 15.0,
-        session_humidity: 60.0,
-        session_rainfall: 0,
-        description: "Cold conditions (winter)"
-    }
-};
+export const WEATHER_OPTIONS = [
+    { key: "dry", label: "Dry" },
+    { key: "hot", label: "Hot" },
+    { key: "wet", label: "Wet" },
+    { key: "storm", label: "Storm" },
+    { key: "cold", label: "Cold" },
+];

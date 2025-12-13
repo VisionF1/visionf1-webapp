@@ -69,12 +69,12 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
     // Run once after mounting and then every second
     setTimeLeft(calculateTimeLeft());
     setIsLive(checkIfLive());
-    
+
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
       setIsLive(checkIfLive());
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, [calculateTimeLeft, checkIfLive]);
 
@@ -121,14 +121,14 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2 text-sm text-foreground">
             <MapPin className="h-3 w-3 @md:h-4 @md:w-4 @lg:h-5 @lg:w-5 @xl:h-6 @xl:w-6 text-muted-foreground mb-1 @xs:mb-3" />
             <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm @lg:text-base @xl:text-lg text-foreground mb-1 @xs:mb-3 truncate">
               {gp.circuit}
             </p>
           </div>
-          
+
           <div className="flex items-center gap-2 text-[0.6rem] @md:text-sm @lg:text-base @xl:text-lg text-foreground">
             <Calendar className="h-3 w-3 @md:h-4 @md:w-4 @lg:h-5 @lg:w-5 @xl:h-6 @xl:w-6 text-muted-foreground" />
             <time dateTime={gp.startDate}>{fmt(start)}</time>
@@ -136,14 +136,14 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
             <time dateTime={gp.endDate}>{fmt(end)}</time>
           </div>
         </div>
-        
+
         {/* Circuit Image */}
         <div className="flex-shrink-0">
           <Dialog>
             <DialogTrigger asChild>
               <button
                 type="button"
-                className="w-18 h-13 @xs:w-24 @xs:h-16 @sm:w-38 @sm:h-26 @md:w-42 @md:h-28 @lg:w-50 @lg:h-30 @xl:w-56 @xl:h-36 rounded-md"
+                className="w-18 h-13 @xs:w-26 @xs:h-18 @sm:w-38 @sm:h-26 @md:w-42 @md:h-28 @lg:w-50 @lg:h-30 @xl:w-56 @xl:h-36 rounded-md"
                 aria-label={`Open ${gp.circuit} image`}
               >
                 <div className="relative w-full h-full">

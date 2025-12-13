@@ -5,6 +5,7 @@ import { CldImage } from "next-cloudinary";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import { Race } from "@/lib/types";
+import { useDriverNavigation } from "@/hooks/use-driver-navigation";
 import {
   Dialog,
   DialogTrigger,
@@ -30,6 +31,7 @@ export function RaceCard({
   driverCodeToTeamColor: Record<string, string>;
 }) {
   const router = useRouter();
+  const { navigateToDriver } = useDriverNavigation();
   const topThreeDrivers = race.driver_names.slice(0, 3);
   const topThreeDriverCodes = race.driver_codes.slice(0, 3);
   const raceDate = new Date(race.event_date);
@@ -40,15 +42,8 @@ export function RaceCard({
   const isLive = now >= raceStart && now <= raceEnd;
   const isUpcoming = !isLive && isNextUpcoming;
 
-  function getDriverSlug(driverName: string) {
-    const [firstName, ...lastNameParts] = driverName.split(" ");
-    const lastName = lastNameParts.join(" ");
-    return `${firstName.toLowerCase().replace(/ü/g, "u")}-${lastName.toLowerCase().replace(/ü/g, "u")}`;
-  }
-
   function handleDriverClick(driverName: string) {
-    const slug = getDriverSlug(driverName);
-    router.push(`/drivers/${slug}`);
+    navigateToDriver(driverName);
   }
 
   function renderDriverRow(driverName: string, actualIndex: number) {
@@ -110,7 +105,15 @@ export function RaceCard({
 
       <div>
         <div className="flex items-center gap-2 mb-2">
-          <Image src={`https://flagcdn.com/${race.country_code.toLocaleLowerCase()}.svg`} alt={race.country} width={24} height={16} className="object-contain flex-shrink-0" />
+          <div className="relative w-6 h-4 flex-shrink-0">
+            <Image
+              src={`https://flagcdn.com/${race.country_code.toLocaleLowerCase()}.svg`}
+              alt={race.country}
+              fill
+              className="object-contain"
+              sizes="24px"
+            />
+          </div>
           <h3 className="text-xl md:text-2xl font-bold text-foreground">{race.event_name}</h3>
         </div>
         <p className="text-xs text-muted-foreground uppercase tracking-widest">
@@ -144,19 +147,19 @@ export function RaceCard({
             <span>View full standings</span>
             <ChevronDown className="w-4 h-4 transition-transform duration-200" />
           </CollapsibleTrigger>
-          
+
           <CollapsibleContent className="space-y-1">
             <div className="grid grid-cols-2 gap-2 pt-2">
               {/* Left column - positions 1-10 */}
               <div className="space-y-1">
-                {race.driver_names.slice(0, 10).map((driverName, index) => 
+                {race.driver_names.slice(0, 10).map((driverName, index) =>
                   renderDriverRow(driverName, index)
                 )}
               </div>
 
               {/* Right column - positions 11+ */}
               <div className="space-y-1">
-                {race.driver_names.slice(10).map((driverName, index) => 
+                {race.driver_names.slice(10).map((driverName, index) =>
                   renderDriverRow(driverName, index + 10)
                 )}
               </div>

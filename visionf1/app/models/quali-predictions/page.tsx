@@ -1,8 +1,7 @@
 import { getDrivers, getEvents, getConfigNextRace } from "@/lib/api-requests";
-import { RacePredictionsView } from "@/components/race-predictions";
+import { QualiPredictionsView } from "@/components/quali-predictions";
 
-
-export default async function RacePredictions() {
+export default async function QualiPredictionsPage() {
   const drivers = (await getDrivers()).data;
   const currentYear = new Date().getFullYear();
   const races = (await getEvents(currentYear)).data;
@@ -18,6 +17,6 @@ export default async function RacePredictions() {
   } : null;
 
   return (
-    <RacePredictionsView drivers={drivers} races={races} nextRace={nextRace} />
+    <QualiPredictionsView drivers={drivers} nextRace={nextRace} />
   );
 }

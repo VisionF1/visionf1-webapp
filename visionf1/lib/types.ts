@@ -83,6 +83,8 @@ export type RacePrediction = {
   team: string;
   predicted_position: number;
   rank: number;
+  score: number;
+  confidence: number;
 };
 
 export type RacePredictionRow = {
@@ -93,4 +95,71 @@ export type RacePredictionRow = {
   teamCode: string;
   predictedPosition: number;
   rank: number;
+  score: number;
+  confidence: number;
+};
+
+export type QualiPrediction = {
+  driver: string;
+  team: string;
+  race_name: string;
+  pred_rank: number;
+  pred_best_quali_lap: string;
+  gap_to_pole: string;
+};
+
+export type QualiPredictionRow = {
+  driverCode: string;
+  driverFirstName: string;
+  driverLastName: string;
+  teamName: string;
+  teamCode: string;
+  rank: number;
+  bestQualiLap: string;
+  gapToPole: string;
+};
+
+export type CleanAirRacePaceRow = {
+  driver: string;
+  driver_first_name: string;
+  driver_last_name: string;
+  driver_position: number;
+  driver_color: string;
+  team: string;
+  team_name: string;
+  team_color: string;
+  clean_air_race_pace_id: string;
+  clean_air_race_pace_position: number;
+  avg_laptime_clean_air: number;
+  std_laptime_clean_air: number;
+  clean_air_laps_count: number;
+  event: string;
+  season: number;
+  round: number;
+};
+
+export type Lap = {
+  lap_number: number;
+  lap_time: number;
+  compound: string | null;
+  tyre_life: number | null;
+};
+
+export type LapTimeDistributionRow = {
+  driver: string;
+  driver_first_name: string;
+  driver_last_name: string;
+  driver_position: number | null;
+  driver_color: string;
+  team: string | null;
+  team_name: string | null;
+  team_color: string;
+  lap_time_distribution_id: string;
+  race_pace_position: number | null;
+  avg_laptime: number | null;
+  std_laptime: number | null;
+  laps: Lap[];
+  event: string;
+  season: number;
+  round: number;
 };

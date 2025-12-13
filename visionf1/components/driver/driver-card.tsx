@@ -4,34 +4,15 @@ import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { CldImage } from "next-cloudinary"
 import { Driver } from "@/lib/types"
-import { useEffect, useState } from "react"
-import { getDriverStandings } from "@/lib/api-requests"
-import { DriverStanding } from "@/lib/types"
 
+interface DriverCardProps {
+  driver: Driver;
+  isTeamView?: boolean;
+  points?: number;
+}
 
-export function DriverCard({ driver, isTeamView = false }: { driver: Driver; isTeamView?: boolean }) {
+export function DriverCard({ driver, isTeamView = false, points }: DriverCardProps) {
   const router = useRouter()
-  const [driverStanding, setDriverStanding] = useState<DriverStanding | null>(null)
-
-  useEffect(() => {
-    if (isTeamView) {
-      const fetchStandings = async () => {
-        try {
-          const response = await getDriverStandings()
-          const driverData = response.data.find(
-            (d: DriverStanding) => d.driverCode === driver.driverCode
-          )
-          if (driverData) {
-            setDriverStanding(driverData)
-          }
-        } catch (error) {
-          console.error("Error fetching standings:", error)
-        }
-      }
-
-      fetchStandings()
-    }
-  }, [driver.driverCode, isTeamView])
 
   const handleDriverClick = () => {
     const firstName = driver.firstName.toLowerCase().replace(/ü/g, 'u')
@@ -56,7 +37,7 @@ export function DriverCard({ driver, isTeamView = false }: { driver: Driver; isT
       <div className="text-lg @xs:text-xl @sm:text-2xl @md:text-3xl @lg:text-4xl @xl:text-5xl @2xl:text-6xl @4xl:text-7xl font-black text-primary/50 mb-0 @xs:mb-1 @sm:mb-2 @md:mb-4">
         {driver.driverNumber}
       </div>
-      
+
       {/* Nationality */}
       <div className="flex items-center gap-2 mt-3">
         <div className="h-8 w-8 @xs:h-9 @xs:w-9 @sm:h-10 @sm:w-10 @md:h-11 @md:w-11 @lg:h-12 @lg:w-12 @xl:h-14 @xl:w-14 @2xl:h-16 @2xl:w-16 @4xl:h-20 @4xl:w-20 rounded">
@@ -68,13 +49,13 @@ export function DriverCard({ driver, isTeamView = false }: { driver: Driver; isT
             className="object-contain w-full h-full"
           />
         </div>
-        
+
         {/* Nationality Name */}
         <span className="text-xs @xs:text-xs @sm:text-base @md:text-lg @lg:text-xl @xl:text-2xl @2xl:text-3xl text-muted-foreground">
           {driver.driverNationality}
         </span>
       </div>
-      
+
       {/* Team and Logo OR Driver Points (conditional) */}
       {!isTeamView ? (
         <div className="flex items-center gap-2 mt-2">
@@ -88,7 +69,7 @@ export function DriverCard({ driver, isTeamView = false }: { driver: Driver; isT
               className="object-contain w-full h-full"
             />
           </div>
-          
+
           {/* Team Name */}
           <span className="text-sm @xs:text-base @sm:text-lg @md:text-xl @lg:text-2xl @xl:text-3xl @2xl:text-4xl @4xl:text-5xl text-sidebar-primary">
             {driver.team}
@@ -99,7 +80,7 @@ export function DriverCard({ driver, isTeamView = false }: { driver: Driver; isT
           {/* Driver Points */}
           <div className="flex items-baseline gap-1">
             <span className="text-sm @xs:text-base @sm:text-lg @md:text-xl @lg:text-2xl @xl:text-3xl @2xl:text-4xl @4xl:text-5xl font-black text-primary">
-              {driverStanding?.points ?? 0}
+              {points ?? 0}
             </span>
             <span className="text-xs @xs:text-xs @sm:text-sm @md:text-base @lg:text-lg @xl:text-xl @2xl:text-2xl text-muted-foreground">
               pts
@@ -121,12 +102,12 @@ export function DriverImage({ driver, useTeamColor = false }: { driver: Driver; 
     router.push(driverPath)
   }
 
-  const bgColor = useTeamColor && driver.teamColor 
+  const bgColor = useTeamColor && driver.teamColor
     ? (driver.teamColor.startsWith('#') ? driver.teamColor : `#${driver.teamColor}`)
     : undefined
 
   return (
-    <div 
+    <div
       className={`absolute right-4 top-1/2 -translate-y-1/2 aspect-square h-20 w-20 @2xs:h-24 @2xs:w-24 @xs:h-28 @xs:w-28 @sm:h-36 @sm:w-36 @md:h-42 @md:w-42 @lg:h-46 @lg:w-46 @xl:h-56 @xl:w-56 @4xl:h-80 @4xl:w-80 rounded-full overflow-hidden border-2 border-sidebar-primary cursor-pointer hover:opacity-80 transition-opacity ${!useTeamColor ? 'bg-brand' : ''}`}
       style={bgColor ? { backgroundColor: bgColor } : undefined}
       onClick={handleDriverClick}
@@ -140,5 +121,17 @@ export function DriverImage({ driver, useTeamColor = false }: { driver: Driver; 
         sizes="(max-width: 640px) 200px, (max-width: 1024px) 200px, 300px"
       />
     </div>
+  )
+}
+
+export function TeamLogo({ team }: { team: string }) {
+  return (
+    <CldImage
+      src={team}
+      alt={team}
+      width={100}
+      height={100}
+      className="object-contain w-full h-full"
+    />
   )
 }
