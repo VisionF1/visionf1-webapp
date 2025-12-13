@@ -83,6 +83,8 @@ export type RacePrediction = {
   team: string;
   predicted_position: number;
   rank: number;
+  score: number;
+  confidence: number;
 };
 
 export type RacePredictionRow = {
@@ -93,6 +95,8 @@ export type RacePredictionRow = {
   teamCode: string;
   predictedPosition: number;
   rank: number;
+  score: number;
+  confidence: number;
 };
 
 export type CleanAirRacePaceRow = {

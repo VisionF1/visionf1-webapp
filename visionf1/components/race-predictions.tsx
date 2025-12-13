@@ -14,7 +14,7 @@ import { predictRace } from "@/lib/api-requests";
 import { Spinner } from "@/components/ui/spinner";
 import Image from "next/image";
 import { exportDataAsCSV } from "@/lib/csv-utils";
-import { CIRCUIT_TYPE_MAP, WEATHER_SCENARIOS } from "@/lib/prediction-data";
+import { WEATHER_OPTIONS } from "@/lib/prediction-data";
 
 
 interface RacePredictionsViewProps {
@@ -28,13 +28,15 @@ export function exportPredictionsAsCSV(data: RacePredictionRow[], filename: stri
     { key: 'rank', label: 'Position' },
     { key: 'driver_name', label: 'Driver' },
     { key: 'teamName', label: 'Team' },
-    { key: 'predictedPosition', label: 'Prediction Score' },
+    { key: 'score', label: 'Score' },
+    { key: 'confidence', label: 'Confidence (%)' },
   ];
 
   const fieldTransformers = {
     driver_name: (value: any, row: RacePredictionRow) =>
       `${row.driverFirstName} ${row.driverLastName}`,
-    predictedPosition: (value: number) => value?.toFixed(3) || 'N/A',
+    score: (value: number) => value?.toFixed(3) || 'N/A',
+    confidence: (value: number) => value?.toFixed(1) || 'N/A',
   };
 
   // Add calculated field for driver name
@@ -97,15 +99,26 @@ const columns: ColumnDef<RacePredictionRow>[] = [
     },
   },
   {
-    accessorKey: "predictedPosition",
+    accessorKey: "score",
     header: "Prediction Score",
-    cell: ({ row }) => row.original.predictedPosition.toFixed(3),
+    cell: ({ row }) => row.original.score?.toFixed(3) || "-",
+  },
+  {
+    accessorKey: "confidence",
+    header: "Confidence",
+    cell: ({ row }) => row.original.confidence ? `${row.original.confidence.toFixed(1)}%` : "-",
   },
 ];
 
-export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps) {
+
+interface RacePredictionsViewProps {
+  drivers: Driver[];
+  races: any[];
+  nextRace: { race_name: string; season: number; round?: number } | null;
+}
+
+export function RacePredictionsView({ drivers, nextRace }: RacePredictionsViewProps) {
   const [predictions, setPredictions] = useState<RacePredictionRow[]>([]);
-  const [selectedRaceId, setSelectedRaceId] = useState<string>("");
   const [selectedWeather, setSelectedWeather] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState("Generating predictions...");
@@ -151,7 +164,7 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
   }, [predictions]);
 
   const handlePredict = async () => {
-    if (!selectedRaceId || !selectedWeather) return;
+    if (!nextRace || !selectedWeather) return;
 
     setIsLoading(true);
     setPredictions([]);
@@ -168,26 +181,9 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
     // Start the API call in the background
     const predictionPromise = (async () => {
       try {
-        const selectedRace = races.find(r => r.event_id === selectedRaceId);
-        const weather = WEATHER_SCENARIOS[selectedWeather as keyof typeof WEATHER_SCENARIOS];
-        const circuitType = CIRCUIT_TYPE_MAP[selectedRace?.event_name] || "hybrid";
-
-        const input = drivers
-          .filter((d: any) => d.driverCode || d.driver)
-          .map((d: any) => ({
-            driver: (d.driverCode ?? d.driver ?? "Unknown Driver").toString(),
-            team: d.team ?? d.teamCode ?? "Unknown Team",
-            race_name: selectedRace?.event_name || "Unknown Race",
-            year: selectedRace?.season || new Date().getFullYear(),
-            session_air_temp: weather.session_air_temp,
-            session_track_temp: weather.session_track_temp,
-            session_humidity: weather.session_humidity,
-            session_rainfall: weather.session_rainfall,
-            circuit_type: circuitType,
-          }));
-
-        const response = await predictRace(input);
-        return response.predictions;
+        console.log("Predicting for:", nextRace.race_name, "Weather:", selectedWeather);
+        const response = await predictRace(nextRace.race_name, selectedWeather);
+        return response.race_predictions;
       } catch (error) {
         console.error("Failed to predict race:", error);
         return null;
@@ -212,8 +208,10 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
           driverLastName: driver?.lastName ?? "",
           teamName: pred.team ?? driver?.team ?? "Unknown Team",
           teamCode: driver?.teamCode,
-          predictedPosition: pred.predicted_position,
-          rank: pred.rank,
+          predictedPosition: pred.final_position,
+          rank: pred.final_position,
+          score: pred.score,
+          confidence: pred.confidence,
         };
       }).sort((a: any, b: any) => a.rank - b.rank);
 
@@ -225,19 +223,11 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
     setIsLoading(false);
   };
 
-  const selectedRaceName = selectedRaceId
-    ? races.find(r => r.event_id === selectedRaceId)?.event_name
-    : "";
-
-  const selectedRaceYear = selectedRaceId
-    ? races.find(r => r.event_id === selectedRaceId)?.season
-    : "";
-
   const handleExportCSV = async () => {
-    if (predictions.length === 0) return;
+    if (predictions.length === 0 || !nextRace) return;
 
-    const weatherLabel = selectedWeather ? WEATHER_SCENARIOS[selectedWeather as keyof typeof WEATHER_SCENARIOS]?.label : 'unknown';
-    const filename = `race_prediction_${selectedRaceYear}_${selectedRaceName}_${weatherLabel}.csv`.replace(/\s+/g, '_');
+    const weatherLabel = WEATHER_OPTIONS.find(w => w.key === selectedWeather)?.label || 'unknown';
+    const filename = `race_prediction_${nextRace.season}_${nextRace.race_name}_${weatherLabel}.csv`.replace(/\s+/g, '_');
     await exportPredictionsAsCSV(predictions, filename);
   };
 
@@ -246,23 +236,18 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
       <div className="bg-popover min-h-min flex-1 rounded-xl md:min-h-min p-4">
         <div className="w-full overflow-x-auto">
           <h2 className="text-lg font-semibold pb-6">
-            Race Predictions {selectedRaceName && `- ${selectedRaceYear} ${selectedRaceName}`}
+            Race Predictions {nextRace && `- ${nextRace.season} ${nextRace.race_name}`}
           </h2>
 
           <div className="flex flex-col sm:flex-row gap-4 mb-8 items-end">
-            <GenericComboBox
-              items={races}
-              value={selectedRaceId}
-              onChange={(val) => setSelectedRaceId(val || "")}
-              getLabel={(race) => `R${race.round} • ${race.event_name}`}
-              getValue={(race) => race.event_id}
-              placeholder="Select Grand Prix"
-              search_label="Grand Prix"
-              width="w-[320px]"
-            />
+            <div className="flex flex-col gap-2 w-full sm:w-[320px]">
+              <div className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 items-center text-muted-foreground bg-muted/50 cursor-not-allowed">
+                {nextRace ? `${nextRace.season} R${nextRace.round} • ${nextRace.race_name}` : "Loading next race..."}
+              </div>
+            </div>
 
             <GenericComboBox
-              items={Object.entries(WEATHER_SCENARIOS).map(([key, value]) => ({ key, ...value }))}
+              items={WEATHER_OPTIONS}
               value={selectedWeather}
               onChange={(val) => setSelectedWeather(val || "")}
               getLabel={(item) => item.label}
@@ -275,7 +260,7 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
             <Button
               className="w-full sm:w-auto min-w-[140px] px-4 py-2 bg-brand text-sm text-black rounded-md hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
               onClick={handlePredict}
-              disabled={!selectedRaceId || !selectedWeather || isLoading}
+              disabled={!nextRace || !selectedWeather || isLoading}
             >
               Predict Race
             </Button>
@@ -308,7 +293,7 @@ export function RacePredictionsView({ drivers, races }: RacePredictionsViewProps
             </div>
           ) : (
             <div className="flex flex-col justify-center items-center text-center h-80 gap-10">
-              <div className="text-lg">Select a Grand Prix and weather conditions to generate a race prediction.</div>
+              <div className="text-lg">Select weather conditions to generate a race prediction for {nextRace?.race_name || "the next Grand Prix"}.</div>
               <div className="text-sm text-muted-foreground max-w-md">
                 These predictions are generated by AI using advanced machine learning models trained by the VisionF1 team.
               </div>
