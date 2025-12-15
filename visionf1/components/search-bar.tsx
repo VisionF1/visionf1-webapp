@@ -52,6 +52,8 @@ export function SearchBar() {
     { name: "Race Pace", url: "/analytics/race-pace", icon: ChartLineIcon, type: "Page" },
     { name: "Clean Air Race Pace", url: "/analytics/clean-air-race-pace", icon: ChartLineIcon, type: "Page" },
     { name: "Lap Time Distributions", url: "/analytics/lap-time-distributions", icon: ChartLineIcon, type: "Page" },
+    { name: "Race Head to Head", url: "/analytics/race-head-to-head", icon: ChartLineIcon, type: "Page" },
+    { name: "Clean Air Head to Head", url: "/analytics/clean-air-head-to-head", icon: ChartLineIcon, type: "Page" },
     { name: "Calendar", url: "/calendar", icon: Calendar, type: "Page" },
     { name: "Drivers", url: "/drivers", icon: Users, type: "Page" },
     { name: "About", url: "/about", icon: InfoIcon, type: "Page" },
