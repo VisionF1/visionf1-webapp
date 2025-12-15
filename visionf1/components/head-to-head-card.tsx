@@ -1,7 +1,7 @@
 "use client";
 
-import { CldImage } from "next-cloudinary"
-import { RacePaceRow } from "@/lib/types"
+import { CldImage } from "next-cloudinary";
+import { RacePaceRow } from "@/lib/types";
 
 interface HeadToHeadCardProps {
   winner: RacePaceRow;
@@ -82,7 +82,7 @@ export function HeadToHeadCard({ winner, loser, delta }: HeadToHeadCardProps) {
 
         {/* Loser Driver Image (Behind Winner, shadowed/smaller) - Only if loser exists */}
         {loser && (
-          <div className="absolute right-[15%] bottom-0 h-[80%] w-[35%] z-15 flex items-end justify-end opacity-80 mix-blend-multiply brightness-70 select-none pointer-events-none">
+          <div className="absolute right-[15%] bottom-0 h-[80%] w-[35%] z-10 flex items-end justify-end opacity-80 mix-blend-multiply brightness-70 select-none pointer-events-none">
             <CldImage
               src={loser.driver}
               alt={loser.driver_last_name}

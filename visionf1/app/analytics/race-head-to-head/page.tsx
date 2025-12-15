@@ -225,5 +225,5 @@ export default function RaceHeadToHead() {
         </div>
       </div>
     </div>
-  )
+  );
 }
