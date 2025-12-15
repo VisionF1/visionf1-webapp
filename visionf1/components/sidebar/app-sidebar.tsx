@@ -85,6 +85,10 @@ const data = {
           title: "Race Head to Head",
           url: "/analytics/race-head-to-head",
         },
+        {
+          title: "Clean Air Head to Head",
+          url: "/analytics/clean-air-head-to-head",
+        },
       ],
     },
     {
