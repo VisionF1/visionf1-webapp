@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { BrainCircuit, Flag, Timer, LineChart, Gauge, ArrowRight, Sparkles } from "lucide-react"
+import { BrainCircuit, Flag, Timer, LineChart, Gauge, ArrowRight, Zap, Layers, Wind, BarChart3, Swords, Crosshair } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
@@ -23,8 +23,8 @@ function NavItem({ href, icon: Icon, title, description, colorClass }: NavItemPr
         transition={{ duration: 0.2 }}
         className="flex items-center justify-between p-2 rounded-lg bg-card hover:bg-accent/50 border border-border/50 hover:border-brand/30 transition-all duration-200 shadow-sm hover:shadow-md mb-2"
       >
-        <div className="flex items-center gap-3">
-          <div className={cn("p-2 rounded-md transition-colors duration-300", colorClass)}>
+        <div className="flex items-center gap-2.5">
+          <div className={cn("p-1.5 rounded-md transition-colors duration-300", colorClass)}>
             <Icon className="h-4 w-4" />
           </div>
           <div className="flex flex-col">
@@ -42,9 +42,9 @@ function NavItem({ href, icon: Icon, title, description, colorClass }: NavItemPr
 
 export function ModelsCard() {
   return (
-    <Card className="h-full bg-muted/50 border-none shadow-sm flex flex-col overflow-hidden relative group/card">
+    <Card className="h-full bg-muted/50 border-none shadow-sm flex flex-col overflow-hidden relative group/card @container py-0 gap-0">
 
-      <CardHeader className="px-4">
+      <CardHeader className="px-3 py-3 pb-2">
         <CardTitle className="flex items-center gap-2 text-sm font-medium text-foreground/90">
           <div className="p-1 rounded-md bg-brand/10 text-brand">
             <BrainCircuit className="h-4 w-4" />
@@ -53,14 +53,28 @@ export function ModelsCard() {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="flex-1 px-4 pb-3 flex flex-col justify-center">
-        <div className="flex flex-col">
+      <CardContent className="flex-1 px-3 pb-2 flex flex-col justify-start overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-muted-foreground/20">
+        <div className="flex flex-col gap-0.5">
           <NavItem
             href="/models/race-predictions"
             icon={Flag}
             title="Race Predictions"
             description="AI-powered race outcomes"
             colorClass="bg-blue-500/10 text-blue-500 group-hover:bg-blue-500/20"
+          />
+          <NavItem
+            href="/models/quali-predictions"
+            icon={Zap}
+            title="Quali Predictions"
+            description="Qualification results forecast"
+            colorClass="bg-purple-500/10 text-purple-500 group-hover:bg-purple-500/20"
+          />
+          <NavItem
+            href="/models/race-quali-predictions"
+            icon={Layers}
+            title="Race + Quali"
+            description="Combined event predictions"
+            colorClass="bg-indigo-500/10 text-indigo-500 group-hover:bg-indigo-500/20"
           />
           <NavItem
             href="/models/race-strategy"
@@ -77,9 +91,9 @@ export function ModelsCard() {
 
 export function AnalyticsCard() {
   return (
-    <Card className="h-full bg-muted/50 border-none shadow-sm flex flex-col overflow-hidden relative group/card">
+    <Card className="h-full bg-muted/50 border-none shadow-sm flex flex-col overflow-hidden relative group/card @container py-0 gap-0">
 
-      <CardHeader className="px-4">
+      <CardHeader className="px-3 py-3 pb-2">
         <CardTitle className="flex items-center gap-2 text-sm font-medium text-foreground/90">
           <div className="p-1 rounded-md bg-brand/10 text-brand">
             <LineChart className="h-4 w-4" />
@@ -88,8 +102,8 @@ export function AnalyticsCard() {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="flex-1 px-4 pb-3 flex flex-col justify-center">
-        <div className="flex flex-col">
+      <CardContent className="flex-1 px-3 pb-2 flex flex-col justify-start overflow-y-auto scrollbar-thin scrollbar-thumb-rounded-md scrollbar-thumb-muted-foreground/20">
+        <div className="flex flex-col gap-0.5">
           <NavItem
             href="/analytics/race-pace"
             icon={Gauge}
@@ -97,21 +111,34 @@ export function AnalyticsCard() {
             description="Lap time analysis"
             colorClass="bg-emerald-500/10 text-emerald-500 group-hover:bg-emerald-500/20"
           />
-
-          {/* Placeholder */}
-          <div className="px-0">
-            <div className="flex items-center justify-between p-2 rounded-lg bg-muted/30 border border-transparent opacity-60 mt-1 mb-2">
-              <div className="flex items-center gap-3">
-                <div className="p-2 rounded-md bg-muted text-muted-foreground">
-                  <Sparkles className="h-4 w-4" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-semibold text-xs text-muted-foreground">More Coming Soon</span>
-                  <span className="text-[10px] text-muted-foreground/70 leading-tight">Advanced telemetry insights</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <NavItem
+            href="/analytics/clean-air-race-pace"
+            icon={Wind}
+            title="Clean Air Race Pace"
+            description="Unimpeded pace analysis"
+            colorClass="bg-teal-500/10 text-teal-500 group-hover:bg-teal-500/20"
+          />
+          <NavItem
+            href="/analytics/lap-time-distributions"
+            icon={BarChart3}
+            title="Lap Time Distributions"
+            description="Consistency & performance"
+            colorClass="bg-cyan-500/10 text-cyan-500 group-hover:bg-cyan-500/20"
+          />
+          <NavItem
+            href="/analytics/race-head-to-head"
+            icon={Swords}
+            title="Race Head to Head"
+            description="Driver performance comparison"
+            colorClass="bg-rose-500/10 text-rose-500 group-hover:bg-rose-500/20"
+          />
+          <NavItem
+            href="/analytics/clean-air-head-to-head"
+            icon={Crosshair}
+            title="Clean Air Head to Head"
+            description="Pure pace comparison"
+            colorClass="bg-pink-500/10 text-pink-500 group-hover:bg-pink-500/20"
+          />
         </div>
       </CardContent>
     </Card>
