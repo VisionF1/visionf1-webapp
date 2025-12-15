@@ -31,9 +31,18 @@ interface UpcomingGPProps {
   gp: GPData;
 }
 
-export function UpcomingGP({ gp }: UpcomingGPProps) {
+export function UpcomingGP({ gp: originalGp }: UpcomingGPProps) {
+  const gp = {
+    ...originalGp,
+    startDate: "2025-12-06",
+    endDate: "2025-12-08"
+  };
+
   const calculateTimeLeft = useCallback(() => {
-    const now = new Date();
+    // Override current date to simulate being during the GP (Dec 7, 2025)
+    // const now = new Date();
+    const now = new Date("2025-12-07T14:00:00");
+
     const start = new Date(gp.startDate);
     const end = new Date(gp.endDate);
     const difference = start.getTime() - now.getTime();
@@ -52,7 +61,10 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
   }, [gp.startDate, gp.endDate]);
 
   const checkIfLive = useCallback(() => {
-    const now = new Date();
+    // Override current date to simulate being during the GP (Dec 7, 2025)
+    // const now = new Date();
+    const now = new Date("2025-12-07T14:00:00");
+
     const start = new Date(gp.startDate);
     const end = new Date(gp.endDate);
     return now >= start && now <= end;
