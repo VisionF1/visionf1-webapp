@@ -82,12 +82,12 @@ const data = {
           url: "/analytics/lap-time-distributions",
         },
         {
-          title: "Quali Head to Head",
-          url: "#",
+          title: "Race Head to Head",
+          url: "/analytics/race-head-to-head",
         },
         {
-          title: "Race Head to Head",
-          url: "#",
+          title: "Clean Air Head to Head",
+          url: "/analytics/clean-air-head-to-head",
         },
       ],
     },
