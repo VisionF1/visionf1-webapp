@@ -13,8 +13,8 @@ import { Season, EventSummary, RacePaceRow } from "@/lib/types"
 interface TeamComparison {
   teamName: string;
   winner: RacePaceRow;
-  loser: RacePaceRow;
-  delta: number;
+  loser?: RacePaceRow;
+  delta?: number;
 }
 
 export default function RaceHeadToHead() {
@@ -115,9 +115,9 @@ export default function RaceHeadToHead() {
     const comparisons: TeamComparison[] = [];
 
     Object.entries(groupedByTeam).forEach(([teamName, drivers]) => {
-      if (drivers.length >= 2) {
-        const sortedDrivers = [...drivers].sort((a, b) => a.avg_laptime - b.avg_laptime);
+      const sortedDrivers = [...drivers].sort((a, b) => a.avg_laptime - b.avg_laptime);
 
+      if (sortedDrivers.length >= 2) {
         const winner = sortedDrivers[0];
         const loser = sortedDrivers[1];
         const delta = loser.avg_laptime - winner.avg_laptime;
@@ -127,6 +127,12 @@ export default function RaceHeadToHead() {
           winner,
           loser,
           delta
+        });
+      } else if (sortedDrivers.length === 1) {
+        // Single driver case
+        comparisons.push({
+          teamName,
+          winner: sortedDrivers[0]
         });
       }
     });
