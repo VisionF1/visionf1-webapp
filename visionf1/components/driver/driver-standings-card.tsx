@@ -23,7 +23,7 @@ export function DriverStandingsCard({ driverCode, teamName }: { driverCode: stri
         const driverData = driverStandingsResponse.data.find(
           (d: DriverStanding) => d.driverCode === driverCode
         )
-        
+
         if (driverData) {
           setDriverStanding(driverData)
         }
@@ -32,7 +32,7 @@ export function DriverStandingsCard({ driverCode, teamName }: { driverCode: stri
         const teamData = teamStandingsResponse.data.find(
           (t: TeamStanding) => t.team === teamName
         )
-        
+
         if (teamData) {
           setTeamStanding(teamData)
         }
@@ -55,13 +55,15 @@ export function DriverStandingsCard({ driverCode, teamName }: { driverCode: stri
               <div className="text-xs text-muted-foreground mb-2">Driver</div>
               <div className="flex justify-between items-start gap-2">
                 <div className="flex items-center gap-1 flex-1 min-w-0">
-                  <Image
-                    src={`https://flagcdn.com/${driverStanding.nationalityCode.toLowerCase()}.svg`}
-                    alt={driverStanding.nationality}
-                    width={20}
-                    height={15}
-                    className="object-contain flex-shrink-0"
-                  />
+                  <div className="relative w-5 h-4 flex-shrink-0">
+                    <Image
+                      src={`https://flagcdn.com/${driverStanding.nationalityCode.toLowerCase()}.svg`}
+                      alt={driverStanding.nationality}
+                      fill
+                      className="object-contain"
+                      sizes="20px"
+                    />
+                  </div>
                   <div className="min-w-0">
                     <div className="font-semibold text-xs @sm:text-sm truncate">{driverStanding.driver}</div>
                     <div className="text-xs text-muted-foreground">P{driverStanding.position}</div>

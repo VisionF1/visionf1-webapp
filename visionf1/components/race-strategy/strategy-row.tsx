@@ -28,24 +28,23 @@ export function StrategyRow({ strategy, index }: StrategyRowProps) {
         hard: "bg-[#F2F2F7]",
     };
 
-    const borderColors = {
-        soft: "border-[#FF3B30]",
-        medium: "border-[#FFCC00]",
-        hard: "border-[#F2F2F7]",
-    };
-
     return (
-        <div className="flex flex-col gap-2 py-4">
+        <div className="flex flex-col gap-2 py-4 pl-2 pr-8">
             <div className="flex items-center justify-between">
                 <h3 className="font-display text-lg font-bold uppercase tracking-wider text-foreground">
-                    {strategy.name}
+                    {strategy.name.split(" (")[0]}
+                    {strategy.name.includes(" (") && (
+                        <span className="text-muted-foreground font-normal text-base normal-case tracking-normal ml-2">
+                            ({strategy.name.split(" (")[1]}
+                        </span>
+                    )}
                 </h3>
                 <span className="text-sm text-muted-foreground">
                     {strategy.stints.length - 1} Stops
                 </span>
             </div>
 
-            <div className="relative h-16 w-full rounded-xl bg-muted/20 p-2">
+            <div className="relative h-16 w-full rounded-xl bg-muted/20">
                 {/* Track Line */}
                 <div className="absolute top-1/2 left-0 h-0.5 w-full -translate-y-1/2 bg-muted-foreground/20" />
 

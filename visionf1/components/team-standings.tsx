@@ -41,13 +41,16 @@ export function TeamStandings({ data: teamStandings }: { data: TeamStanding[] })
         const team = row.original;
         return (
           <div className="flex items-center gap-2">
-            <Image
-              src={`https://flagcdn.com/${team.nationalityCode.toLowerCase()}.svg`}
-              alt={team.nationality}
-              width={24}
-              height={18}
-              className="object-contain"
-            />
+            <div className="relative w-6 h-5">
+              <Image
+                src={`https://flagcdn.com/${team.nationalityCode.toLowerCase()}.svg`}
+                alt={team.nationality}
+                fill
+                className="object-contain"
+                sizes="24px"
+                priority={row.index < 10}
+              />
+            </div>
             <span>{team.nationality}</span>
           </div>
         );

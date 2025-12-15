@@ -47,13 +47,15 @@ export async function DriverRaces({ driverCode }: { driverCode: string }) {
               <div key={`${race.season}-${race.round}`} className="border border-border rounded-lg p-2 flex flex-col">
                 <div className="text-xs @sm:text-sm text-muted-foreground">Race {race.round}</div>
                 <div className="flex items-center gap-1 mt-1">
-                  <Image
-                    src={`https://flagcdn.com/${race.country_code.toLocaleLowerCase()}.svg`}
-                    alt={race.country}
-                    width={20}
-                    height={15}
-                    className="object-contain flex-shrink-0"
-                  />
+                  <div className="relative w-5 h-4 flex-shrink-0">
+                    <Image
+                      src={`https://flagcdn.com/${race.country_code.toLocaleLowerCase()}.svg`}
+                      alt={race.country}
+                      fill
+                      className="object-contain"
+                      sizes="20px"
+                    />
+                  </div>
                   <div className="font-semibold text-xs @sm:text-sm truncate">{race.event_name}</div>
                 </div>
                 <div className="text-xs text-muted-foreground mt-1 truncate">{race.circuit_name}</div>
