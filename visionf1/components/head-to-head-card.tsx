@@ -60,6 +60,18 @@ export function HeadToHeadCard({ winner, loser, delta }: HeadToHeadCardProps) {
           />
         </div>
 
+        {/* Loser Driver Image (Behind Winner, shadowed/smaller) */}
+        <div className="absolute right-[15%] bottom-0 h-[80%] w-[35%] z-15 flex items-end justify-end opacity-80 mix-blend-multiply brightness-70 select-none pointer-events-none">
+          <CldImage
+            src={loser.driver}
+            alt={loser.driver_last_name}
+            width={300}
+            height={300}
+            crop="fill"
+            className="object-contain object-bottom h-full w-auto mask-image-linear-to-b"
+          />
+        </div>
+
         {/* Right Side: Driver Image */}
         <div className="absolute right-2 bottom-0 h-[95%] w-[40%] z-20 flex items-end justify-end">
           <CldImage
