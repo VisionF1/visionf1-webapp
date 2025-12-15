@@ -8,12 +8,12 @@ export default function Home() {
     <div className="flex flex-1 flex-col gap-4 p-4 pt-4">
       <div className="flex flex-col gap-12 items-center w-full">
         {/* Main Heading and Mission */}
-          <div className="flex flex-col items-center text-center gap-2 w-full">
-            <h1 className="text-5xl font-bold mt-4 mb-2">About Us</h1>
-            <p className="text-lg text-muted-foreground max-w-2xl">
-              We&apos;re on a mission to use data science and machine learning to reveal new insights and predictions in Formula 1, combining our passion for racing and technology.
-            </p>
-          </div>
+        <div className="flex flex-col items-center text-center gap-2 w-full">
+          <h1 className="text-5xl font-bold mt-4 mb-2">About Us</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            We&apos;re on a mission to use data science and machine learning to reveal new insights and predictions in Formula 1, combining our passion for racing and technology.
+          </p>
+        </div>
         {/* Story and Mission Columns */}
         <div className="flex flex-col md:flex-row gap-10 w-full max-w-5xl justify-center">
           <Card className="flex-1 min-w-[250px]">
@@ -45,7 +45,7 @@ export default function Home() {
             <div className="flex flex-col items-center">
               <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
                 <CldImage
-                  src="avatar"
+                  src="alejo"
                   fill
                   alt="Alejo Fabregas Avatar"
                   crop="fill"
@@ -60,7 +60,7 @@ export default function Home() {
             <div className="flex flex-col items-center">
               <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
                 <CldImage
-                  src="avatar"
+                  src="camilo"
                   fill
                   alt="Camilo Fabregas Avatar"
                   crop="fill"
@@ -75,7 +75,7 @@ export default function Home() {
             <div className="flex flex-col items-center">
               <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
                 <CldImage
-                  src="avatar"
+                  src="fran"
                   fill
                   alt="Francisco Sobral Avatar"
                   crop="fill"
@@ -90,7 +90,7 @@ export default function Home() {
             <div className="flex flex-col items-center">
               <div className="relative aspect-square w-36 h-36 mb-4 rounded-full overflow-hidden bg-brand">
                 <CldImage
-                  src="avatar"
+                  src="tomas"
                   fill
                   alt="Tomás Della Vecchia Avatar"
                   crop="fill"
