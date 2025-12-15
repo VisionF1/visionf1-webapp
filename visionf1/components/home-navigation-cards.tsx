@@ -21,7 +21,7 @@ function NavItem({ href, icon: Icon, title, description, colorClass }: NavItemPr
         whileHover={{ scale: 1.01, x: 2 }}
         whileTap={{ scale: 0.99 }}
         transition={{ duration: 0.2 }}
-        className="flex items-center justify-between p-2 rounded-lg bg-card hover:bg-accent/50 border border-border/50 hover:border-brand/30 transition-all duration-200 shadow-sm hover:shadow-md mb-2"
+        className="flex items-center justify-between p-2 rounded-lg bg-popover hover:bg-accent/50 border border-border/50 hover:border-brand/30 transition-all duration-200 shadow-sm hover:shadow-md mb-2"
       >
         <div className="flex items-center gap-2.5">
           <div className={cn("p-1.5 rounded-md transition-colors duration-300", colorClass)}>
