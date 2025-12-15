@@ -27,7 +27,7 @@ export function HeadToHeadCard({ winner, loser, delta }: HeadToHeadCardProps) {
 
       <div className="relative h-full flex items-center justify-between p-6">
         {/* Left Side: Stats & Info */}
-        <div className="flex flex-col justify-center gap-1 z-10 max-w-[60%]">
+        <div className="flex flex-col justify-center gap-1 z-10 max-w-[50%]">
           {/* Winner Name */}
           <h3 className="text-2xl @xs:text-3xl font-black text-white uppercase tracking-tighter leading-none mb-2">
             {winner.driver_last_name}
@@ -49,8 +49,8 @@ export function HeadToHeadCard({ winner, loser, delta }: HeadToHeadCardProps) {
           </div>
         </div>
 
-        {/* Center/Right: Team Logo */}
-        <div className="absolute right-24 top-1/2 -translate-y-1/2 opacity-100 w-16 h-16 pointer-events-none z-10 flex items-center justify-center">
+        {/* Center/Right: Team Logo (Positioned between text and driver) */}
+        <div className="absolute right-[42%] top-1/2 -translate-y-1/2 w-14 h-14 pointer-events-none z-10 flex items-center justify-center">
           <CldImage
             src={winner.team_name.toLowerCase()}
             alt={winner.team_name}
