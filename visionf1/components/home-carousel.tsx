@@ -1,10 +1,10 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import { CldImage } from "next-cloudinary"
 import Autoplay from "embla-carousel-autoplay"
 import { Trophy, Crown } from "lucide-react"
+import { ChampionshipBattleChart } from "@/components/charts/championship-battle-chart"
 
 import {
   Carousel,
@@ -12,8 +12,8 @@ import {
   CarouselItem,
   type CarouselApi,
 } from "@/components/ui/carousel"
-import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+
 
 export function HomeCarousel() {
   const plugin = React.useRef(
@@ -164,6 +164,30 @@ export function HomeCarousel() {
                 </div>
 
               </div>
+            </div>
+          </CarouselItem>
+
+          {/* Slide 3: Championship Battle Area Chart */}
+          <CarouselItem className="pl-0 h-full">
+            <div className="h-full w-full @container relative overflow-hidden flex flex-col pt-0 px-0">
+
+              {/* Header matching ModelsCard */}
+              <div className="px-4 py-3 pb-0 z-20">
+                <div className="flex items-center gap-2 text-sm font-medium text-foreground/90">
+                  <div className="p-1 rounded-md bg-orange-500/10 text-orange-500">
+                    <Trophy className="h-4 w-4" />
+                  </div>
+                  Championship Battle
+                </div>
+              </div>
+
+              {/* Chart Container */}
+              <div className="flex-1 w-full min-h-0 flex items-center justify-center">
+                <div className="w-full h-full pb-0 px-6">
+                  <ChampionshipBattleChart />
+                </div>
+              </div>
+
             </div>
           </CarouselItem>
 
