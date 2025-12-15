@@ -4,6 +4,7 @@ import Image from "next/image";
 import { CldImage } from "next-cloudinary";
 import { useEffect, useState, useCallback } from "react";
 import { Calendar, MapPin } from "lucide-react"
+import BlurText from "@/components/ui/blur-text"
 import {
   Dialog,
   DialogTrigger,
@@ -88,9 +89,13 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
   return (
     <div className="@container rounded-xl p-4 h-full flex flex-col">
       <div className="flex justify-between items-start mb-1 @xs:mb-1 @md:mb-3 @lg:mb-4 @xl:mb-5 3xl:mb-3">
-        <span className="text-[0.6rem] @xs:text-[0.6rem] @md:text-xs @lg:text-base @xl:text-large uppercase tracking-wide text-muted-foreground">
-          Upcoming GP
-        </span>
+        <BlurText
+          text="Upcoming GP"
+          className="text-[0.6rem] @xs:text-[0.6rem] @md:text-xs @lg:text-base @xl:text-large uppercase tracking-wide text-muted-foreground"
+          delay={50}
+          animateBy="words"
+          direction="top"
+        />
         {isLive && (
           <span className="flex items-center gap-1 bg-red-600 text-white text-[0.6rem] @xs:text-[0.6rem] @md:text-xs @lg:text-base @xl:text-lg px-2 py-1 rounded-md font-semibold">
             <div className="w-2 h-2 bg-red-200 rounded-full animate-pulse" />
@@ -114,7 +119,13 @@ export function UpcomingGP({ gp }: UpcomingGPProps) {
             </div>
             <div>
               <h3 className="text-xs @xs:text-xs @sm:text-normal @md:text-lg @lg:text-xl @xl:text-2xl font-semibold text-foreground truncate">
-                {gp.name}
+                <BlurText
+                  text={gp.name}
+                  className="inline-block"
+                  delay={30}
+                  animateBy="letters"
+                  direction="bottom"
+                />
               </h3>
               <p className="text-[0.6rem] @xs:text-[0.6rem] @sm:text-xs @md:text-sm @lg:text-base @xl:text-lg text-muted-foreground">
                 {year} - Round {gp.round}
