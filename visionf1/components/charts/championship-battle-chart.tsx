@@ -53,7 +53,7 @@ const chartConfig = {
   },
   oscar: {
     label: "Oscar Piastri",
-    color: "#e5e7eb", // Gray-200
+    color: "#6b7280", // Gray-500
   },
 } satisfies ChartConfig
 
@@ -86,10 +86,10 @@ export function ChampionshipBattleChart() {
               axisLine={false}
               tickMargin={8}
               tick={{ fill: "hsl(var(--muted-foreground))", fontSize: 10, fontWeight: 600 }}
-              interval={"preserveStartEnd"}
+              interval="preserveStart"
               minTickGap={12}
             />
-            <YAxis hide domain={[0, 'dataMax']} padding={{ top: 0, bottom: 0 }} />
+            <YAxis hide domain={[0, 'dataMax']} padding={{ top: 3, bottom: 0 }} />
             <ChartTooltip
               content={
                 <ChartTooltipContent
